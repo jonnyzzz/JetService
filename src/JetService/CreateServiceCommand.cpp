@@ -4,7 +4,7 @@
 
 const Logger LOG(L"CreateServiceCommand");
 
-CreateServiceCommand::CreateServiceCommand(const ServiceSettings* settings) 
+CreateServiceCommand::CreateServiceCommand(const CreateServiceSettings* settings) 
   : mySettings(settings), 
   ServiceControlManagerCommand(SCM_Right::CREATE_SERVICE)
 {
@@ -40,7 +40,6 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
     userName,
     password
   );
-
 
   if (service == NULL) {
     LOG.LogErrorFormat(L"Failed to create service. %s", LOG.GetLastError());

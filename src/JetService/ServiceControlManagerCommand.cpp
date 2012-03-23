@@ -9,7 +9,7 @@ const SCM_Right SCM_Right::ENUMERATE_SERVICE = SCM_Right(L"Enumerate service", S
 Logger LOG(L"ServiceControlManagerCommand");
 
 int ServiceControlManagerCommand::executeCommand() {
-  LOG.LogDebug(CString(L"Openning ServiceControlManager with ") + myRight + L" permissions");
+  LOG.LogDebugFormat(L"Openning ServiceControlManager with %s permissions", (CString&)myRight);
 
   SC_HANDLE handle = OpenSCManager(NULL, NULL, myRight);
   if (handle == NULL) {

@@ -1,0 +1,9 @@
+*.suo
+*.sdf
+*.user
+*.DotSettings
+*.DotSettings.user
+Release/
+ipch/
+Debug/
+_Resharper*/

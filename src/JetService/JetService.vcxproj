@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="CreateServiceCommand.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
     <ClInclude Include="stdafx.h" />
@@ -84,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CreateServiceCommand.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />

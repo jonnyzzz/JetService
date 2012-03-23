@@ -13,10 +13,7 @@ int ServiceControlManagerCommand::executeCommand() {
 
   SC_HANDLE handle = OpenSCManager(NULL, NULL, myRight);
   if (handle == NULL) {
-    DWORD error = GetLastError();
-
-    CString err;
-    err.Format(L"Failed to open Service Control Manager: " + LOG.GetLastError());
+    LOG.LogErrorFormat(L"Failed to open Service Control Manager with %s permissions: %s", (CString&)myRight, LOG.GetLastError());
     return 1;
   }
 

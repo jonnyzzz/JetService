@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Logger.h"
+#include <stdarg.h>
 
 LoggerSuverity Logger::ourSuverity = LogSError;
 
@@ -23,22 +24,79 @@ bool Logger::IsInfoEnabled() {
 	return Logger::ToLog(LogSInfo);
 }
 
+  
 void Logger::LogDebug(const CString message) const {
 	Logger::Log(LogSDebug, myPrefix, message);
+}
+void Logger::LogDebug(const CString message, const CString m2) const {
+  if (!IsDebugEnabled()) return;
+  LogDebug(message + m2);
+}
+void Logger::LogDebug(const CString message, const CString m2, const CString m3) const {
+  if (!IsDebugEnabled()) return;
+  LogDebug(message + m2 + m3);
+}
+
+void Logger::LogDebugFormat(const CString message, ...) const {
+  if (!IsDebugEnabled()) return;
+
+  CString str;
+  va_list args;
+  va_start(args,message);
+  str.FormatV(message, args);  
+  va_end(args);  
+  LogDebug(str);
 }
 
 void Logger::LogInfo(const CString message) const {
 	Logger::Log(LogSInfo, myPrefix, message);
 }
+void Logger::LogInfo(const CString message, const CString m2) const {
+  if (!IsInfoEnabled()) return;
+  LogInfo(message + m2);
+}
+void Logger::LogInfo(const CString message, const CString m2, const CString m3) const {
+  if (!IsInfoEnabled()) return;
+  LogInfo(message + m2 + m3);
+}
+void Logger::LogInfoFormat(const CString message, ...) const {
+  if (!IsInfoEnabled()) return;
+
+  CString str;
+  va_list args;
+  va_start(args,message);
+  str.FormatV(message, args);  
+  va_end(args);  
+  LogInfo(str);
+}
+
 
 void Logger::LogWarn(const CString message) const {
 	Logger::Log(LogSWarn, myPrefix, message);
+}
+void Logger::LogWarnFormat(const CString message, ...) const {
+  if (!IsWarnEnabled()) return;
+
+  CString str;
+  va_list args;
+  va_start(args,message);
+  str.FormatV(message, args);  
+  va_end(args);  
+  LogWarn(str);
 }
 
 void Logger::LogError(const CString message) const {
 	Logger::Log(LogSError, myPrefix, message);
 }
 
+void Logger::LogErrorFormat(const CString message, ...) const {
+  CString str;
+  va_list args;
+  va_start(args,message);
+  str.FormatV(message, args);  
+  va_end(args);  
+  LogError(str);
+}
 
 bool Logger::ToLog(LoggerSuverity suv) {
 	return (int)ourSuverity <= (int)suv;

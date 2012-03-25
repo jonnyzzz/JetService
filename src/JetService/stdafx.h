@@ -17,5 +17,6 @@
 #include <atlstr.h>
 
 
+CString CreateFormatted(const CString& tmpl, ...);
 
 // TODO: reference additional headers your program requires here

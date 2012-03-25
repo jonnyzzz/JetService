@@ -78,7 +78,12 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="CreateServiceCommand.h" />
     <ClInclude Include="DeleteServiceCommand.h" />
+    <ClInclude Include="FileServiceSettings.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="rapidxml\rapidxml.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
     <ClInclude Include="ServiceSettings.h" />
@@ -90,6 +95,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CreateServiceCommand.cpp" />
     <ClCompile Include="DeleteServiceCommand.cpp" />
+    <ClCompile Include="FileServiceSettings.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />

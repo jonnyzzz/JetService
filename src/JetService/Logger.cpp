@@ -120,7 +120,7 @@ void Logger::Log(LoggerSuverity suv, CString prefix, CString message) {
 	if (Logger::ToLog(suv)) {
     CString log;    
 		log.Append(prefix);
-    log.Append(L" ");
+    log.Append(L" [");
 		switch(suv) {
 			case LogSDebug:
         log.Append(L"Debug");
@@ -135,7 +135,8 @@ void Logger::Log(LoggerSuverity suv, CString prefix, CString message) {
 				log.Append(L"Error");
 				break;
 		}
-		log.Append(L" - ");
+		log.Append(L"]");
+    while (log.GetLength() < 20) log.AppendChar(L' ');
 		log.Append(message);
 		log.Append(L"\r\n");
     wprintf_s(log);

@@ -6,8 +6,12 @@ public:
   virtual ~Argz(void);
 
 public:
-  CString getArgument(int idx);
-  int getArgumentCount();
+  CString GetArgument(int idx);
+  int GetArgumentCount();
+
+  bool HasArgument(const CString& text);
+  
+  bool GetNamedArgument(const CString& text, CString& dest);
 
 private:
   const int myArgc;

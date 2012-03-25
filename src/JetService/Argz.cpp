@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "Argz.h"
 
-Argz::Argz(int argc, _TCHAR* argv[]) : myArgc(argc), myArgv(new CString*[argc]){
-  CString** strings = new CString*[argc];
-  for(int i = 0; i < argc; i++) {    
-    strings[i] = new CString(argv[i]);    
+Argz::Argz(int argc, _TCHAR* argv[]) : myArgc(argc-1), myArgv(new CString*[argc]){  
+  //Normally, 0-th argument is the executable name
+  for(int i = 1; i < argc; i++) {    
+    myArgv[i] = new CString(argv[i]);    
   }
 }
  
@@ -12,13 +12,32 @@ Argz::~Argz() {
   delete myArgv;
 }
 
-int Argz::getArgumentCount() {
+int Argz::GetArgumentCount() {
   return myArgc;
 }
 
-CString Argz::getArgument(int c) {
+CString Argz::GetArgument(int c) {
   if (c < 0 || c >= myArgc) return CString(L"");
-  return *(myArgv[c]);
+  return CString(*(myArgv[c]));
 }
 
+bool Argz::HasArgument(const CString& text) {
+  for(int i = 0; i < GetArgumentCount(); i++) {
+    if (text == GetArgument(i)) return true;
+  }
+  return false;
+}
+
+
+bool Argz::GetNamedArgument(const CString& text, CString& dest) {
+  CString pat = text + L"=";
+  for(int i = 0; i < GetArgumentCount(); i++) {
+    CString arg = GetArgument(i);
+    if (arg.Find(pat) == 0) {
+      dest = arg.Right(arg.GetLength() - pat.GetLength());
+      return true;
+    }
+  }
+  return false;
+}
 

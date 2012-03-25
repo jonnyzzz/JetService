@@ -4,8 +4,9 @@
 Argz::Argz(int argc, _TCHAR* argv[]) : myArgc(argc-1), myArgv(new CString*[argc]){  
   //Normally, 0-th argument is the executable name
   for(int i = 1; i < argc; i++) {    
-    myArgv[i] = new CString(argv[i]);    
+    myArgv[i-1] = new CString(argv[i]);    
   }
+  myArgv[myArgc] = NULL;
 }
  
 Argz::~Argz() {
@@ -30,7 +31,7 @@ bool Argz::HasArgument(const CString& text) {
 
 
 bool Argz::GetNamedArgument(const CString& text, CString& dest) {
-  CString pat = text + L"=";
+  CString pat = L"/" + text + L"=";
   for(int i = 0; i < GetArgumentCount(); i++) {
     CString arg = GetArgument(i);
     if (arg.Find(pat) == 0) {

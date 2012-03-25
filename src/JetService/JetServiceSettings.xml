@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jetservice>
+  <name>JetService32</name>
+  <description>JetService sample service</description>
+
+  <execution>
+    <!-- 
+       working dir is relative to service.exe location,
+       full paths are allowed as well
+    -->
+    <workdir>/../foo</workdir>
+    <!-- 
+       path to executable file
+    -->
+    <program>foo.exe</program>
+    <!--
+       arguments list
+    -->
+    <arguments>a b c "333" /foo:bar</arguments>
+  </execution>
+</jetservice>

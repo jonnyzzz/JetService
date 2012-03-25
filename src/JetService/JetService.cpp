@@ -3,32 +3,31 @@
 
 #include "stdafx.h"
 #include "Command.h"
+#include "FileServiceSettings.h"
+#include "Logger.h"
 
-
-class C2 : public Command {
-public: 
-  C2(Argz* a) : Command() {}
-  virtual ~C2() {}
-public:
-  virtual int executeCommand() { return 0;}
-};
+const Logger LOG(L"main");
 
 int _tmain(int argc, _TCHAR* argv[])
 {
   Argz az(argc, argv);
 
-  C2 z(&az);
-
-
-  wprintf(L"Started JetService\r\n");
-
-  SC_HANDLE handler = OpenSCManager(NULL, NULL, SC_MANAGER_ENUMERATE_SERVICE);
-
-  wprintf(L"Service openned\r\n");
-
-  if (handler != NULL) {
-    CloseServiceHandle(handler);
+  if (az.HasArgument(L"/debug")) {
+    Logger::SetSuverity(LoggerSuverity::LogSDebug);
+  } else {
+    Logger::SetSuverity(LoggerSuverity::LogSInfo);
   }
+
+  LOG.LogInfo(L"Starting JetService...");
+
+  CString file;
+  if (!az.GetNamedArgument(L"settings", file)) {
+    LOG.LogErrorFormat(L"Failed to find configuration file");
+    return 1;
+  }
+
+  FileServiceSettings set(file);
+  return set.executeCommand();
   
 	return 0;
 }

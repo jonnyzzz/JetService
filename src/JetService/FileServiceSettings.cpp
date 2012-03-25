@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "FileServiceSettings.h"
 #include "rapidxml\rapidxml.hpp"
-#include "rapidxml\rapidxml_iterators.hpp"
-#include "rapidxml\rapidxml_utils.hpp"
 #include "Logger.h"
 #include <fstream>
 #include <vector>
@@ -20,12 +18,6 @@ FileServiceSettings::FileServiceSettings(const CString& configFile)
 
 FileServiceSettings::~FileServiceSettings(void)
 {
-}
-
-CString parseAttribute(xml_node<TCHAR> node, const CString& name) {
-  xml_node<TCHAR>* s = node.first_node(name);
-  if (s == NULL) return L"";
-  s.o
 }
 
 int FileServiceSettings::executeCommand() {
@@ -56,21 +48,9 @@ int FileServiceSettings::executeCommand() {
     LOG.LogWarnFormat(L"Failed to find <jetservice> node in document");
     return 1;
   }
-  
-  CString serviceName;
-  CString serviceDescription;
-
-  for(node_iterator<TCHAR> nodes(root);nodes != NULL; nodes++) {
-    if (CString((*nodes).name()) == L"name") {
-      serviceName = (*nodes).a
-  }
-
-  
 
   return 0;
 }
-
-
 
 
 int FileServiceSettings::executeCommnad(const CreateServiceSettings* settings) {return 0;}

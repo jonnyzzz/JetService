@@ -4,20 +4,31 @@
 #include "stdafx.h"
 #include "Command.h"
 #include "ConsoleAction.h"
+#include "SimpleConsoleWriter.h"
 #include "DeleteServiceAction.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
 
+
 DeleteServiceAction deleteAction;
+
 
 ConsoleAction* actions[] = {
     &deleteAction,
     NULL
 };
 
-int usage(const Argz& az) {
-
+int usage(const Argz& az, ConsoleWriter* writer) {
+  writer->Write();
+  writer->Write(L"Usage:");
+  writer->WriteFormat(L"  %s <command>", az.GetExecutableName());
+  writer->Write();
+  writer->Write(L"  where <command> could be one of the following: ");
+  for(ConsoleAction** p = actions; *p != NULL; p++) {    
+    (*p)->PrintUsage(writer);
+    writer->Write();
+  }
 
   return 1;
 }
@@ -25,6 +36,9 @@ int usage(const Argz& az) {
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+  SimpleConsoleWriter sConsole;
+  ConsoleWriter* console = &sConsole;
+
   Argz az(argc, argv);
 
   if (az.HasArgument(L"/debug")) {
@@ -33,17 +47,18 @@ int _tmain(int argc, _TCHAR* argv[])
     Logger::SetSuverity(LogSInfo);
   }
 
-  LOG.LogInfo(L"Starting JetService...");
-  LOG.LogInfo(L"Copyright (C) JetBrains GmbH 2012");
-  LOG.LogInfo(L"");
+  console->Write(L"Starting JetService...");
+  console->Write(L"Copyright (C) JetBrains GmbH 2012");
+  console->Write();
 
   if (az.GetArgumentCount() < 1) {
     LOG.LogWarn(L"Incorrect usage.");
-    return usage(az);
+    return usage(az, console);
   }
 
-  CString command = az.GetArgument(0);
-  Argz subArgz = az.SkipFirstParameter();
+  CString& command = az.GetArgument(0);
+  Argz& subArgz = az.SkipFirstParameter();
+
   for(ConsoleAction** p = actions; *p != NULL; p++) {
     ConsoleAction* action = *p;
     if (action->GetCommandName() == command) {
@@ -52,6 +67,6 @@ int _tmain(int argc, _TCHAR* argv[])
   }
 
   LOG.LogWarnFormat(L"Unknown command: %s", command);
-  return usage(az);
+  return usage(az, console);
 }
 

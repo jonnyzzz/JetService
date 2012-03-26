@@ -1,5 +1,6 @@
 #pragma once
 #include "Argz.h"
+#include "ConsoleWriter.h"
 
 class ConsoleAction
 {
@@ -9,7 +10,7 @@ public:
 
 public:
   CString GetCommandName() const;
-  virtual CString GetUsage() = 0;  
+  virtual void PrintUsage(ConsoleWriter* writer) = 0;  
   virtual int ExecuteAction(const Argz* argz) = 0;
 
 protected:

@@ -10,7 +10,7 @@ public:
   virtual ~DeleteServiceAction();
 
 public:
-  virtual CString GetUsage();  
+  virtual void PrintUsage(ConsoleWriter* writer);  
   virtual int ExecuteAction(const Argz* argz);
 
 };

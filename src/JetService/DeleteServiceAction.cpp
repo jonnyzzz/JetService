@@ -18,8 +18,9 @@ DeleteServiceAction::~DeleteServiceAction(void)
 }
 
 
-CString DeleteServiceAction::GetUsage() {
-  return L"";
+void DeleteServiceAction::PrintUsage(ConsoleWriter* writer) {
+  writer->Write(L"    delete /settings=<path to settings file>");
+  writer->Write(L"      removes installed service");  
 }
 
 

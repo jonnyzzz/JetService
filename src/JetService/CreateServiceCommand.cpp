@@ -33,7 +33,7 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
     SERVICE_WIN32_OWN_PROCESS, //Consider to have SERVICE_INTERACTIVE_PROCESS
     mySettings->isAutostart() ? SERVICE_AUTO_START : SERVICE_DEMAND_START, 
     SERVICE_ERROR_NORMAL, 
-    NULL, //TODO: executable to be started from service
+    L"Some mock executable for now", //TODO: executable to be started from service
     NULL, //Start orger group
     NULL, //tag
     NULL, //dependencies
@@ -43,8 +43,37 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
 
   if (service == NULL) {
     DWORD err = GetLastError();
-    LOG.LogErrorFormat(L"Failed to create service. %s", LOG.GetLastError());
-    return 1;
+    CString msg = CreateFormatted(L"Failed to create service %s.", mySettings->getServiceName());
+    switch(err) {
+    case ERROR_ACCESS_DENIED:
+      LOG.LogWarnFormat(L"%s Access denied", msg);
+      return 1;
+    case ERROR_CIRCULAR_DEPENDENCY:
+      LOG.LogWarnFormat(L"%s A circular service dependency was specified", msg);
+      return 1;
+    case ERROR_DUPLICATE_SERVICE_NAME:
+      LOG.LogWarnFormat(L"%s Service display name is already used", msg);
+      return 1;
+    case ERROR_INVALID_NAME:
+      LOG.LogWarnFormat(L"%s The specified service name is invalid", msg);
+      return 1;
+    case ERROR_INVALID_PARAMETER:
+      LOG.LogWarnFormat(L"%s A parameter that was specified is invalid", msg);
+      return 1;
+    case ERROR_INVALID_SERVICE_ACCOUNT:
+      LOG.LogWarnFormat(L"%s Specified account does not exist", msg);
+      return 1;
+    case ERROR_SERVICE_EXISTS:
+      LOG.LogWarnFormat(L"%s The service already exists", msg);
+      return 1;
+    case ERROR_SERVICE_MARKED_FOR_DELETE:
+      LOG.LogWarnFormat(L"%s The service already exists and marked for deletion", msg);
+      return 1;
+    case ERROR_INVALID_HANDLE:
+    default:
+      LOG.LogErrorFormat(L"%s %s", msg, LOG.GetLastError());
+      return 1;
+    }    
   }
 
   LOG.LogInfoFormat(L"Service %s was created", mySettings->getServiceName());

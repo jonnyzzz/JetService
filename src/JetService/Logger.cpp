@@ -118,7 +118,7 @@ CString Logger::GetErrorText(DWORD win32Error) {
     FORMAT_MESSAGE_FROM_SYSTEM,
     NULL, 
     win32Error, 
-    LANG_SYSTEM_DEFAULT,
+    LANG_NEUTRAL,
     buff,
     sz, 
     NULL);

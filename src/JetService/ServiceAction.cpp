@@ -3,9 +3,10 @@
 #include "Logger.h"
 
 const Logger LOG(L"ServiceAction");
+const CString ServiceAction::JetServiceCommand(L"jetservice");
 
 ServiceAction::ServiceAction()
-  : SimpleConsoleAction(L"jetservice")
+  : SimpleConsoleAction(JetServiceCommand)
 {
 }
 

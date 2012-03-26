@@ -31,7 +31,7 @@ int DeleteServiceCommand::executeCommand(SC_HANDLE scm, SC_HANDLE svc) {
     }
   }
 
-  LOG.LogInfoFormat(L"Service %s will be removed");
+  LOG.LogInfoFormat(L"Service %s will be removed", mySettings->getServiceName());
   return 0;
 }
 

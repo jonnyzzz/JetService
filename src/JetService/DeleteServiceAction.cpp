@@ -24,12 +24,6 @@ void DeleteServiceAction::PrintUsage(ConsoleWriter* writer) {
 }
 
 int DeleteServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* settings){
-  CString file;
-  if (az->GetNamedArgument(L"settings", file)) {
-    LOG.LogErrorFormat(L"Failed to find configuration file");
-    return 1;
-  }
-
   DeleteServiceCommand cmd(settings);
   return static_cast<Command*>(&cmd)->executeCommand();
 }

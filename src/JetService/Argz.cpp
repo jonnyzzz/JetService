@@ -67,3 +67,8 @@ Argz Argz::SkipFirstParameter() const {
 CString Argz::MakeKey(const CString& name) {
   return L"/" + name;
 }
+
+CString Argz::MakeArgument(const CString& name, const CString& value) {
+  return MakeKey(name) + L"=" + value;
+}
+

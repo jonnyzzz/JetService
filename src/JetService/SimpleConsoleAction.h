@@ -12,6 +12,9 @@ public:
 public:    
   virtual int ExecuteAction(const Argz* argz);
 
+protected:
+  int GetSettingsFile(const Argz* argz, CString& result);
+
 public:
   virtual void PrintUsage(ConsoleWriter* writer) = 0;  
   virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings) = 0;

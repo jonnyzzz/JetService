@@ -27,12 +27,13 @@ CString SimpleServiceSettings::getServiceDisplayName() const{
 ////////////////////////////////////////
 
 
-SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings)
-  : myBase(baseSettings),
-  myUserName(L""),
-  myPassword(L""),
-  myAutostart(true), 
-  myRunAsSystem(false) {
+SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand)
+  : myBase(baseSettings)
+  , myUserName(L"")
+  , myPassword(L"")
+  , myAutostart(true)
+  , myRunAsSystem(false)
+  , myServiceExecutableCommand(serviceCommand) {
 }
 
 SimpleCreateServiceSettings::~SimpleCreateServiceSettings(){
@@ -62,6 +63,9 @@ CString SimpleCreateServiceSettings::getPassword() const {
   return myPassword;
 }
 
+CString SimpleCreateServiceSettings::getServiceExecutable() const {
+  return myServiceExecutableCommand;
+}
 
 void SimpleCreateServiceSettings::setUserName(const CString& name) {
   myUserName = name;

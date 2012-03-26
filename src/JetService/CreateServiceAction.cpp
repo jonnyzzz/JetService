@@ -2,6 +2,7 @@
 #include "CreateServiceAction.h"
 #include "CreateServiceCommand.h"
 #include "SimpleServiceSettings.h"
+#include "ServiceAction.h"
 #include "Logger.h"
 
 const Logger LOG(L"CreateServiceAction");
@@ -25,8 +26,12 @@ void CreateServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      installs service to the system to run under local system");
 }
 
-int CreateServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* baseSettings) {
-  SimpleCreateServiceSettings settings(baseSettings);
+int CreateServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* baseSettings) {  
+  CString serviceCommand;
+  int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
+  if (ret != 0) return ret;
+  
+  SimpleCreateServiceSettings settings(baseSettings, serviceCommand);
 
   if (az->HasArgument(L"/runAsSystem")) {
     settings.setRunAsSystem(true);
@@ -52,6 +57,8 @@ int CreateServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* ba
   if (p.CompareNoCase(L"true") == 0) {
     settings.setAutostart(true);
   }
+
+
   
   CreateServiceCommand cmd(&settings);
   return static_cast<Command*>(&cmd)->executeCommand();

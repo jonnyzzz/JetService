@@ -36,13 +36,19 @@ int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {
   return myAction->ExecuteAction(myArgz, settings);
 }
 
-
-int SimpleConsoleAction::ExecuteAction(const Argz* az) {
-  CString file;
-  if (!az->GetNamedArgument(SettingsKeyName, file)) {  
+int SimpleConsoleAction::GetSettingsFile(const Argz* az, CString& result) {
+  result = L"";
+  if (!az->GetNamedArgument(SettingsKeyName, result)) {  
     LOG.LogErrorFormat(L"Failed to find configuration file");
     return 1;
   }
+  return 0;
+}
+
+int SimpleConsoleAction::ExecuteAction(const Argz* az) {
+  CString file;
+  int ret = GetSettingsFile(az, file);
+  if (ret != 0) return ret;
 
   FileSettingsWrapper cmd(file, this, az);
   return static_cast<Command*>(&cmd)->executeCommand();

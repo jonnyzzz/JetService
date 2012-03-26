@@ -33,7 +33,7 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
     SERVICE_WIN32_OWN_PROCESS, //Consider to have SERVICE_INTERACTIVE_PROCESS
     mySettings->isAutostart() ? SERVICE_AUTO_START : SERVICE_DEMAND_START, 
     SERVICE_ERROR_NORMAL, 
-    L"Some mock executable for now", //TODO: executable to be started from service
+    mySettings->getServiceExecutable(), //executable command    
     NULL, //Start orger group
     NULL, //tag
     NULL, //dependencies

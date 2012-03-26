@@ -8,7 +8,7 @@ const Logger LOG(L"DeleteServiceAction");
 
 
 DeleteServiceAction::DeleteServiceAction()
-  : ConsoleAction(L"delete") 
+  : SimpleConsoleAction(L"delete") 
 {
 }
 
@@ -19,35 +19,17 @@ DeleteServiceAction::~DeleteServiceAction(void)
 
 
 void DeleteServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->Write(L"    delete /settings=<path to settings file>");
+  writer->WriteFormat(L"    delete /%s=<path to settings file>", SettingsKeyName);
   writer->Write(L"      removes installed service");  
 }
 
-
-class DeleteFileSettings : public FileServiceSettings {
-public:
-  DeleteFileSettings(CString name) : FileServiceSettings(name) {}
-  virtual ~DeleteFileSettings() {}
-
-public:
-  virtual int executeCommand(const ServiceSettings* settings);
-
-};
-
-int DeleteFileSettings::executeCommand(const ServiceSettings* settings) {
-  DeleteServiceCommand cmd(settings);
-  Command* pcmd = &cmd;
-  return pcmd->executeCommand();
-}
-
-
-int DeleteServiceAction::ExecuteAction(const Argz* az){
+int DeleteServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* settings){
   CString file;
   if (az->GetNamedArgument(L"settings", file)) {
     LOG.LogErrorFormat(L"Failed to find configuration file");
     return 1;
   }
 
-  DeleteFileSettings cmd(file);
+  DeleteServiceCommand cmd(settings);
   return ((Command*)&cmd)->executeCommand();
 }

@@ -49,7 +49,7 @@ bool Argz::HasArgument(const CString& text) const {
 
 
 bool Argz::GetNamedArgument(const CString& text, CString& dest) const {
-  CString pat = L"/" + text + L"=";
+  CString pat = MakeKey(text) + L"=";
   for(int i = 0; i < GetArgumentCount(); i++) {
     CString arg = GetArgument(i);
     if (arg.Find(pat) == 0) {
@@ -64,3 +64,6 @@ Argz Argz::SkipFirstParameter() const {
   return Argz(*this, 1); 
 }
 
+CString Argz::MakeKey(const CString& name) {
+  return L"/" + name;
+}

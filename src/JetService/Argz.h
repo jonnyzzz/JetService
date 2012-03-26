@@ -16,6 +16,8 @@ public:
 
   Argz SkipFirstParameter() const;
 
+  static CString MakeKey(const CString& name);
+
 private:
   const int myArgc;
   const CString myExecutableName;

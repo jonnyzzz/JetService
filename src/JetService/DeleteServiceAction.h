@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ConsoleAction.h"
+#include "SimpleConsoleAction.h"
 
 
-class DeleteServiceAction : public ConsoleAction
+class DeleteServiceAction : public SimpleConsoleAction
 {
 public:
   DeleteServiceAction();
@@ -11,7 +11,7 @@ public:
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer);  
-  virtual int ExecuteAction(const Argz* argz);
+  virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings);
 
 };
 

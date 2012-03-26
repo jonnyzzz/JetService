@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "FileServiceSettings.h"
+#include "SimpleServiceSettings.h"
 #include "rapidxml\rapidxml.hpp"
 #include "Logger.h"
 #include <fstream>
@@ -83,9 +84,8 @@ int FileServiceSettings::executeCommand() {
   LOG.LogErrorFormat(L"Parsed name:%s", name);
   LOG.LogErrorFormat(L"Parsed descr:%s", descr);
 
-  return 0;
+  SimpleServiceSettings settings(name, descr);
+  return executeCommand(&settings);  
 }
 
 
-int FileServiceSettings::executeCommnad(const CreateServiceSettings* settings) {return 0;}
-int FileServiceSettings::executeCommnad(const ServiceSettings* settings) {return 0;}

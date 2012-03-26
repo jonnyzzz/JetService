@@ -13,8 +13,8 @@ public:
 public:
   virtual int executeCommand();
 
-  virtual int executeCommnad(const CreateServiceSettings* settings);
-  virtual int executeCommnad(const ServiceSettings* settings);
+  
+  virtual int executeCommand(const ServiceSettings* settings) = 0;
 
 private:
   CString loadSettingsXml();

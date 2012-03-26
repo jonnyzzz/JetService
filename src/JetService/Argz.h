@@ -2,19 +2,23 @@
 class Argz
 {
 public:
-  Argz(int argc, _TCHAR* argv[]);
+  Argz(int argc, _TCHAR* argv[]);  
+  Argz(const Argz& az, int skip = 0);
   virtual ~Argz(void);
 
 public:
-  CString GetArgument(int idx);
-  int GetArgumentCount();
+  CString GetExecutableName() const;
 
-  bool HasArgument(const CString& text);
-  
-  bool GetNamedArgument(const CString& text, CString& dest);
+  CString GetArgument(int idx) const;
+  int GetArgumentCount() const;
+  bool HasArgument(const CString& text) const;  
+  bool GetNamedArgument(const CString& text, CString& dest) const;
+
+  Argz SkipFirstParameter() const;
 
 private:
   const int myArgc;
+  const CString myExecutableName;
   CString** const myArgv;
 };
 

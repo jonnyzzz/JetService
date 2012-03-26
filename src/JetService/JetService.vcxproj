@@ -76,7 +76,9 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="ConsoleAction.h" />
     <ClInclude Include="CreateServiceCommand.h" />
+    <ClInclude Include="DeleteServiceAction.h" />
     <ClInclude Include="DeleteServiceCommand.h" />
     <ClInclude Include="FileServiceSettings.h" />
     <ClInclude Include="Logger.h" />
@@ -87,19 +89,23 @@
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
     <ClInclude Include="ServiceSettings.h" />
+    <ClInclude Include="SimpleServiceSettings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="ConsoleAction.cpp" />
     <ClCompile Include="CreateServiceCommand.cpp" />
+    <ClCompile Include="DeleteServiceAction.cpp" />
     <ClCompile Include="DeleteServiceCommand.cpp" />
     <ClCompile Include="FileServiceSettings.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />
+    <ClCompile Include="SimpleServiceSettings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

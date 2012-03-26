@@ -19,8 +19,8 @@ DeleteServiceAction::~DeleteServiceAction(void)
 
 
 void DeleteServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->WriteFormat(L"    delete /%s=<path to settings file>", SettingsKeyName);
-  writer->Write(L"      removes installed service");  
+  writer->WriteFormat(L"    %s /%s=<path to settings file>", myName, SettingsKeyName);
+  writer->Write(      L"      removes installed service");  
 }
 
 int DeleteServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* settings){
@@ -31,5 +31,5 @@ int DeleteServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* se
   }
 
   DeleteServiceCommand cmd(settings);
-  return ((Command*)&cmd)->executeCommand();
+  return static_cast<Command*>(&cmd)->executeCommand();
 }

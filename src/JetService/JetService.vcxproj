@@ -78,6 +78,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="ConsoleAction.h" />
     <ClInclude Include="ConsoleWriter.h" />
+    <ClInclude Include="CreateServiceAction.h" />
     <ClInclude Include="CreateServiceCommand.h" />
     <ClInclude Include="DeleteServiceAction.h" />
     <ClInclude Include="DeleteServiceCommand.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="ConsoleAction.cpp" />
     <ClCompile Include="ConsoleWriter.cpp" />
+    <ClCompile Include="CreateServiceAction.cpp" />
     <ClCompile Include="CreateServiceCommand.cpp" />
     <ClCompile Include="DeleteServiceAction.cpp" />
     <ClCompile Include="DeleteServiceCommand.cpp" />

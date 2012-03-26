@@ -17,3 +17,31 @@ private:
   const CString myDescription;
 };
 
+
+
+class SimpleCreateServiceSettings : public CreateServiceSettings {
+public:
+  SimpleCreateServiceSettings(const ServiceSettings* baseSettings);
+  virtual ~SimpleCreateServiceSettings();
+
+public:
+  virtual CString getServiceName() const;
+  virtual CString getServiceDisplayName() const;
+  virtual bool isAutostart() const;
+  virtual bool runAsSystem() const;
+  virtual CString getUserName() const;
+  virtual CString getPassword() const;
+
+public:
+  void setUserName(const CString& name);
+  void setPassword(const CString& pwd);
+  void setAutostart(bool autostart);
+  void setRunAsSystem(bool runAsSystem);
+
+private:
+  const ServiceSettings* myBase;
+  CString myUserName;
+  CString myPassword;
+  bool myAutostart;
+  bool myRunAsSystem;
+};

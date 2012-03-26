@@ -6,15 +6,17 @@
 #include "ConsoleAction.h"
 #include "SimpleConsoleWriter.h"
 #include "DeleteServiceAction.h"
+#include "CreateServiceAction.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
 
 
 DeleteServiceAction deleteAction;
-
+CreateServiceAction createAction;
 
 ConsoleAction* actions[] = {
+    &createAction, 
     &deleteAction,
     NULL
 };

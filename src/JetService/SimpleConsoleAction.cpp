@@ -45,5 +45,5 @@ int SimpleConsoleAction::ExecuteAction(const Argz* az) {
   }
 
   FileSettingsWrapper cmd(file, this, az);
-  return ((Command*)&cmd)->executeCommand();
+  return static_cast<Command*>(&cmd)->executeCommand();
 }

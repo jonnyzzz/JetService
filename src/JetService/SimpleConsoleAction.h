@@ -9,10 +9,11 @@ public:
   SimpleConsoleAction(const CString& name);
   virtual ~SimpleConsoleAction(void);
 
-public:  
-  virtual void PrintUsage(ConsoleWriter* writer) = 0;  
+public:    
   virtual int ExecuteAction(const Argz* argz);
 
+public:
+  virtual void PrintUsage(ConsoleWriter* writer) = 0;  
   virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings) = 0;
 
 public:

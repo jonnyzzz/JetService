@@ -27,7 +27,7 @@ ServiceCommand::~ServiceCommand(void)
 }
 
 int ServiceCommand::executeCommand(SC_HANDLE scm) {
-  LOG.LogDebugFormat(L"Opening %s...", mySettings->getServiceName());
+  LOG.LogDebugFormat(L"Opening %s with %s rights...", mySettings->getServiceName(), (CString)mySCRight);
 
   SC_HANDLE svc = OpenService(scm, mySettings->getServiceName(), mySCRight);
 

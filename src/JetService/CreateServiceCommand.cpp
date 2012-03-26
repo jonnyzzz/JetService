@@ -42,6 +42,7 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
   );
 
   if (service == NULL) {
+    DWORD err = GetLastError();
     LOG.LogErrorFormat(L"Failed to create service. %s", LOG.GetLastError());
     return 1;
   }

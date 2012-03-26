@@ -45,6 +45,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
   if (az.HasArgument(L"/debug")) {
     Logger::SetSuverity(LogSDebug);
+    LOG.LogDebug(L"Debug logging is enabled");
   } else {
     Logger::SetSuverity(LogSInfo);
   }

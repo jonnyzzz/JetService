@@ -81,8 +81,8 @@ int FileServiceSettings::executeCommand() {
     descr = nodeText(descrNode);
   }
 
-  LOG.LogErrorFormat(L"Parsed name:%s", name);
-  LOG.LogErrorFormat(L"Parsed descr:%s", descr);
+  LOG.LogDebugFormat(L"Parsed service name: %s", name);
+  LOG.LogDebugFormat(L"Parsed service description: %s", descr);
 
   SimpleServiceSettings settings(name, descr);
   return executeCommand(&settings);  

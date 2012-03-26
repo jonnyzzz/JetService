@@ -39,7 +39,7 @@ int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {
 
 int SimpleConsoleAction::ExecuteAction(const Argz* az) {
   CString file;
-  if (az->GetNamedArgument(SettingsKeyName, file)) {  
+  if (!az->GetNamedArgument(SettingsKeyName, file)) {  
     LOG.LogErrorFormat(L"Failed to find configuration file");
     return 1;
   }

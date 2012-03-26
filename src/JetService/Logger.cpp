@@ -111,32 +111,54 @@ CString Logger::GetLastError() const {
 }
 
 CString Logger::GetErrorText(DWORD win32Error) {
-  CString txt;
-  txt.Format(L"%d", win32Error);
-  return txt;
+  const DWORD sz = 65535;
+  TCHAR buff[sz+1];
+
+  DWORD n = FormatMessage(
+    FORMAT_MESSAGE_FROM_SYSTEM,
+    NULL, 
+    win32Error, 
+    LANG_SYSTEM_DEFAULT,
+    buff,
+    sz, 
+    NULL);
+
+  if (n > 0) {
+    CString str;
+    str.Append(buff);
+    str.Trim();
+    str.AppendFormat(L" (%d)", win32Error);
+    return str;
+  } else {
+    CString txt;
+    txt.Format(L"%d", win32Error);
+    return txt;
+  }
 }
 
-void Logger::Log(LoggerSuverity suv, CString prefix, CString message) {    
+void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& message) {    
 	if (Logger::ToLog(suv)) {
     CString log;    
 		log.Append(prefix);
-    log.Append(L" [");
+    if (log.GetLength() > 17) {
+      log = log.Left(14);
+    }
+
+    while (log.GetLength() < 18) log.AppendChar(L' ');    
 		switch(suv) {
 			case LogSDebug:
-        log.Append(L"Debug");
+        log.Append(L"[Debug] ");
 				break;
 			case LogSInfo:
-				log.Append(L"Info");
+				log.Append(L" [Info] ");
 				break;
 			case LogSWarn:
-				log.Append(L"Warn");
+				log.Append(L" [Warn] ");
 				break;
 			case LogSError:
-				log.Append(L"Error");
+				log.Append(L"  [Err] ");
 				break;
-		}
-		log.Append(L"]");
-    while (log.GetLength() < 20) log.AppendChar(L' ');
+		}		
 		log.Append(message);
 		log.Append(L"\r\n");
     wprintf_s(log);

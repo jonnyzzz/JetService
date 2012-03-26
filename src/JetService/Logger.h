@@ -51,5 +51,5 @@ public:
 
   static CString GetErrorText(DWORD win32Error);
 private:
-	static void Log(LoggerSuverity suv, CString prefix, CString message);
+	static void Log(LoggerSuverity suv, const CString& prefix, const CString& message);
 };

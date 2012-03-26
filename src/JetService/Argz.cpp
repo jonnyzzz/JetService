@@ -18,7 +18,7 @@ Argz::Argz(const Argz& az, int skip)
   , myExecutableName(az.myExecutableName) {  
   //Normally, 0-th argument is the executable name
   for(int i = 0; i < myArgc; i++) {    
-    myArgv[i] = new CString(az.GetArgument(i));
+    myArgv[i] = new CString(az.GetArgument(i+skip));
   }
   myArgv[myArgc] = NULL;
 }
@@ -42,17 +42,17 @@ CString Argz::GetExecutableName() const {
 
 bool Argz::HasArgument(const CString& text) const {
   for(int i = 0; i < GetArgumentCount(); i++) {
-    if (text == GetArgument(i)) return true;
+    CString arg = GetArgument(i);
+    if (text.CompareNoCase(arg) == 0) return true;
   }
   return false;
 }
 
-
 bool Argz::GetNamedArgument(const CString& text, CString& dest) const {
-  CString pat = MakeKey(text) + L"=";
+  CString pat = (MakeKey(text) + L"=").MakeLower();
   for(int i = 0; i < GetArgumentCount(); i++) {
     CString arg = GetArgument(i);
-    if (arg.Find(pat) == 0) {
+    if (arg.MakeLower().Find(pat) == 0) {
       dest = arg.Right(arg.GetLength() - pat.GetLength());
       return true;
     }

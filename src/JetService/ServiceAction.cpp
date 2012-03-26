@@ -17,7 +17,8 @@ ServiceAction::~ServiceAction()
 
 
 void ServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->WriteFormat(L"  %s", myName);  
+  writer->WriteFormat(L"    %s", myName);  
+  writer->Write      (L"      internal, called to run as windows service");  
 }
 
 int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settings) {

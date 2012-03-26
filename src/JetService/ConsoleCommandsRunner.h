@@ -8,7 +8,7 @@ class ConsoleCommandsRunner
 {
 public:
   ConsoleCommandsRunner(ConsoleWriter* writer, Argz* argz, ConsoleAction** commands);
-  ~ConsoleCommandsRunner();
+  virtual ~ConsoleCommandsRunner();
 
 public:
 

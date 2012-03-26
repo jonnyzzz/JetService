@@ -19,6 +19,14 @@ ConsoleCommandsRunner::~ConsoleCommandsRunner(void)
 
 
 int ConsoleCommandsRunner::executeCommand() {
+  if (myArgz->HasArgument(L"/debug")) {
+    Logger::SetSuverity(LogSDebug);
+    LOG.LogDebug(L"Debug logging is enabled");
+  } else {
+    Logger::SetSuverity(LogSInfo);
+  }
+
+
   if (myArgz->GetArgumentCount() < 1) {
     LOG.LogWarn(L"Incorrect usage.");
     return usage();
@@ -42,7 +50,7 @@ int ConsoleCommandsRunner::executeCommand() {
 int ConsoleCommandsRunner::usage() {
   myWriter->Write();
   myWriter->Write(L"Usage:");
-  myWriter->WriteFormat(L"  %s <command>", myArgz->GetExecutableName());
+  myWriter->WriteFormat(L"  %s <command> [/debug]", myArgz->GetExecutableName());
   myWriter->Write();
   myWriter->Write(L"  where <command> could be one of the following: ");
   for(ConsoleAction** p = myActions; *p != NULL; p++) {    

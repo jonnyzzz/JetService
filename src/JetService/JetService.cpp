@@ -13,28 +13,16 @@
 #include "Logger.h"
 const Logger LOG(L"main");
 
-
 int _tmain(int argc, _TCHAR* argv[])
 {
   SimpleConsoleWriter sConsole;
   ConsoleWriter* console = &sConsole;
-
-  Argz az(argc, argv);
-
-  if (az.HasArgument(L"/debug")) {
-    Logger::SetSuverity(LogSDebug);
-    LOG.LogDebug(L"Debug logging is enabled");
-  } else {
-    Logger::SetSuverity(LogSInfo);
-  }
-
-  console->Write(L"Starting JetService...");
+  console->Write(L"Starting JetBrains JetService...");
   console->Write(L"Copyright (C) JetBrains GmbH 2012");
   console->Write();
 
+  Argz az(argc, argv);
 
-  //TODO: move initialization into main() method to avoid 
-  //TODO: static constats initialization issues
   DeleteServiceAction deleteAction;
   CreateServiceAction createAction;
   ServiceAction       serviceAction;

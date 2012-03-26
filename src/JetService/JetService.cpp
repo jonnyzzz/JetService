@@ -7,33 +7,11 @@
 #include "SimpleConsoleWriter.h"
 #include "DeleteServiceAction.h"
 #include "CreateServiceAction.h"
+#include "ServiceAction.h"
+#include "ConsoleCommandsRunner.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
-
-
-DeleteServiceAction deleteAction;
-CreateServiceAction createAction;
-
-ConsoleAction* actions[] = {
-    &createAction, 
-    &deleteAction,
-    NULL
-};
-
-int usage(const Argz& az, ConsoleWriter* writer) {
-  writer->Write();
-  writer->Write(L"Usage:");
-  writer->WriteFormat(L"  %s <command>", az.GetExecutableName());
-  writer->Write();
-  writer->Write(L"  where <command> could be one of the following: ");
-  for(ConsoleAction** p = actions; *p != NULL; p++) {    
-    (*p)->PrintUsage(writer);
-    writer->Write();
-  }
-
-  return 1;
-}
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -54,22 +32,20 @@ int _tmain(int argc, _TCHAR* argv[])
   console->Write(L"Copyright (C) JetBrains GmbH 2012");
   console->Write();
 
-  if (az.GetArgumentCount() < 1) {
-    LOG.LogWarn(L"Incorrect usage.");
-    return usage(az, console);
-  }
 
-  CString& command = az.GetArgument(0);
-  Argz& subArgz = az.SkipFirstParameter();
+  //TODO: move initialization into main() method to avoid 
+  //TODO: static constats initialization issues
+  DeleteServiceAction deleteAction;
+  CreateServiceAction createAction;
+  ServiceAction       serviceAction;
 
-  for(ConsoleAction** p = actions; *p != NULL; p++) {
-    ConsoleAction* action = *p;
-    if (action->GetCommandName() == command) {
-      return action->ExecuteAction(&subArgz);
-    }
-  }
+  ConsoleAction* actions[] = {
+    &serviceAction,
+    &createAction, 
+    &deleteAction,
+    NULL
+  };
 
-  LOG.LogWarnFormat(L"Unknown command: %s", command);
-  return usage(az, console);
+  return (ConsoleCommandsRunner(console, &az, actions)).executeCommand();
 }
 

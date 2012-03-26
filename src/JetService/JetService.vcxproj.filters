@@ -81,6 +81,12 @@
     <ClInclude Include="CreateServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleCommandsRunner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -132,6 +138,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreateServiceAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleCommandsRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

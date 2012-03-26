@@ -77,6 +77,7 @@
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="ConsoleAction.h" />
+    <ClInclude Include="ConsoleCommandsRunner.h" />
     <ClInclude Include="ConsoleWriter.h" />
     <ClInclude Include="CreateServiceAction.h" />
     <ClInclude Include="CreateServiceCommand.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="ServiceAction.h" />
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
     <ClInclude Include="ServiceSettings.h" />
@@ -101,6 +103,7 @@
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="ConsoleAction.cpp" />
+    <ClCompile Include="ConsoleCommandsRunner.cpp" />
     <ClCompile Include="ConsoleWriter.cpp" />
     <ClCompile Include="CreateServiceAction.cpp" />
     <ClCompile Include="CreateServiceCommand.cpp" />
@@ -109,6 +112,7 @@
     <ClCompile Include="FileServiceSettings.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="ServiceAction.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />
     <ClCompile Include="SimpleConsoleAction.cpp" />

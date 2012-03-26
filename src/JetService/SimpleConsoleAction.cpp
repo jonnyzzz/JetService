@@ -38,10 +38,21 @@ int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {
 
 int SimpleConsoleAction::GetSettingsFile(const Argz* az, CString& result) {
   result = L"";
-  if (!az->GetNamedArgument(SettingsKeyName, result)) {  
+  CString path = L"";
+  if (!az->GetNamedArgument(SettingsKeyName, path)) {  
     LOG.LogErrorFormat(L"Failed to find configuration file");
     return 1;
   }
+
+  const DWORD sz = 65535;
+  TCHAR buff[sz+1];
+  DWORD n = GetFullPathName(path, sz, buff, NULL);
+  if (n <= 0 || n >= sz) {
+    LOG.LogErrorFormat(L"Failed to compute full path for settings file: %s", path);    
+    return 1;
+  }
+
+  result.Append(buff);
   return 0;
 }
 

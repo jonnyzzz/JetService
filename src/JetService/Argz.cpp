@@ -1,10 +1,19 @@
 #include "StdAfx.h"
 #include "Argz.h"
 
+CString getExecutableFileName(CString file) {  
+  int p1 = file.ReverseFind(L'\\');
+  int p2 = file.ReverseFind(L'\\');
+
+  int p = max(p1,p2);
+  if (p <= 0) return file;
+  return file.Right(file.GetLength() - p - 1);
+}
+
 Argz::Argz(int argc, _TCHAR* argv[]) 
   : myArgc(argc-1)
   , myArgv(new CString*[argc])
-  , myExecutableName(argc <= 0 ? L"JetService.exe" : argv[0])  {  
+  , myExecutableName(getExecutableFileName(argc <= 0 ? L"JetService.exe" : argv[0]))  {  
   //Normally, 0-th argument is the executable name
   for(int i = 1; i < argc; i++) {    
     myArgv[i-1] = new CString(argv[i]);    

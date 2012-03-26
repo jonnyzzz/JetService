@@ -58,8 +58,6 @@ int CreateServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* ba
     settings.setAutostart(true);
   }
 
-
-  
   CreateServiceCommand cmd(&settings);
   return static_cast<Command*>(&cmd)->executeCommand();
 }

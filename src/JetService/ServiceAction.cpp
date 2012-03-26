@@ -20,8 +20,31 @@ void ServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      internal, called to run as windows service");  
 }
 
+VOID WINAPI JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv) {
+  //RegisterServiceCtrlHandlerEx(
+}
+
+
+VOID WINAPI ServiceAction::JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv) {
+  //RegisterServiceCtrlHandlerEx(
+}
+
+
 int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settings) {
-  return 1;
+  CString serviceName = settings->getServiceName();
+  LPWSTR buff = serviceName.GetBuffer();
+
+  SERVICE_TABLE_ENTRY tbl[] = {
+    {buff, (LPSERVICE_MAIN_FUNCTION)::JetServiceMain },
+    {NULL, NULL}
+  };
+
+  if (!StartServiceCtrlDispatcher(tbl)) {
+    LOG.LogWarn(L"Failed to register service");
+    return 1;
+  }
+
+  return 0;
 }
 
 int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result) {

@@ -16,5 +16,6 @@ public:
 
 public:
   static const CString JetServiceCommand;
+  VOID WINAPI JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv);
 
 };

@@ -87,6 +87,9 @@
     <ClInclude Include="ConsoleCommandsRunner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleCommandsRunner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

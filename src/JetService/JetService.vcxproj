@@ -92,6 +92,7 @@
     <ClInclude Include="ServiceAction.h" />
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
+    <ClInclude Include="ServiceMain.h" />
     <ClInclude Include="ServiceSettings.h" />
     <ClInclude Include="SimpleConsoleAction.h" />
     <ClInclude Include="SimpleConsoleWriter.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="ServiceAction.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />
+    <ClCompile Include="ServiceMain.cpp" />
     <ClCompile Include="SimpleConsoleAction.cpp" />
     <ClCompile Include="SimpleConsoleWriter.cpp" />
     <ClCompile Include="SimpleServiceSettings.cpp" />

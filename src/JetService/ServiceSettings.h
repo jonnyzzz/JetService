@@ -20,3 +20,10 @@ public:
   virtual CString getPassword() const = 0;
   virtual CString getServiceExecutable() const = 0;
 };
+
+
+class RunServiceSettings : public ServiceSettings {
+
+
+};
+

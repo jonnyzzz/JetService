@@ -90,6 +90,12 @@
     <ClInclude Include="ServiceMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InstanceCount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JetServiceMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -150,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServiceMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InstanceCount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

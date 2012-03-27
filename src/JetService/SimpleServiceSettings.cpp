@@ -83,5 +83,21 @@ void SimpleCreateServiceSettings::setRunAsSystem(bool runAsSystem) {
   myRunAsSystem = runAsSystem;
 }
 
+/////////
 
 
+
+SimpleRunServiceSettings::SimpleRunServiceSettings(const ServiceSettings* base)
+  : myBase(base) {
+}
+
+SimpleRunServiceSettings::~SimpleRunServiceSettings() {
+}
+
+CString SimpleRunServiceSettings::getServiceName() const {
+  return myBase->getServiceName();
+}
+
+CString SimpleRunServiceSettings::getServiceDisplayName() const {
+  return myBase->getServiceDisplayName();
+}

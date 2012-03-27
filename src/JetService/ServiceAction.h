@@ -1,7 +1,9 @@
 #pragma once
 #include "SimpleConsoleAction.h"
+#include "InstanceCount.h"
+#include "JetServiceMain.h"
 
-class ServiceAction : public SimpleConsoleAction
+class ServiceAction : public SimpleConsoleAction, private InstanceCount<ServiceAction>
 {
 public:
   ServiceAction();
@@ -16,6 +18,8 @@ public:
 
 public:
   static const CString JetServiceCommand;
-  VOID WINAPI JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv);
+  void JetServiceMain(const Argz* argz, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv);
 
+private:
+  JetServiceState<128> myState;
 };

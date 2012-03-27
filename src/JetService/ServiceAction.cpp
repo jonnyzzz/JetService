@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "ServiceAction.h"
 #include "Logger.h"
+#include "SimpleServiceSettings.h"
+#include "ServiceMain.h"
 
 const Logger LOG(L"ServiceAction");
 const CString ServiceAction::JetServiceCommand(L"jetservice");
@@ -20,22 +22,19 @@ void ServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      internal, called to run as windows service");  
 }
 
-VOID WINAPI JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv) {
-  //RegisterServiceCtrlHandlerEx(
+void ServiceAction::JetServiceMain(const Argz* az, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  
+  SimpleRunServiceSettings rs(settings);
+  Argz saz(dwArgc, lpszArgv);
+  ServiceMain(&rs).JetServiceMain(&saz);
 }
-
-
-VOID WINAPI ServiceAction::JetServiceMain(DWORD dwArgc, LPTSTR *lpszArgv) {
-  //RegisterServiceCtrlHandlerEx(
-}
-
 
 int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settings) {
   CString serviceName = settings->getServiceName();
   LPWSTR buff = serviceName.GetBuffer();
 
+  myState.setState(GetInstanceId(), this, argz, settings);
   SERVICE_TABLE_ENTRY tbl[] = {
-    {buff, (LPSERVICE_MAIN_FUNCTION)::JetServiceMain },
+    {buff, myState.getFunction(GetInstanceId()) },
     {NULL, NULL}
   };
 

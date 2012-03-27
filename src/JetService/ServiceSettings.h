@@ -23,7 +23,8 @@ public:
 
 
 class RunServiceSettings : public ServiceSettings {
-
+public:
+  virtual ~RunServiceSettings() {}
 
 };
 

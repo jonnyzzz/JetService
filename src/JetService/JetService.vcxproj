@@ -84,6 +84,8 @@
     <ClInclude Include="DeleteServiceAction.h" />
     <ClInclude Include="DeleteServiceCommand.h" />
     <ClInclude Include="FileServiceSettings.h" />
+    <ClInclude Include="InstanceCount.h" />
+    <ClInclude Include="JetServiceMain.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="rapidxml\rapidxml.hpp" />
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
@@ -111,6 +113,7 @@
     <ClCompile Include="DeleteServiceAction.cpp" />
     <ClCompile Include="DeleteServiceCommand.cpp" />
     <ClCompile Include="FileServiceSettings.cpp" />
+    <ClCompile Include="InstanceCount.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="ServiceAction.cpp" />

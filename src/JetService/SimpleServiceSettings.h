@@ -47,3 +47,15 @@ private:
   bool myAutostart;
   bool myRunAsSystem;
 };
+
+
+class SimpleRunServiceSettings : public RunServiceSettings {
+public:
+  SimpleRunServiceSettings(const ServiceSettings* baseSettings);
+  virtual ~SimpleRunServiceSettings();
+public:
+  virtual CString getServiceName() const;
+  virtual CString getServiceDisplayName() const;
+private:
+  const ServiceSettings* const myBase;
+};

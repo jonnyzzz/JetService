@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Logger.h"
+#include <share.h>
 #include <stdarg.h>
 
 LoggerSuverity Logger::ourSuverity = LogSError;
+FILE* Logger::ourFileStream = NULL;
 
 Logger::Logger(CString prefix) : myPrefix(prefix)
 {	
@@ -160,7 +162,30 @@ void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& messa
 				break;
 		}		
 		log.Append(message);
-		log.Append(L"\r\n");
-    wprintf_s(log);
+		log.Append(L"\n");
+    wprintf_s(L"%s", log);
+    if (ourFileStream != NULL) {
+      fwprintf(ourFileStream, L"%s", log);
+      fflush(ourFileStream);
+    }
 	}
+}
+
+void Logger::SetLogFile(const CString& file) {
+  Logger LOG(L"Logger#SetLogFile");
+  if (ourFileStream != NULL) {
+    fclose(ourFileStream);
+    ourFileStream = NULL;
+  }
+
+  FILE* stream =_wfsopen(file, L"a", _SH_DENYWR);
+  if (stream == NULL) {
+    LOG.LogWarnFormat(L"Failed to open settings file %s", file);
+    return;
+  }
+  
+  LOG.LogInfoFormat(L"Logging will be redirected to: %s", file);
+  ourFileStream = stream;
+  fwprintf(ourFileStream, L"\n\n\n");
+  fflush(ourFileStream);
 }

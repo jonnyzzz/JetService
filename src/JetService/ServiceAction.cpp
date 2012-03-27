@@ -23,12 +23,16 @@ void ServiceAction::PrintUsage(ConsoleWriter* writer) {
 }
 
 void ServiceAction::JetServiceMain(const Argz* az, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  
+  LOG.LogDebug(L"Executing JetServiceMain");
+
   SimpleRunServiceSettings rs(settings);
   Argz saz(dwArgc, lpszArgv);
   ServiceMain(&rs).JetServiceMain(&saz);
 }
 
 int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settings) {
+  LOG.LogDebug(L"ExecuteAction entered");
+
   CString serviceName = settings->getServiceName();
   LPWSTR buff = serviceName.GetBuffer();
 
@@ -47,12 +51,14 @@ int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settin
   if (argz->IsServiceMockDebug()) {    
     tbl[0].lpServiceProc(0, NULL);
   } else {
+    LOG.LogDebug(L"Calling StartServiceCtrlDispatcher");
     if (!StartServiceCtrlDispatcher(tbl)) {
       LOG.LogWarn(L"Failed to register service");
       return 1;
     }
   }
 
+  LOG.LogDebug(L"Exit ExecuteAction");
   return 0;
 }
 
@@ -88,6 +94,18 @@ int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result)
   path.Append(L"\"");
   path.Append(argz->MakeArgument(SettingsKeyName, settings));
   path.Append(L"\"");
+
+  CString logFile;
+  if (argz->GetLogFile(logFile)) {
+    path.Append(L" ");
+    path.Append(L"\"");
+    path.Append(argz->MakeArgument(L"LogFile", logFile));
+    path.Append(L"\"");
+  }
+
+  if (argz->IsDebug()) {
+    path.Append(L" /debug ");
+  }
   
   LOG.LogDebugFormat(L"Generated service command: %s", path);
   result = path;

@@ -11,12 +11,14 @@ class Logger
 {
 private:
 	static LoggerSuverity ourSuverity;
+  static FILE* ourFileStream;
 
 private:
 	static bool ToLog(LoggerSuverity suv);
 
 public:
 	static void SetSuverity(LoggerSuverity suv);
+  static void SetLogFile(const CString& file);
 
 private:
 	const CString myPrefix;

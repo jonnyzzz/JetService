@@ -19,6 +19,10 @@ ConsoleCommandsRunner::~ConsoleCommandsRunner(void)
 
 
 int ConsoleCommandsRunner::executeCommand() {
+  CString logFile;
+  if (myArgz->GetLogFile(logFile)) {
+    Logger::SetLogFile(logFile);
+  }
   if (myArgz->IsDebug()) {
     Logger::SetSuverity(LogSDebug);
     LOG.LogDebug(L"Debug logging is enabled");
@@ -36,6 +40,7 @@ int ConsoleCommandsRunner::executeCommand() {
   }
 
   CString command = myArgz->GetArgument(0);
+  LOG.LogDebugFormat(L"Selected commnad: %s", command);
   Argz subArgz = myArgz->SkipFirstParameter();
 
   for(ConsoleAction** p = myActions; *p != NULL; p++) {

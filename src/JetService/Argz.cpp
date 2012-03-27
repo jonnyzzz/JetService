@@ -90,3 +90,15 @@ bool Argz::IsServiceMockDebug() const {
   return HasArgument(L"/debugservice");
 }
 
+bool Argz::GetLogFile(CString& logFile) const {
+  logFile = L"";
+  CString file;
+  if (!GetNamedArgument(L"LogFile", file)) return false;
+  
+  const int sz=65535;
+  TCHAR buff[sz+1];
+  int n = GetFullPathName(file, sz, buff, NULL);
+  if (n <= 0 || n >= sz) return false;
+  logFile.Append(buff);
+  return true;
+}

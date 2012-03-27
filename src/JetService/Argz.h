@@ -19,6 +19,7 @@ public:
 public:
   bool IsDebug() const;
   bool IsServiceMockDebug() const;
+  bool GetLogFile(CString& logFile) const;
 
   static CString MakeKey(const CString& name);
   static CString MakeArgument(const CString& name, const CString& value);

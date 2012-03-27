@@ -23,7 +23,7 @@ int DeleteServiceCommand::executeCommand(SC_HANDLE scm, SC_HANDLE svc) {
     CString msg = CreateFormatted(L"Failed to delete service %s.", mySettings->getServiceName());
 
     if (err == ERROR_SERVICE_MARKED_FOR_DELETE) {
-      LOG.LogWarnFormat(L"%s Service is marted for delete.", msg);
+      LOG.LogWarnFormat(L"%s Service is marked for delete.", msg);
       return 1;
     } else {
       LOG.LogWarnFormat(L"%s %s", LOG.GetErrorText(err));

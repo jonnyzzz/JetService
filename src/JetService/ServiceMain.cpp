@@ -99,7 +99,7 @@ void ServiceMain::ReportSvcStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode, D
     static DWORD dwCheckPoint = 1;
 
     SERVICE_STATUS myStatus;
-    ZeroMemory((void*)&myStatus, sizeof(myStatus));
+    //ZeroMemory((void*)&myStatus, sizeof(myStatus));
 
     // Fill in the SERVICE_STATUS structure.
     myStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS;

@@ -11,8 +11,8 @@ CString getExecutableFileName(CString file) {
 }
 
 Argz::Argz(int argc, _TCHAR* argv[]) 
-  : myArgc(argc-1)
-  , myArgv(new CString*[argc])
+  : myArgc(max(0, argc-1))
+  , myArgv(new CString*[myArgc + 1])
   , myExecutableName(getExecutableFileName(argc <= 0 ? L"JetService.exe" : argv[0]))  {  
   //Normally, 0-th argument is the executable name
   for(int i = 1; i < argc; i++) {    
@@ -79,5 +79,14 @@ CString Argz::MakeKey(const CString& name) {
 
 CString Argz::MakeArgument(const CString& name, const CString& value) {
   return MakeKey(name) + L"=" + value;
+}
+
+
+bool Argz::IsDebug() const {
+  return HasArgument(L"/debug");
+}
+
+bool Argz::IsServiceMockDebug() const {
+  return HasArgument(L"/debugservice");
 }
 

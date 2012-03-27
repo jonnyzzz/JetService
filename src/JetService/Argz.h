@@ -16,6 +16,10 @@ public:
 
   Argz SkipFirstParameter() const;
 
+public:
+  bool IsDebug() const;
+  bool IsServiceMockDebug() const;
+
   static CString MakeKey(const CString& name);
   static CString MakeArgument(const CString& name, const CString& value);
 private:

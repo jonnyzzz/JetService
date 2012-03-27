@@ -21,5 +21,6 @@ public:
   void JetServiceMain(const Argz* argz, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv);
 
 private:
-  JetServiceState<128> myState;
+  JetServiceState<3> myState;
 };
+

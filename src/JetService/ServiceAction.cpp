@@ -32,19 +32,31 @@ int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settin
   CString serviceName = settings->getServiceName();
   LPWSTR buff = serviceName.GetBuffer();
 
-  myState.setState(GetInstanceId(), this, argz, settings);
+  bool set = myState.setState(GetInstanceId(), this, argz, settings);
+  LPSERVICE_MAIN_FUNCTION main = myState.getFunction(GetInstanceId());
+  if (!set || main == NULL) {
+    LOG.LogErrorFormat(L"Failed to prepare Service Main function");
+    return 1;
+  }
+
   SERVICE_TABLE_ENTRY tbl[] = {
-    {buff, myState.getFunction(GetInstanceId()) },
+    {buff,  main},
     {NULL, NULL}
   };
 
-  if (!StartServiceCtrlDispatcher(tbl)) {
-    LOG.LogWarn(L"Failed to register service");
-    return 1;
+  if (argz->IsServiceMockDebug()) {    
+    tbl[0].lpServiceProc(0, NULL);
+  } else {
+    if (!StartServiceCtrlDispatcher(tbl)) {
+      LOG.LogWarn(L"Failed to register service");
+      return 1;
+    }
   }
 
   return 0;
 }
+
+
 
 int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result) {
   result = L"";

@@ -19,13 +19,16 @@ ConsoleCommandsRunner::~ConsoleCommandsRunner(void)
 
 
 int ConsoleCommandsRunner::executeCommand() {
-  if (myArgz->HasArgument(L"/debug")) {
+  if (myArgz->IsDebug()) {
     Logger::SetSuverity(LogSDebug);
     LOG.LogDebug(L"Debug logging is enabled");
   } else {
     Logger::SetSuverity(LogSInfo);
   }
 
+  if (myArgz->IsServiceMockDebug()) {
+    LOG.LogWarn(L"Service functions are mocked");
+  }
 
   if (myArgz->GetArgumentCount() < 1) {
     LOG.LogWarn(L"Incorrect usage.");

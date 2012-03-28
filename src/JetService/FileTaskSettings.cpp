@@ -71,7 +71,7 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
 
   LOG.LogDebugFormat(L"Program to execute: %s", program);
   LOG.LogDebugFormat(L"Program arguments:  %s", argz);
-  LOG.LogDebugFormat(L"Program work dir    %s", workDir);
+  LOG.LogDebugFormat(L"Program work dir:   %s", workDir);
 
   SimpleServiceTaskSettings settings(myRunSettings, workDir, program, argz);
   const ServiceTaskSettings* pSettings = &settings;

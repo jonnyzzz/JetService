@@ -4,6 +4,7 @@
 #include "Logger.h"
 
 #include "ServiceEventContext.h"
+#include "ServiceTask.h"
 #include "ServiceEventINRERROGATEHandler.h"
 #include "ServiceEventSTOPHandler.h"
 
@@ -44,12 +45,24 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   }
 
   ServiceStatus status(myStatusHandle, handlers.GetSupportedControlEventsMask());
+  ServiceTask task(&context);
+
+  context.SetServiceTask(&task);
   context.SetServiceStatus(&status);
+  if (!context.IsValid()) {
+    LOG.LogError(L"Failed to initialize ServiceContext. IsValid() returned false");
+    //TODO: Introduce Stopped-error status here!
+    status.SetStatus(StatusValue::STOPPED);
+    return;
+  }
   LOG.LogDebug(L"RegisterServiceCtrlHandler completed");
+    
+  //initialize status
+  status.SetStatus(StatusValue::STARTING);
+  //set task decide what to call next
+  task.CallStartService();
   
-  //TODO: call Start first and handle event to move into RUNNING
-  status.SetStatus(StatusValue::RUNNING);
-  
+  //wait for the end.
   status.WaitForExit();
   LOG.LogDebug(L"Stop event processes");
   

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ServiceStatus.h"
+class ServiceStatus;
+class ServiceTask;
 
 class ServiceEventContext
 {
@@ -11,6 +12,7 @@ public:
 public:
 
   virtual ServiceStatus* GetServiceStatus() const = 0;
+  virtual ServiceTask* GetServiceTask() const = 0;
   bool IsValid() const;
 
 };
@@ -25,8 +27,12 @@ public:
   virtual ServiceStatus* GetServiceStatus() const;
   void SetServiceStatus(ServiceStatus* status);
 
+  virtual ServiceTask* GetServiceTask() const;
+  void SetServiceTask(ServiceTask* task);
+
 private:
   ServiceStatus* myServiceStatus;
+  ServiceTask* myTask;
 
 };
 

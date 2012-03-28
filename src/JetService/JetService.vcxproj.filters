@@ -117,6 +117,9 @@
     <ClInclude Include="ServiceEventSTOPHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -201,6 +204,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServiceEventSTOPHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

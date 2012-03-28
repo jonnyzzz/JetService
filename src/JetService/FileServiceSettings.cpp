@@ -48,8 +48,7 @@ int FileServiceSettings::executeCommand() {
 
   TCHAR* buff = &buffer[0];
 
-  LOG.LogDebugFormat(L"Loaded settings:\r\n%s", CString(buff));
-
+  LOG.LogDebugFormat(L"Loaded settings:\n%s", CString(buff));
 
   xml_document<TCHAR> doc;
   doc.parse<0>(buff); 

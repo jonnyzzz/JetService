@@ -166,13 +166,13 @@ CString Logger::GetErrorText(DWORD win32Error) {
 }
 
 void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& message) {    
-  const int NAME_SZ = 24;
+  const int NAME_SZ = 33;
 
 	if (Logger::ToLog(suv)) {
     CString log;    
 		log.Append(prefix);
-    if (log.GetLength() > NAME_SZ) {
-      log = log.Left(NAME_SZ);
+    if (log.GetLength() > NAME_SZ-1) {
+      log = log.Left(NAME_SZ-1);
     }
 
     while (log.GetLength() < NAME_SZ) log.AppendChar(L' ');

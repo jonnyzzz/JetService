@@ -16,7 +16,7 @@ ServiceStatus::ServiceStatus(SERVICE_STATUS_HANDLE handle)
   , myUpdateStatusEvent(NULL)
   , myThreadId(0)
 {
-  myUpdateStatusEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+  myUpdateStatusEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
   if (myUpdateStatusEvent == NULL) {
     LOG.LogErrorFormat(L"Failed to create ManualResetEvent. %s", LOG.GetLastError());
     return;
@@ -80,11 +80,9 @@ DWORD ServiceStatus::ThreadMain() {
   status.dwCheckPoint = 42;
 
   DWORD waitTimeSpan = INFINITE;
-  while(true) {
-    //NOTE: possible concurrency here
+  while(true) {    
     WaitForSingleObject(myUpdateStatusEvent, waitTimeSpan);
-    const StatusValue* nextValue = myCurrentStatus;
-    ResetEvent(myUpdateStatusEvent);
+    const StatusValue* nextValue = myCurrentStatus;    
 
     UpdateStatus(&status, nextValue);
     LOG.LogInfoFormat(L"Call SetSerciceStatus for: %s", nextValue->GetName());    

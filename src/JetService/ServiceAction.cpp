@@ -24,12 +24,6 @@ void ServiceAction::PrintUsage(ConsoleWriter* writer) {
 
 void ServiceAction::JetServiceMain(const Argz* az, const RunServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  
   LOG.LogDebug(L"Executing JetServiceMain");
-
-  CString settingsFile;
-  if (0 != GetSettingsFile(az, settingsFile)) {
-    LOG.LogError(L"Failed to get path to settings file");
-    return;
-  }
   
   Argz saz(dwArgc, lpszArgv);
   ServiceMain(settings).JetServiceMain(&saz);

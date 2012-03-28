@@ -3,8 +3,35 @@
 #include <share.h>
 #include <stdarg.h>
 
+
+class LoggerCriticalSection {
+public:
+  LoggerCriticalSection() {
+    InitializeCriticalSection(&mySection);
+  }
+  ~LoggerCriticalSection() {
+    DeleteCriticalSection(&mySection);
+  }
+private:
+  //disabled copy constructor
+  LoggerCriticalSection(const LoggerCriticalSection& c) {}
+
+public:
+  void EnterCriticalSection() {
+    ::EnterCriticalSection(&mySection);
+  }
+  void LeaveCriticalSection() {
+    ::LeaveCriticalSection(&mySection);
+  }
+
+private:
+  CRITICAL_SECTION mySection;
+};
+
+
 LoggerSuverity Logger::ourSuverity = LogSError;
 FILE* Logger::ourFileStream = NULL;
+LoggerCriticalSection Logger::ourCriticalSection;
 
 Logger::Logger(CString prefix) : myPrefix(prefix)
 {	
@@ -163,11 +190,16 @@ void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& messa
 		}		
 		log.Append(message);
 		log.Append(L"\n");
-    wprintf_s(L"%s", log);
-    if (ourFileStream != NULL) {
-      fwprintf(ourFileStream, L"%s", log);
-      fflush(ourFileStream);
+
+    ourCriticalSection.EnterCriticalSection();
+    {
+      wprintf_s(L"%s", log);
+      if (ourFileStream != NULL) {
+        fwprintf(ourFileStream, L"%s", log);
+        fflush(ourFileStream);
+      }
     }
+    ourCriticalSection.LeaveCriticalSection();
 	}
 }
 

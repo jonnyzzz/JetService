@@ -7,14 +7,17 @@ enum LoggerSuverity {
 	LogSError = 4
 };
 
+class LoggerCriticalSection;
+
 class Logger
 {
 private:
 	static LoggerSuverity ourSuverity;
   static FILE* ourFileStream;
+  static LoggerCriticalSection ourCriticalSection;
 
 private:
-	static bool ToLog(LoggerSuverity suv);
+	static bool ToLog(LoggerSuverity suv);  
 
 public:
 	static void SetSuverity(LoggerSuverity suv);

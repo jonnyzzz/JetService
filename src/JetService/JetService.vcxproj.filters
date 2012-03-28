@@ -123,6 +123,9 @@
     <ClInclude Include="XmlFileSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FileTaskSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -213,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XmlFileSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTaskSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

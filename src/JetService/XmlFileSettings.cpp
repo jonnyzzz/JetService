@@ -55,6 +55,7 @@ CString XmlFileSettings::nodeText(xml_node<TCHAR>* node) {
     //TODO: recursive
     buff.Append(ch->value());
   }  
+  buff = buff.Trim();
   return buff;
 }
 

@@ -64,7 +64,7 @@ private:
 
 
 
-class SimpleServiceTaskSettings : public RunServiceSettings {
+class SimpleServiceTaskSettings : public ServiceTaskSettings {
 public:
   SimpleServiceTaskSettings(const RunServiceSettings* baseSettings, 
                             const CString& workDir, 

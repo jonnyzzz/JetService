@@ -18,6 +18,7 @@ public:
 
 protected:
   CString nodeText(rapidxml::xml_node<TCHAR>* node);
+    
 
 private:
   const CString myConfigFile;

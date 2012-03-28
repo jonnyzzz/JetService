@@ -30,7 +30,7 @@ int FileServiceSettings::executeCommand(xml_document<TCHAR>* doc) {
   {
     xml_node<TCHAR>* nameNode = root->first_node(L"name");
     if (nameNode == NULL) {
-      LOG.LogWarn(L"Failed to find <jetservice>/<name> element in document");
+      LOG.LogWarn(L"Failed to find <jetservice>/<name> element in settings");
       return 1;
     }
     name = nodeText(nameNode);
@@ -41,7 +41,7 @@ int FileServiceSettings::executeCommand(xml_document<TCHAR>* doc) {
   {
     xml_node<TCHAR>* descrNode = root->first_node(L"description");
     if (descrNode == NULL) {
-      LOG.LogWarn(L"Failed to find <jetservice>/<description> element in document");
+      LOG.LogWarn(L"Failed to find <jetservice>/<description> element in settings");
       return 1;
     }
     descr = nodeText(descrNode);

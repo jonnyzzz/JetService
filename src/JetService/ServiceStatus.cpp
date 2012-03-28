@@ -9,8 +9,9 @@ DWORD WINAPI ServiceStatusThreadMain(LPVOID lpParameter) {
   return ((ServiceStatus*)lpParameter)->ThreadMain();
 }
 
-ServiceStatus::ServiceStatus(SERVICE_STATUS_HANDLE handle)
+ServiceStatus::ServiceStatus(SERVICE_STATUS_HANDLE handle, DWORD handlersMask)
   : myStatusHandle(handle)
+  , myHandlersMask(handlersMask)
   , myCurrentStatus(NULL)
   , myThreadHandle(NULL)
   , myUpdateStatusEvent(NULL)
@@ -77,9 +78,9 @@ DWORD ServiceStatus::ThreadMain() {
   //see http://msdn.microsoft.com/en-us/library/windows/desktop/ms685996(v=vs.85).aspx
   SERVICE_STATUS status;
   ZeroMemory(&status, sizeof(status));
-
+  
   status.dwServiceType = SERVICE_WIN32_OWN_PROCESS;  //service type. Could be reused with service registration  
-  status.dwControlsAccepted = SERVICE_CONTROL_INTERROGATE | SERVICE_ACCEPT_STOP; //TODO: must be the same as in HandlerEx implementation => introduce class for it.
+  status.dwControlsAccepted = myHandlersMask;
   status.dwWin32ExitCode = NO_ERROR; //or ERROR_SERVICE_SPECIFIC_ERROR + dwServiceSpecificExitCode
   status.dwServiceSpecificExitCode = 0;
   status.dwCheckPoint = 42;

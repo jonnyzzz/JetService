@@ -12,11 +12,7 @@ public:
 public:
   void JetServiceMain(const Argz* serviceArgz);
 
-public:
-  DWORD HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventData);
-
 private:
   const RunServiceSettings* const mySettings;  
-  HANDLE myStopEvent;
 };
 

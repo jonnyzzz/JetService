@@ -94,6 +94,11 @@
     <ClInclude Include="ServiceAction.h" />
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
+    <ClInclude Include="ServiceEventContext.h" />
+    <ClInclude Include="ServiceEventHandler.h" />
+    <ClInclude Include="ServiceEventHandlerCollection.h" />
+    <ClInclude Include="ServiceEventINRERROGATEHandler.h" />
+    <ClInclude Include="ServiceEventSTOPHandler.h" />
     <ClInclude Include="ServiceMain.h" />
     <ClInclude Include="ServiceSettings.h" />
     <ClInclude Include="ServiceStatus.h" />
@@ -121,6 +126,11 @@
     <ClCompile Include="ServiceAction.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />
+    <ClCompile Include="ServiceEventContext.cpp" />
+    <ClCompile Include="ServiceEventHandler.cpp" />
+    <ClCompile Include="ServiceEventHandlerCollection.cpp" />
+    <ClCompile Include="ServiceEventINRERROGATEHandler.cpp" />
+    <ClCompile Include="ServiceEventSTOPHandler.cpp" />
     <ClCompile Include="ServiceMain.cpp" />
     <ClCompile Include="ServiceStatus.cpp" />
     <ClCompile Include="SimpleConsoleAction.cpp" />

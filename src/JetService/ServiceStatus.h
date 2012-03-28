@@ -6,7 +6,7 @@
 class ServiceStatus
 {
 public:
-  ServiceStatus(SERVICE_STATUS_HANDLE handle);
+  ServiceStatus(SERVICE_STATUS_HANDLE handle, DWORD handlersMask);
   virtual ~ServiceStatus(void);
 
 private:
@@ -24,6 +24,7 @@ private:
 
 private:
   SERVICE_STATUS_HANDLE myStatusHandle;
+  const DWORD myHandlersMask;
   const StatusValue* myCurrentStatus;
 
   HANDLE myThreadHandle;

@@ -1,6 +1,11 @@
 #include "StdAfx.h"
 #include "ServiceMain.h"
+#include "ServiceEventHandlerCollection.h"
 #include "Logger.h"
+
+#include "ServiceEventContext.h"
+#include "ServiceEventINRERROGATEHandler.h"
+#include "ServiceEventSTOPHandler.h"
 
 const Logger LOG(L"ServiceMain");
 
@@ -14,42 +19,44 @@ ServiceMain::~ServiceMain() {
 
 
 DWORD WINAPI GlobalHandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventData, LPVOID lpContext) {
-  return ((ServiceMain*)lpContext)->HandlerEx(dwControl, dwEventType, lpEventData);
+  return ((ServiceEventHandlerCollection*)lpContext)->HandleServiceControlEvent(dwControl, dwEventType, lpEventData);
 }
 
 
 void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   LOG.LogDebug(L"Executing JetServiceMain");
 
-  SERVICE_STATUS_HANDLE myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, this);
+  ServiceEventINRERROGATEHandler serviceEventINRERROGATEHandler;
+  ServiceEventSTOPHandler serviceEventSTOPHandler;
+  ServiceEventHandler* pHandlers[] = {  
+    &serviceEventINRERROGATEHandler,
+    &serviceEventSTOPHandler,
+    NULL
+  };
+
+  ServiceEventContextEx context;
+  ServiceEventHandlerCollection handlers(&context, pHandlers);
+  
+  SERVICE_STATUS_HANDLE myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, &handlers);
   if (myStatusHandle == NULL) {
     LOG.LogErrorFormat(L"Failed to RegisterServiceCtrlHandlerEx. %s", LOG.GetLastError());    
     return;
   }
-
-  ServiceStatus status(myStatusHandle);
+  ServiceStatus status(myStatusHandle, handlers.GetSupportedControlEventsMask());
+  context.SetServiceStatus(&status);
   LOG.LogDebug(L"RegisterServiceCtrlHandler completed");
   
+  //TODO: call Start first and handle event to move into RUNNING
   status.SetStatus(StatusValue::RUNNING);
-
-  myStopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-  if (myStopEvent == NULL) {
-    LOG.LogErrorFormat(L"Failed to CreateEvent. %s", LOG.GetLastError());
-    //ReportSvcStatus(SERVICE_STOP, GetLastError());
-    return;
-  }
-
-  // Check whether to stop the service.
-  WaitForSingleObject(myStopEvent, INFINITE);
-  LOG.LogDebug(L"Stop event processes");
-
-  status.SetStatus(StatusValue::STOPPED);  
-  status.WaitForExit();
-  return;
   
+  status.WaitForExit();
+    LOG.LogDebug(L"Stop event processes");
+  return;  
 }
 
 
+
+/*
 DWORD ServiceMain::HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventData) {
   const Logger LOG(L"ServiceEvent");
   //see http://msdn.microsoft.com/en-us/library/windows/desktop/ms683241(v=vs.85).aspx
@@ -109,3 +116,4 @@ DWORD ServiceMain::HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventD
     return ERROR_CALL_NOT_IMPLEMENTED;
    }   
 }
+*/

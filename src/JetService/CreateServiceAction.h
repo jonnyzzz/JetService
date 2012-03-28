@@ -11,7 +11,7 @@ public:
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer);  
-  virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings);
+  virtual int ExecuteAction(const Argz* argz, const RunServiceSettings* settings);
 
 };
 

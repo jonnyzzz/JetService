@@ -2,6 +2,7 @@
 #include "SimpleConsoleAction.h"
 #include "FileServiceSettings.h"
 #include "Logger.h"
+#include "SimpleServiceSettings.h"
 
 const Logger LOG(L"SimpleConsoleAction");
 const CString SimpleConsoleAction::SettingsKeyName = L"settings";
@@ -17,8 +18,9 @@ SimpleConsoleAction::~SimpleConsoleAction(void)
 
 class FileSettingsWrapper : public FileServiceSettings {
 public:
-  FileSettingsWrapper(CString name, SimpleConsoleAction* action, const Argz* argz) 
+  FileSettingsWrapper(const CString& name, SimpleConsoleAction* action, const Argz* argz) 
     : FileServiceSettings(name)
+    , mySettingsPath(name)
     , myAction(action)
     , myArgz(argz) {
   }
@@ -30,10 +32,12 @@ public:
 private:
   SimpleConsoleAction* const myAction;
   const Argz* const myArgz;
+  const CString mySettingsPath;
 };
 
 int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {
-  return myAction->ExecuteAction(myArgz, settings);
+  SimpleRunServiceSettings rs(settings, mySettingsPath);
+  return myAction->ExecuteAction(myArgz, &rs);
 }
 
 int SimpleConsoleAction::GetSettingsFile(const Argz* az, CString& result) {
@@ -64,3 +68,4 @@ int SimpleConsoleAction::ExecuteAction(const Argz* az) {
   FileSettingsWrapper cmd(file, this, az);
   return static_cast<Command*>(&cmd)->executeCommand();
 }
+

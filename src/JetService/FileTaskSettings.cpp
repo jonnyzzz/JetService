@@ -72,8 +72,40 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
   LOG.LogDebugFormat(L"Program to execute: %s", program);
   LOG.LogDebugFormat(L"Program arguments:  %s", argz);
   LOG.LogDebugFormat(L"Program work dir:   %s", workDir);
+  
+  CString baseDir;
+  int ret = GetBaseDirectory(baseDir);
+  if (ret != 0) return ret;
+
 
   SimpleServiceTaskSettings settings(myRunSettings, workDir, program, argz);
   const ServiceTaskSettings* pSettings = &settings;
   return executeCommand(pSettings);
+}
+
+int FileTaskSettings::GetBaseDirectory(CString& baseFile) {
+  CString settings = myRunSettings->getServiceTaskSettingsPath();
+  LOG.LogDebugFormat(L"Start resolve of base path: %s", settings);
+
+  const DWORD sz = 65535;
+  TCHAR buff[sz+1];
+  TCHAR* pFile;
+  
+  int n = GetFullPathName(settings, sz, buff, &pFile);
+  if (n <= 0 || n >= sz) {
+    LOG.LogErrorFormat(L"Failed to resolve path: %s", settings);
+    return 1;
+  }
+
+  if (pFile == NULL) {
+    LOG.LogErrorFormat(L"Given path to settings should point to file: %s", settings);
+    return 1;
+  }
+
+  //make path end before file name in buff
+  *pFile = L'\0';
+
+  LOG.LogDebugFormat(L"Resolved base path: %s", buff);
+  baseFile = buff;
+  return 0;
 }

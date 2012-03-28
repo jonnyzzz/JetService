@@ -16,6 +16,9 @@ public:
   virtual int executeCommand(const ServiceTaskSettings* settings) = 0;
 
 private:
+  int GetBaseDirectory(CString& baseFile);
+
+private:
   const RunServiceSettings* const myRunSettings;
 
 };

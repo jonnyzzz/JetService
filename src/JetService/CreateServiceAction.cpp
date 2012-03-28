@@ -26,7 +26,7 @@ void CreateServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      installs service to the system to run under local system");
 }
 
-int CreateServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* baseSettings) {  
+int CreateServiceAction::ExecuteAction(const Argz* az, const RunServiceSettings* baseSettings) {  
   CString serviceCommand;
   int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
   if (ret != 0) return ret;

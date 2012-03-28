@@ -1,25 +1,20 @@
 #pragma once
 
-#include "Command.h"
+#include "XmlFileSettings.h"
 #include "ServiceSettings.h"
-#include "CreateServiceCommand.h"
 
-class FileServiceSettings : public Command
+
+class FileServiceSettings : public XmlFileSettings
 {
 public:
   FileServiceSettings(const CString& configFilePath);
-  virtual ~FileServiceSettings(void);
+  virtual ~FileServiceSettings();
 
 public:
-  virtual int executeCommand();
+  virtual int executeCommand(rapidxml::xml_document<TCHAR>* doc);
 
-  
+public:  
   virtual int executeCommand(const ServiceSettings* settings) = 0;
 
-private:
-  CString loadSettingsXml();
-
-private:
-  const CString myConfigFile;
 };
 

@@ -120,6 +120,9 @@
     <ClInclude Include="ServiceTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="XmlFileSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -207,6 +210,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlFileSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

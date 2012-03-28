@@ -5,8 +5,7 @@
 const Logger LOG(L"ServiceMain");
 
 ServiceMain::ServiceMain(const RunServiceSettings* settings) 
-  : mySettings(settings)
-  , myStatusHandle(NULL)
+  : mySettings(settings)  
 {
 }
 
@@ -22,30 +21,31 @@ DWORD WINAPI GlobalHandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventD
 void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   LOG.LogDebug(L"Executing JetServiceMain");
 
-  myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, this);
+  SERVICE_STATUS_HANDLE myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, this);
   if (myStatusHandle == NULL) {
     LOG.LogErrorFormat(L"Failed to RegisterServiceCtrlHandlerEx. %s", LOG.GetLastError());    
     return;
   }
-  LOG.LogDebug(L"RegisterServiceCtrlHandler completed");
 
-  ReportSvcStatus(SERVICE_START, NO_ERROR);
+  ServiceStatus status(myStatusHandle);
+  LOG.LogDebug(L"RegisterServiceCtrlHandler completed");
+  
+  status.SetStatus(StatusValue::RUNNING);
 
   myStopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
   if (myStopEvent == NULL) {
     LOG.LogErrorFormat(L"Failed to CreateEvent. %s", LOG.GetLastError());
-    ReportSvcStatus(SERVICE_STOP, GetLastError());
+    //ReportSvcStatus(SERVICE_STOP, GetLastError());
     return;
   }
 
-  while(1) {
-    // Check whether to stop the service.
-    WaitForSingleObject(myStopEvent, INFINITE);
-    LOG.LogDebug(L"Stop event processes");
+  // Check whether to stop the service.
+  WaitForSingleObject(myStopEvent, INFINITE);
+  LOG.LogDebug(L"Stop event processes");
 
-    ReportSvcStatus(SERVICE_STOPPED, NO_ERROR);
-    return;
-  }
+  status.SetStatus(StatusValue::STOPPED);
+  return;
+  
 }
 
 
@@ -95,10 +95,10 @@ DWORD ServiceMain::HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventD
     return ERROR_CALL_NOT_IMPLEMENTED;
 
   case SERVICE_CONTROL_STOP: 
-    LOG.LogInfo(L"SERVICE_CONTROL_TIMECHANGE");
+    LOG.LogInfo(L"SERVICE_CONTROL_STOP");
     ///Notifies a service that it should stop
     ///If a service accepts this control code, it must stop upon receipt and return NO_ERROR. 
-    ReportSvcStatus(SERVICE_STOP_PENDING, NO_ERROR);
+    ///ReportSvcStatus(SERVICE_STOP_PENDING, NO_ERROR);
 
     // Signal the service to stop.
     SetEvent(myStopEvent);
@@ -108,34 +108,3 @@ DWORD ServiceMain::HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventD
     return ERROR_CALL_NOT_IMPLEMENTED;
    }   
 }
-
-void ServiceMain::ReportSvcStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode, DWORD dwWaitHint ) {
-    static DWORD dwCheckPoint = 1;
-
-    SERVICE_STATUS myStatus;
-
-    // Fill in the SERVICE_STATUS structure.
-    myStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
-    myStatus.dwServiceSpecificExitCode = 0;
-    myStatus.dwCurrentState = dwCurrentState;
-    myStatus.dwWin32ExitCode = dwWin32ExitCode;
-    myStatus.dwWaitHint = dwWaitHint;
-
-    if (dwCurrentState == SERVICE_START_PENDING) {
-        myStatus.dwControlsAccepted = 0;
-    } else {
-      myStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP;
-    }
-
-    if ((dwCurrentState == SERVICE_RUNNING) || (dwCurrentState == SERVICE_STOPPED)) {
-        myStatus.dwCheckPoint = 0;
-    } else {
-      myStatus.dwCheckPoint = dwCheckPoint++;
-    }
-
-    // Report the status of the service to the SCM.
-    if (0 == SetServiceStatus( myStatusHandle, &myStatus)) {
-      LOG.LogWarnFormat(L"Failed to set service status: %s", LOG.GetLastError());
-    }
-}
-

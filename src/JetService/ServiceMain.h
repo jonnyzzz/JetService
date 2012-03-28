@@ -2,6 +2,7 @@
 
 #include "ServiceSettings.h"
 #include "Argz.h"
+#include "ServiceStatus.h"
 
 class ServiceMain {
 public:
@@ -15,11 +16,7 @@ public:
   DWORD HandlerEx(DWORD dwControl, DWORD dwEventType, LPVOID lpEventData);
 
 private:
-  void ReportSvcStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode, DWORD dwWaitHint = 0);
-
-private:
-  const RunServiceSettings* const mySettings;
-  SERVICE_STATUS_HANDLE myStatusHandle;  
+  const RunServiceSettings* const mySettings;  
   HANDLE myStopEvent;
 };
 

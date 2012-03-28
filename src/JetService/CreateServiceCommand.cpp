@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "CreateServiceCommand.h"
 #include "Logger.h"
-#include "FileTaskSettings.h"
 
 const Logger LOG(L"CreateServiceCommand");
 

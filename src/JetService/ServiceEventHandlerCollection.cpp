@@ -25,6 +25,11 @@ DWORD ServiceEventHandlerCollection::GetSupportedControlEventsMask() const {
 }
  
 DWORD ServiceEventHandlerCollection::HandleServiceControlEvent(DWORD dwControl, DWORD dwEventType, LPVOID lpEventData) const {  
+  if (!myContext->IsValid()) {
+    LOG.LogError(L"Context is not fully initialized. Event handlers will not be called");
+    return ERROR_CALL_NOT_IMPLEMENTED;
+  }
+
   for(ServiceEventHandler** p = myHandlers; *p != NULL; p++) {
     ServiceEventHandler* handler = *p;
 

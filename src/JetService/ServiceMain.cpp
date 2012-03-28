@@ -42,6 +42,7 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
     LOG.LogErrorFormat(L"Failed to RegisterServiceCtrlHandlerEx. %s", LOG.GetLastError());    
     return;
   }
+
   ServiceStatus status(myStatusHandle, handlers.GetSupportedControlEventsMask());
   context.SetServiceStatus(&status);
   LOG.LogDebug(L"RegisterServiceCtrlHandler completed");
@@ -50,7 +51,8 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   status.SetStatus(StatusValue::RUNNING);
   
   status.WaitForExit();
-    LOG.LogDebug(L"Stop event processes");
+  LOG.LogDebug(L"Stop event processes");
+  
   return;  
 }
 

@@ -34,9 +34,10 @@ struct JetServiceState {
 
 template<int N>
 ServiceAction* JetServiceState<N>::myState = NULL;
-template<int N>
 
+template<int N>
 const Argz* JetServiceState<N>::myParam1 = NULL;
+
 template<int N>
 const ServiceSettings* JetServiceState<N>::myParam2 = NULL;
 

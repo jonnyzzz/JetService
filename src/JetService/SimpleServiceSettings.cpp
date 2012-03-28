@@ -106,3 +106,47 @@ CString SimpleRunServiceSettings::getServiceDisplayName() const {
 CString SimpleRunServiceSettings::getServiceTaskSettingsPath() const {
   return myTaskPath;
 }
+
+
+///////////////////
+
+SimpleServiceTaskSettings::SimpleServiceTaskSettings(const RunServiceSettings* baseSettings, 
+                            const CString& workDir, 
+                            const CString& programPath, 
+                            const CString& arguments)
+  : myBase(baseSettings)
+  , myWorkDir(workDir)
+  , myProgramPath(programPath)
+  , myArguments(arguments) {
+}
+
+SimpleServiceTaskSettings::~SimpleServiceTaskSettings() {
+}
+
+
+CString SimpleServiceTaskSettings::getServiceName() const {
+  return myBase->getServiceName();
+} 
+
+CString SimpleServiceTaskSettings::getServiceDisplayName() const {
+  return myBase->getServiceDisplayName();
+}
+
+CString SimpleServiceTaskSettings::getServiceTaskSettingsPath() const {
+  return myBase->getServiceTaskSettingsPath();
+}
+
+CString SimpleServiceTaskSettings::getWorkDir() const {
+  return myWorkDir;
+}
+
+CString SimpleServiceTaskSettings::getProgramPath() const {
+  return myProgramPath;
+}
+
+CString SimpleServiceTaskSettings::GetProgramArguments() const {
+  return myArguments;
+}
+
+
+

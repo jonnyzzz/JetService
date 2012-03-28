@@ -61,3 +61,31 @@ private:
   const ServiceSettings* const myBase;
   const CString myTaskPath;
 };
+
+
+
+class SimpleServiceTaskSettings : public RunServiceSettings {
+public:
+  SimpleServiceTaskSettings(const RunServiceSettings* baseSettings, 
+                            const CString& workDir, 
+                            const CString& programPath, 
+                            const CString& arguments);
+  virtual ~SimpleServiceTaskSettings();
+
+public:
+ 
+  virtual CString getServiceName() const;
+  virtual CString getServiceDisplayName() const;
+  virtual CString getServiceTaskSettingsPath() const;
+
+  virtual CString getWorkDir() const;
+  virtual CString getProgramPath() const;
+  virtual CString GetProgramArguments() const;
+
+private:
+  const RunServiceSettings* const myBase;
+  const CString myWorkDir;
+  const CString myProgramPath;
+  const CString myArguments;
+};
+

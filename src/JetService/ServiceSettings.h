@@ -31,3 +31,15 @@ public:
 
 };
 
+
+class ServiceTaskSettings : public RunServiceSettings {
+public:
+  virtual ~ServiceTaskSettings() {}
+
+public:
+
+  virtual CString getWorkDir() const = 0;
+  virtual CString getProgramPath() const = 0;
+  virtual CString GetProgramArguments() const = 0;
+};
+

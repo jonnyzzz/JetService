@@ -51,11 +51,13 @@ private:
 
 class SimpleRunServiceSettings : public RunServiceSettings {
 public:
-  SimpleRunServiceSettings(const ServiceSettings* baseSettings);
+  SimpleRunServiceSettings(const ServiceSettings* baseSettings, const CString& taskPath);
   virtual ~SimpleRunServiceSettings();
 public:
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
+  virtual CString getServiceTaskSettingsPath() const;
 private:
   const ServiceSettings* const myBase;
+  const CString myTaskPath;
 };

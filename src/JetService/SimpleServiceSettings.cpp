@@ -87,8 +87,9 @@ void SimpleCreateServiceSettings::setRunAsSystem(bool runAsSystem) {
 
 
 
-SimpleRunServiceSettings::SimpleRunServiceSettings(const ServiceSettings* base)
-  : myBase(base) {
+SimpleRunServiceSettings::SimpleRunServiceSettings(const ServiceSettings* base, const CString& taskPath)
+  : myBase(base)
+  , myTaskPath(taskPath){
 }
 
 SimpleRunServiceSettings::~SimpleRunServiceSettings() {
@@ -100,4 +101,8 @@ CString SimpleRunServiceSettings::getServiceName() const {
 
 CString SimpleRunServiceSettings::getServiceDisplayName() const {
   return myBase->getServiceDisplayName();
+}
+
+CString SimpleRunServiceSettings::getServiceTaskSettingsPath() const {
+  return myTaskPath;
 }

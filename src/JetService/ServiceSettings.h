@@ -23,8 +23,11 @@ public:
 
 
 class RunServiceSettings : public ServiceSettings {
-public:
+public:  
   virtual ~RunServiceSettings() {}
+
+public:
+  virtual CString getServiceTaskSettingsPath() const = 0;
 
 };
 

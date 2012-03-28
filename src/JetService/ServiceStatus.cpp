@@ -48,6 +48,11 @@ ServiceStatus::~ServiceStatus(void)
 }
 
 
+void ServiceStatus::WaitForExit() {
+  if (myThreadHandle == NULL) return;
+  WaitForSingleObject(myThreadHandle, INFINITE);
+}
+
 void ServiceStatus::SetStatus(const StatusValue* newStatus) {
   myCurrentStatus = newStatus;
   LOG.LogDebugFormat(L"Set status to: %s", newStatus->GetName());

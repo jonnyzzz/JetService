@@ -43,7 +43,8 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   WaitForSingleObject(myStopEvent, INFINITE);
   LOG.LogDebug(L"Stop event processes");
 
-  status.SetStatus(StatusValue::STOPPED);
+  status.SetStatus(StatusValue::STOPPED);  
+  status.WaitForExit();
   return;
   
 }

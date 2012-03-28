@@ -14,6 +14,7 @@ private:
 
 public:
   void SetStatus(const StatusValue* newStatus);
+  void WaitForExit();
 
 public:
   DWORD ThreadMain();

@@ -31,14 +31,18 @@ DWORD WINAPI ThreadedServiceTaskThreadProc(LPVOID lpParameter) {
 
 void ThreadedServiceTask::CallStartService() {
   LOG.LogInfo(L"CallStartService");
-  myContext->GetServiceStatus()->SetStatus(StatusValue::STARTING);
-
-  EnterCriticalSection(&myLock);
+  
+  EnterCriticalSection(&myLock);  
   ProcessServiceStart();
   LeaveCriticalSection(&myLock);
 }
 
 void ThreadedServiceTask::ProcessServiceStart() {
+  if (IsInterrupted()) {
+    LOG.LogWarn(L"There is a stopping process");
+    return;
+  }
+
   if (myProcessThread != NULL) {
     //TODO: process this cause
     LOG.LogWarn(L"There is running process thread. Will terminate");
@@ -46,6 +50,7 @@ void ThreadedServiceTask::ProcessServiceStart() {
     return;
   }
 
+  myContext->GetServiceStatus()->SetStatus(StatusValue::STARTING);
   myProcessThread = CreateThread(NULL, 0, &ThreadedServiceTaskThreadProc, this, 0, &myProcessThreadId);
   if (myProcessThread == NULL) {
     LOG.LogError(L"Failed to create thread to execute service task");
@@ -57,8 +62,7 @@ void ThreadedServiceTask::ProcessServiceStart() {
 
 void ThreadedServiceTask::CallStopSerive() {
   LOG.LogInfo(L"CallStopService");
-  myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPING);
-  
+    
   EnterCriticalSection(&myLock);
   ProcessServiceStop();
   LeaveCriticalSection(&myLock);
@@ -70,7 +74,8 @@ void ThreadedServiceTask::ProcessServiceStop() {
     myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPED);
     return;
   }
-
+    
+  myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPING);
   Interrupt();
 }
 
@@ -89,9 +94,12 @@ DWORD ThreadedServiceTask::ThreadProcess() {
   }
 
   LOG.LogDebugFormat(L"Task finished. Interrupted=%s.", IsInterrupted() ? L"true" : L"false");
+
+  EnterCriticalSection(&myLock);
   myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPED);
   myProcessThread = NULL;
   myProcessThreadId = 0;
+  LeaveCriticalSection(&myLock);
   return 0;
 }
 

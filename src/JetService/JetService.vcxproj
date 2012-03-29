@@ -105,6 +105,7 @@
     <ClInclude Include="ServiceSettings.h" />
     <ClInclude Include="ServiceStatus.h" />
     <ClInclude Include="ServiceTask.h" />
+    <ClInclude Include="SettingsServiceTask.h" />
     <ClInclude Include="SimpleConsoleAction.h" />
     <ClInclude Include="SimpleConsoleWriter.h" />
     <ClInclude Include="SimpleServiceSettings.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="ServiceMain.cpp" />
     <ClCompile Include="ServiceStatus.cpp" />
     <ClCompile Include="ServiceTask.cpp" />
+    <ClCompile Include="SettingsServiceTask.cpp" />
     <ClCompile Include="SimpleConsoleAction.cpp" />
     <ClCompile Include="SimpleConsoleWriter.cpp" />
     <ClCompile Include="SimpleServiceSettings.cpp" />

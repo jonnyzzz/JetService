@@ -77,6 +77,61 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
   int ret = GetBaseDirectory(baseDir);
   if (ret != 0) return ret;
 
+  //resolve workdir
+  {
+    if (workDir.Find(L"\\\\") == 0) {
+      LOG.LogErrorFormat(L"Program path may not refer to a network share");
+      return 1;
+    }
+    //remove slashes to make Combine work right.
+    workDir = workDir.TrimLeft(L'\\').TrimLeft(L'/');
+
+    const int sz = max(MAX_PATH + 1, 65535);
+    TCHAR buff[sz+1];
+    if(NULL == PathCombine(buff, baseDir, workDir)) {
+      LOG.LogErrorFormat(L"Failed to resolve workdir path: %s", workDir);
+      return 1;
+    }
+    workDir = buff;
+    *buff = L'\0';
+    int n = GetFullPathName(workDir, sz, buff, NULL);
+    if (n <= 0 || n >= sz) {
+      LOG.LogErrorFormat(L"Failed to resolve workdir full path: %s", workDir);
+      return 1;
+    }
+    workDir = buff;
+    LOG.LogDebugFormat(L"Resolved workdir path: %s", workDir);
+  }
+
+  //resolve program path
+  {
+    if (program.Find(L"\\\\") == 0) {
+      LOG.LogErrorFormat(L"Program path may not refer to a network share");
+      return 1;
+    }
+
+    LPCTSTR extraPaths[] = { baseDir, NULL};
+    const int sz = max(MAX_PATH+1, 65535);
+    TCHAR buff[sz+1];
+    if (!CopyStringChars(program, buff, sz)) {
+      LOG.LogErrorFormat(L"Program path is too long: %s", program);
+      return 1;
+    }
+  
+    if (FALSE == PathFindOnPath(buff, extraPaths)) {
+      LOG.LogErrorFormat(L"Failed to find executable for: %s", program);
+      return 1;
+    }
+    program = buff;
+    *buff=L'\0';
+    int n = GetFullPathName(program, sz, buff, NULL);
+    if (n <= 0 || n >= sz) {
+      LOG.LogErrorFormat(L"Failed to resolve program full path: %s", program);
+      return 1;
+    }
+    program = buff;
+    LOG.LogDebugFormat(L"Resolved path to program: %s", program);
+  }
 
   SimpleServiceTaskSettings settings(myRunSettings, workDir, program, argz);
   const ServiceTaskSettings* pSettings = &settings;
@@ -104,6 +159,10 @@ int FileTaskSettings::GetBaseDirectory(CString& baseFile) {
 
   //make path end before file name in buff
   *pFile = L'\0';
+  pFile--;
+  //remove trailing slash
+  if (*pFile == L'\\' || *pFile == L'/') *pFile = L'\0';
+
 
   LOG.LogDebugFormat(L"Resolved base path: %s", buff);
   baseFile = buff;

@@ -3,6 +3,7 @@
 #include "CreateServiceCommand.h"
 #include "SimpleServiceSettings.h"
 #include "ServiceAction.h"
+#include "FileTaskSettings.h"
 #include "Logger.h"
 
 const Logger LOG(L"CreateServiceAction");
@@ -26,10 +27,36 @@ void CreateServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      installs service to the system to run under local system");
 }
 
+class ValidateServiceTaskSettings : public FileTaskSettings {
+public:
+
+  ValidateServiceTaskSettings(const RunServiceSettings* settings) 
+    : FileTaskSettings(settings) {}
+  virtual ~ValidateServiceTaskSettings() {}
+
+public:
+  virtual int executeCommand(const ServiceTaskSettings* settings) {
+    LOG.LogInfoFormat(L"Program to execute: %s", settings->getProgramPath());
+    LOG.LogInfoFormat(L"Program arguments:  %s", settings->GetProgramArguments());
+    LOG.LogInfoFormat(L"Program work dir:   %s", settings->getWorkDir());
+    return 0;
+  }
+};
+
 int CreateServiceAction::ExecuteAction(const Argz* az, const RunServiceSettings* baseSettings) {  
+  {
+    ValidateServiceTaskSettings validate(baseSettings);
+
+    int ret = static_cast<Command*>(&validate)->executeCommand();
+    if (ret != 0) return ret;
+  }
+
+
   CString serviceCommand;
-  int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
-  if (ret != 0) return ret;
+  {
+    int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
+    if (ret != 0) return ret;
+  }
   
   SimpleCreateServiceSettings settings(baseSettings, serviceCommand);
 

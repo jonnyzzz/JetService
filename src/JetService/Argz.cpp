@@ -61,7 +61,10 @@ bool Argz::GetNamedArgument(const CString& text, CString& dest) const {
   CString pat = (MakeKey(text) + L"=").MakeLower();
   for(int i = 0; i < GetArgumentCount(); i++) {
     CString arg = GetArgument(i);
-    if (arg.MakeLower().Find(pat) == 0) {
+    CString lArg = arg;
+    lArg = lArg.MakeLower();
+
+    if (lArg.Find(pat) == 0) {
       dest = arg.Right(arg.GetLength() - pat.GetLength());
       return true;
     }
@@ -81,7 +84,6 @@ CString Argz::MakeArgument(const CString& name, const CString& value) {
   return MakeKey(name) + L"=" + value;
 }
 
-
 bool Argz::IsDebug() const {
   return HasArgument(L"/debug");
 }
@@ -99,6 +101,7 @@ bool Argz::GetLogFile(CString& logFile) const {
   TCHAR buff[sz+1];
   int n = GetFullPathName(file, sz, buff, NULL);
   if (n <= 0 || n >= sz) return false;
-  logFile.Append(buff);
+  logFile = buff;
   return true;
 }
+

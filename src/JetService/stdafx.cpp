@@ -17,3 +17,15 @@ CString CreateFormatted(const CString tmpl, ...) {
 
   return str;
 }
+
+
+bool CopyStringChars(const CString& text, TCHAR* buff, int sz) {
+  if (sz <= 1) return false;
+  *buff = L'\0';
+  if (text.GetLength() >= sz-1) return false;
+  LPCTSTR tmp = text;
+  CString::CopyChars(buff, sz-1, text, text.GetLength());
+  buff[text.GetLength()] = L'\0';
+  return true;
+}
+

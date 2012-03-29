@@ -18,5 +18,6 @@
 
 
 CString CreateFormatted(const CString tmpl, ...);
+bool CopyStringChars(const CString& text, TCHAR* buff, int sz);
 
 // TODO: reference additional headers your program requires here

@@ -135,6 +135,11 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
 
   SimpleServiceTaskSettings settings(myRunSettings, workDir, program, argz);
   const ServiceTaskSettings* pSettings = &settings;
+
+  LOG.LogInfoFormat(L"Program to execute: %s", pSettings->getProgramPath());
+  LOG.LogInfoFormat(L"Program arguments:  %s", pSettings->GetProgramArguments());
+  LOG.LogInfoFormat(L"Program work dir:   %s", pSettings->getWorkDir());
+
   return executeCommand(pSettings);
 }
 

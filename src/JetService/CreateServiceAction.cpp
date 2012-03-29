@@ -36,9 +36,6 @@ public:
 
 public:
   virtual int executeCommand(const ServiceTaskSettings* settings) {
-    LOG.LogInfoFormat(L"Program to execute: %s", settings->getProgramPath());
-    LOG.LogInfoFormat(L"Program arguments:  %s", settings->GetProgramArguments());
-    LOG.LogInfoFormat(L"Program work dir:   %s", settings->getWorkDir());
     return 0;
   }
 };

@@ -4,7 +4,7 @@
 #include "Logger.h"
 
 #include "ServiceEventContext.h"
-#include "SimpleThreadedServiceTask.h"
+#include "ServiceExecuteProcessTask.h"
 #include "ServiceEventINRERROGATEHandler.h"
 #include "ServiceEventSTOPHandler.h"
 
@@ -45,7 +45,7 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
   }
 
   ServiceStatus status(myStatusHandle, handlers.GetSupportedControlEventsMask());
-  SimpleThreadedServiceTask task(&context);
+  ServiceExecuteProcessTask task(&context);
 
   context.SetServiceSettings(mySettings);
   context.SetServiceTask(&task);

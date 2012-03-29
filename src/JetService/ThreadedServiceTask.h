@@ -17,6 +17,14 @@ public:
 public:
   DWORD ThreadProcess();
 
+public:
+  ///This method will be called from new thread. 
+  ///Implementation whould take care of IsInterrupted() 
+  ///As the process is started, it should report RUNNING status
+  ///This method should perform polling while service is running.
+  ///Service will be stopped as method is finished.
+  virtual void ExecuteProcess() = 0;
+
 private:
   void ProcessServiceStart();
   void ProcessServiceStop();
@@ -26,7 +34,5 @@ private:
   HANDLE myProcessThread;
 
   CRITICAL_SECTION myLock;
-
-
 };
 

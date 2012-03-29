@@ -83,16 +83,7 @@ DWORD ThreadedServiceTask::ThreadProcess() {
   const Logger LOG(L"ThreadedServiceTask:Thread");
   LOG.LogDebug(L"Thread started");
   
-  //report service is running
-  myContext->GetServiceStatus()->SetStatus(StatusValue::RUNNING);
-  while(true) {
-    Sleep(500);
-    if (IsInterrupted()) {
-      LOG.LogDebug(L"Interrupted flag is detected");
-      break;
-    }
-  }
-
+  ExecuteProcess();
   LOG.LogDebugFormat(L"Task finished. Interrupted=%s.", IsInterrupted() ? L"true" : L"false");
 
   EnterCriticalSection(&myLock);

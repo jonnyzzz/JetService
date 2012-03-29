@@ -108,6 +108,7 @@
     <ClInclude Include="SimpleConsoleAction.h" />
     <ClInclude Include="SimpleConsoleWriter.h" />
     <ClInclude Include="SimpleServiceSettings.h" />
+    <ClInclude Include="SimpleThreadedServiceTask.h" />
     <ClInclude Include="StatusValue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="SimpleConsoleAction.cpp" />
     <ClCompile Include="SimpleConsoleWriter.cpp" />
     <ClCompile Include="SimpleServiceSettings.cpp" />
+    <ClCompile Include="SimpleThreadedServiceTask.cpp" />
     <ClCompile Include="StatusValue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

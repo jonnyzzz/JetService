@@ -7,6 +7,7 @@
 #include "SimpleConsoleWriter.h"
 #include "DeleteServiceAction.h"
 #include "CreateServiceAction.h"
+#include "ProcessAction.h"
 #include "ServiceAction.h"
 #include "ConsoleCommandsRunner.h"
 
@@ -26,11 +27,13 @@ int _tmain(int argc, _TCHAR* argv[])
   DeleteServiceAction deleteAction;
   CreateServiceAction createAction;
   ServiceAction       serviceAction;
+  ProcessAction       processAction;
 
   ConsoleAction* actions[] = {
     &serviceAction,
     &createAction, 
     &deleteAction,
+    &processAction,
     NULL
   };
 

@@ -141,6 +141,12 @@
     <ClInclude Include="ServiceExecuteProcessTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -249,6 +255,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServiceExecuteProcessTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

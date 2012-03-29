@@ -89,6 +89,8 @@
     <ClInclude Include="InterruptHolder.h" />
     <ClInclude Include="JetServiceMain.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="ProcessAction.h" />
+    <ClInclude Include="ProcessCommand.h" />
     <ClInclude Include="rapidxml\rapidxml.hpp" />
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
@@ -133,6 +135,8 @@
     <ClCompile Include="InterruptHolder.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="ProcessAction.cpp" />
+    <ClCompile Include="ProcessCommand.cpp" />
     <ClCompile Include="ServiceAction.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />

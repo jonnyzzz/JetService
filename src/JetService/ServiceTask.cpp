@@ -6,7 +6,7 @@
 
 const Logger LOG(L"ServiceTask");
 
-ServiceTask::ServiceTask(ServiceEventContext* context)
+ServiceTask::ServiceTask(const ServiceEventContext* context)
   : myContext(context)
 {
 }

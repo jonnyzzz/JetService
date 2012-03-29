@@ -5,7 +5,7 @@ class ServiceEventContext;
 class ServiceTask
 {
 public:
-  ServiceTask(ServiceEventContext* context);
+  ServiceTask(const ServiceEventContext* context);
   virtual ~ServiceTask();
 
 public:
@@ -13,16 +13,16 @@ public:
   ///it's expected to move service to 
   ///running state as it initialization 
   ///is finished
-  void CallStartService();
+  virtual void CallStartService();
 
   ///async notification
   ///it may be called while StartService command 
   ///is still running.
   ///must report service status is stopped at end.
-  void CallStopSerive();
+  virtual void CallStopSerive();
 
 private:
-  ServiceEventContext* const myContext;
+  const ServiceEventContext* const myContext;
 
 };
 

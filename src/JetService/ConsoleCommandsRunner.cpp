@@ -58,7 +58,7 @@ int ConsoleCommandsRunner::executeCommand() {
 int ConsoleCommandsRunner::usage() {
   myWriter->Write();
   myWriter->Write(L"Usage:");
-  myWriter->WriteFormat(L"  %s <command> [/debug]", myArgz->GetExecutableName());
+  myWriter->WriteFormat(L"  %s <command> [/debug] [/logfile=<log file>] ", myArgz->GetExecutableName());
   myWriter->Write();
   myWriter->Write(L"  where <command> could be one of the following: ");
   for(ConsoleAction** p = myActions; *p != NULL; p++) {    

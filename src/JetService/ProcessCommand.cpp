@@ -19,11 +19,11 @@ bool ProcessCommand::IsInterrupted() const {
 }
 
 HANDLE ProcessCommand::CreateProcessToken() {
-  HANDLE threadHandle = GetCurrentThread();
+  HANDLE threadHandle = GetCurrentProcess();
 
   HANDLE ourToken;  
-  if (0 == OpenThreadToken(threadHandle, TOKEN_DUPLICATE , TRUE, &ourToken)) {
-    LOG.LogErrorFormat(L"Failed to OpenThreadToken. %s", LOG.GetLastError());    
+  if (0 == OpenProcessToken(threadHandle, TOKEN_DUPLICATE , &ourToken)) {
+    LOG.LogErrorFormat(L"Failed to OpenProcessToken. %s", LOG.GetLastError());    
     return NULL;
   }
 
@@ -56,6 +56,8 @@ STARTUPINFO ProcessCommand::CreateProcessStartupInfo() {
 }
 
 int ProcessCommand::executeCommand() {
+  LOG.LogDebug(L"Starting process");
+
   HANDLE processToken = CreateProcessToken();
   if (processToken == NULL) {    
     return 1;
@@ -118,3 +120,4 @@ int ProcessCommand::executeCommand() {
   CloseHandle(processInfo.hThread);
   return 0;
 }
+

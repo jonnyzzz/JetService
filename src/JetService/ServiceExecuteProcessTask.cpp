@@ -23,7 +23,7 @@ void ServiceExecuteProcessTask::ExecuteProcess() {
 }
 
 void ServiceExecuteProcessTask::ExecuteProcess(const ServiceTaskSettings* settings) {
-  ProcessCommand cmd(settings);
+  ProcessCommand cmd(settings, this);
   int ret = cmd.executeCommand();
   if (ret != 0) {
     LOG.LogError(L"Failed to start process");

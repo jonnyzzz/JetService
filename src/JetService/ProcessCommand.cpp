@@ -4,8 +4,9 @@
 
 const Logger LOG(L"ProcessCommand");
 
-ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings)
+ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings, const InterruptHolder* interrupt)
   : mySettings(settings)
+  , myInterrupt(interrupt)
 {
 }
 
@@ -13,9 +14,8 @@ ProcessCommand::~ProcessCommand(void)
 {
 }
 
-bool ProcessCommand::IsInterrupted() const {
-  //TODO: for now
-  return false;
+bool ProcessCommand::IsInterrupted() {  
+  return myInterrupt->IsInterrupted();
 }
 
 HANDLE ProcessCommand::CreateProcessToken() {

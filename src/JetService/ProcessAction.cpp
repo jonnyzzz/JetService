@@ -26,7 +26,8 @@ public:
 
 public:
   int executeCommand(const ServiceTaskSettings* settings) {
-    ProcessCommand cmd(settings);
+    InterruptHolder interrupt;
+    ProcessCommand cmd(settings, &interrupt);
     return static_cast<Command*>(&cmd)->executeCommand();
   }
 };

@@ -15,14 +15,3 @@ ServiceTask::~ServiceTask()
 {
 }
 
-
-void ServiceTask::CallStartService() {
-  LOG.LogInfo(L"CallStartService");
-  myContext->GetServiceStatus()->SetStatus(StatusValue::RUNNING);
-}
-
-
-void ServiceTask::CallStopSerive() {
-  LOG.LogInfo(L"CallStopService");
-  myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPED);
-}

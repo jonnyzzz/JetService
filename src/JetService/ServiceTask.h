@@ -13,15 +13,15 @@ public:
   ///it's expected to move service to 
   ///running state as it initialization 
   ///is finished
-  virtual void CallStartService();
+  virtual void CallStartService() = 0;
 
   ///async notification
   ///it may be called while StartService command 
   ///is still running.
   ///must report service status is stopped at end.
-  virtual void CallStopSerive();
+  virtual void CallStopSerive() = 0;
 
-private:
+protected:
   const ServiceEventContext* const myContext;
 
 };

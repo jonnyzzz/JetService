@@ -126,6 +126,12 @@
     <ClInclude Include="FileTaskSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadedServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterruptHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -219,6 +225,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileTaskSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadedServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InterruptHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

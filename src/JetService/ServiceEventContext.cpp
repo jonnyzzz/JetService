@@ -13,7 +13,8 @@ ServiceEventContext::~ServiceEventContext()
 
 bool ServiceEventContext::IsValid() const {
   return GetServiceStatus() != NULL
-    && GetServiceTask() != NULL;
+    && GetServiceTask() != NULL
+    && GetServiceSettings() != NULL;
 }
 
 ////////////
@@ -42,3 +43,11 @@ void ServiceEventContextEx::SetServiceTask(ServiceTask* task) {
   myTask = task;
 }
 
+const RunServiceSettings* ServiceEventContextEx::GetServiceSettings() const {
+  return mySettings;
+}
+
+void ServiceEventContextEx::SetServiceSettings(const RunServiceSettings* settings) {
+  mySettings = settings;
+}
+    

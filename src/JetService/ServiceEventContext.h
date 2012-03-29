@@ -2,6 +2,7 @@
 
 class ServiceStatus;
 class ServiceTask;
+class RunServiceSettings;
 
 class ServiceEventContext
 {
@@ -13,6 +14,7 @@ public:
 
   virtual ServiceStatus* GetServiceStatus() const = 0;
   virtual ServiceTask* GetServiceTask() const = 0;
+  virtual const RunServiceSettings* GetServiceSettings() const = 0;
   bool IsValid() const;
 
 };
@@ -30,7 +32,11 @@ public:
   virtual ServiceTask* GetServiceTask() const;
   void SetServiceTask(ServiceTask* task);
 
+  virtual const RunServiceSettings* GetServiceSettings() const;
+  void SetServiceSettings(const RunServiceSettings* settings);
+
 private:
+  const RunServiceSettings* mySettings;
   ServiceStatus* myServiceStatus;
   ServiceTask* myTask;
 

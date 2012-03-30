@@ -165,44 +165,53 @@ CString Logger::GetErrorText(DWORD win32Error) {
   }
 }
 
+void Logger::FormatTimestamp(CString& buff) {
+  SYSTEMTIME time;
+  GetLocalTime(&time);
+  buff.Format(L"[%04d-%02d-%02d %02d:%02d:%02d,%03d] ", 
+    (DWORD)time.wYear, (DWORD)time.wMonth, (DWORD)time.wDay, 
+    (DWORD)time.wHour, (DWORD)time.wMinute, (DWORD)time.wSecond, (DWORD)time.wMilliseconds);
+}
+
 void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& message) {    
+  if (!Logger::ToLog(suv)) return;
+  CString log;
   const int NAME_SZ = 33;
 
-	if (Logger::ToLog(suv)) {
-    CString log;    
-		log.Append(prefix);
-    if (log.GetLength() > NAME_SZ-1) {
-      log = log.Left(NAME_SZ-1);
-    }
+	log.Append(prefix);
+  if (log.GetLength() > NAME_SZ-1) {
+    log = log.Left(NAME_SZ-1);
+  }
 
-    while (log.GetLength() < NAME_SZ) log.AppendChar(L' ');
-		switch(suv) {
-			case LogSDebug:
-        log.Append(L"[Debug] ");
-				break;
-			case LogSInfo:
-				log.Append(L" [Info] ");
-				break;
-			case LogSWarn:
-				log.Append(L" [Warn] ");
-				break;
-			case LogSError:
-				log.Append(L"  [Err] ");
-				break;
-		}		
-		log.Append(message);
-		log.Append(L"\n");
+  while (log.GetLength() < NAME_SZ) log.AppendChar(L' ');
+	switch(suv) {
+		case LogSDebug:
+      log.Append(L"[Debug] ");
+			break;
+		case LogSInfo:
+			log.Append(L" [Info] ");
+			break;
+		case LogSWarn:
+			log.Append(L" [Warn] ");
+			break;
+		case LogSError:
+			log.Append(L"  [Err] ");
+			break;
+	}		
+	log.Append(message);
+	log.Append(L"\n");
 
-    ourCriticalSection.EnterCriticalSection();
-    {
-      wprintf_s(L"%s", log);
-      if (ourFileStream != NULL) {
-        fwprintf(ourFileStream, L"%s", log);
-        fflush(ourFileStream);
-      }
+  ourCriticalSection.EnterCriticalSection();
+  {
+    wprintf_s(L"%s", log);
+    if (ourFileStream != NULL) {      
+      CString time;
+      FormatTimestamp(time);      
+      fwprintf(ourFileStream, L"%s%s", time, log);
+      fflush(ourFileStream);
     }
-    ourCriticalSection.LeaveCriticalSection();
-	}
+  }
+  ourCriticalSection.LeaveCriticalSection();	
 }
 
 void Logger::SetLogFile(const CString& file) {

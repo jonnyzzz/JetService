@@ -11,13 +11,6 @@ class LoggerCriticalSection;
 
 class Logger
 {
-private:
-	static LoggerSuverity ourSuverity;
-  static FILE* ourFileStream;
-  static LoggerCriticalSection ourCriticalSection;
-
-private:
-	static bool ToLog(LoggerSuverity suv);  
 
 public:
 	static void SetSuverity(LoggerSuverity suv);
@@ -55,6 +48,15 @@ public:
   CString GetLastError() const;
 
   static CString GetErrorText(DWORD win32Error);
+
 private:
 	static void Log(LoggerSuverity suv, const CString& prefix, const CString& message);
+	static bool ToLog(LoggerSuverity suv);  
+  static void FormatTimestamp(CString& buff);
+
+private:
+	static LoggerSuverity ourSuverity;
+  static FILE* ourFileStream;
+  static LoggerCriticalSection ourCriticalSection;
+
 };

@@ -101,6 +101,12 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
     }
     workDir = buff;
     LOG.LogDebugFormat(L"Resolved workdir path: %s", workDir);
+
+    DWORD attrs = GetFileAttributes(workDir);
+    if (attrs == INVALID_FILE_ATTRIBUTES || (attrs & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+      LOG.LogErrorFormat(L"Workdir must exist and be directory: %s", workDir);
+      return 1;
+    }
   }
 
   //resolve program path

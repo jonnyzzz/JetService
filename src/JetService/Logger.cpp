@@ -195,7 +195,7 @@ void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& messa
 			log.Append(L" [Warn] ");
 			break;
 		case LogSError:
-			log.Append(L"  [Err] ");
+			log.Append(L"[Error] ");
 			break;
 	}		
 	log.Append(message);

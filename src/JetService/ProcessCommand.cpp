@@ -96,7 +96,7 @@ int ProcessCommand::executeCommand() {
     NULL, //process attributes
     NULL, //thread attributes
     TRUE, //inherit handles
-    DETACHED_PROCESS | CREATE_UNICODE_ENVIRONMENT |  CREATE_NO_WINDOW, //TODO: | CREATE_NEW_PROCESS_GROUP
+    DETACHED_PROCESS | CREATE_UNICODE_ENVIRONMENT |  CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP, 
     NULL,
     workdir,
     &startupInfo,

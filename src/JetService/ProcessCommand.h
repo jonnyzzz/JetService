@@ -3,6 +3,7 @@
 #include "Command.h"
 #include "ServiceSettings.h"
 #include "InterruptHolder.h"
+#include "Pipe.h"
 
 
 class ProcessCommand : public Command
@@ -17,7 +18,7 @@ public:
 private:
   bool IsInterrupted();
   HANDLE CreateProcessToken();
-  STARTUPINFO CreateProcessStartupInfo();
+  STARTUPINFO CreateProcessStartupInfo(ChildProcessHandle* pstdin, ChildProcessHandle* pstdout, ChildProcessHandle* pstderr);
 
 private:
   const ServiceTaskSettings* const mySettings;

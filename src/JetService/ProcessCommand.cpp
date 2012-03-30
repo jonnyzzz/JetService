@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "ProcessCommand.h"
+#include "Pipe.h"
 #include "Logger.h"
 
 const Logger LOG(L"ProcessCommand");
@@ -45,13 +46,15 @@ HANDLE ProcessCommand::CreateProcessToken() {
 }
 
 
-STARTUPINFO ProcessCommand::CreateProcessStartupInfo() {
+STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessHandle* pstdin, ChildProcessHandle* pstdout, ChildProcessHandle* pstderr) {
   STARTUPINFO info;
   ZeroMemory(&info, sizeof(info));
   info.cb = sizeof(info);
   //TODO: Create pipes and transfer process output.
-  //info.dwFlags = STARTF_USESTDHANDLES;
-
+  info.dwFlags = STARTF_USESTDHANDLES;
+  info.hStdOutput = pstdout->GetChildProcessHandle();
+  info.hStdError = pstderr->GetChildProcessHandle();
+  info.hStdInput = pstdin->GetChildProcessHandle();
   return info;
 }
 
@@ -74,7 +77,15 @@ int ProcessCommand::executeCommand() {
 
   //NOTE: it may be necessary to call LoadUserProfile beforehand
 
-  STARTUPINFO startupInfo = CreateProcessStartupInfo();
+  ChildProcessInHandle stdInHandle;
+  ChildProcessOutHandle stdOutHandle;
+
+  if (!stdInHandle.IsValid() || !stdOutHandle.IsValid()) {
+    LOG.LogError(L"Failed to setup pipes for process");
+    return 1;
+  }
+
+  STARTUPINFO startupInfo = CreateProcessStartupInfo(&stdInHandle, &stdOutHandle, &stdOutHandle);
   PROCESS_INFORMATION processInfo;
 
   LOG.LogDebug(L"Starting process");
@@ -93,6 +104,14 @@ int ProcessCommand::executeCommand() {
       LOG.LogErrorFormat(L"Failed to CreateProcessAsUser: %s", LOG.GetLastError());      
       return 1; 
   }
+
+  //avoid handle duplication in current process
+  stdInHandle.CloseChildProcessHandle();  
+  stdOutHandle.CloseChildProcessHandle();
+
+  //closee handles as we do not like to process process output
+  stdInHandle.CloseHostProcessHandle();
+  stdOutHandle.CloseHostProcessHandle();
 
   while(true) {    
     if (IsInterrupted()) {

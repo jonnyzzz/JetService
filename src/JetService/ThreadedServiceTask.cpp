@@ -84,7 +84,7 @@ DWORD ThreadedServiceTask::ThreadProcess() {
   LOG.LogDebug(L"Thread started");
   
   ExecuteProcess();
-  LOG.LogDebugFormat(L"Task finished. Interrupted=%s.", IsInterrupted() ? L"true" : L"false");
+  LOG.LogDebugFormat(L"Task finished. Interrupted=%s.", IsInterruptedString());
 
   EnterCriticalSection(&myLock);
   myContext->GetServiceStatus()->SetStatus(StatusValue::STOPPED);

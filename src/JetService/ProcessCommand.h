@@ -6,7 +6,7 @@
 #include "Pipe.h"
 
 
-class ProcessCommand : public Command
+class ProcessCommand : public Command, protected InterruptHolder
 {
 public:
   ProcessCommand(const ServiceTaskSettings* settings, const InterruptHolder* interrupt);
@@ -15,13 +15,11 @@ public:
 public:
   virtual int executeCommand();
 
-private:
-  bool IsInterrupted();
+private:  
   HANDLE CreateProcessToken();
   STARTUPINFO CreateProcessStartupInfo(ChildProcessHandle* pstdin, ChildProcessHandle* pstdout, ChildProcessHandle* pstderr);
 
 private:
-  const ServiceTaskSettings* const mySettings;
-  const InterruptHolder* const myInterrupt;
+  const ServiceTaskSettings* const mySettings;  
 };
 

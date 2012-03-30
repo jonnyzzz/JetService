@@ -3,8 +3,9 @@
 
 
 
-InterruptHolder::InterruptHolder()
+InterruptHolder::InterruptHolder(const InterruptHolder* parent)
   : myStopFlag(false)
+  , myParent(parent)
 {
 }
 
@@ -14,11 +15,14 @@ InterruptHolder::~InterruptHolder()
 }
 
 
-bool InterruptHolder::IsInterrupted() const { 
-  return myStopFlag; 
+bool InterruptHolder::IsInterrupted() const {   
+  return myStopFlag || ((myParent != NULL) && myParent->IsInterrupted()); 
 }
 
 void InterruptHolder::Interrupt() { 
-  myStopFlag = true; 
+  myStopFlag = true;   
 }
 
+CString InterruptHolder::IsInterruptedString() const {
+  return IsInterrupted() ? L"true" : L"false";
+}

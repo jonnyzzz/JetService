@@ -2,21 +2,18 @@
 #include "ProcessCommand.h"
 #include "Pipe.h"
 #include "Logger.h"
+#include "LogPipeReader.h"
 
 const Logger LOG(L"ProcessCommand");
 
 ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings, const InterruptHolder* interrupt)
   : mySettings(settings)
-  , myInterrupt(interrupt)
+  , InterruptHolder(interrupt)
 {
 }
 
 ProcessCommand::~ProcessCommand(void)
 {
-}
-
-bool ProcessCommand::IsInterrupted() {  
-  return myInterrupt->IsInterrupted();
 }
 
 HANDLE ProcessCommand::CreateProcessToken() {
@@ -111,7 +108,8 @@ int ProcessCommand::executeCommand() {
 
   //closee handles as we do not like to process process output
   stdInHandle.CloseHostProcessHandle();
-  stdOutHandle.CloseHostProcessHandle();
+ 
+  LogPipeReader outputRedirect(L"stdout", stdOutHandle.GetHostProcessHandle(), this);
 
   while(true) {    
     if (IsInterrupted()) {

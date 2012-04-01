@@ -1,12 +1,13 @@
 #include "StdAfx.h"
 #include "RollFileWriter.h"
 #include <share.h>
+#include <io.h>
 #include "Logger.h"
 
 const Logger LOG(L"RollFileWriter");
 
 RollFileWriter::RollFileWriter()
-  : myMaxSize(1024)
+  : myMaxSize(3 * 1024 * 1024)
   , myMaxNum(3)
   , myFileName(L"")
   , myFileStream(NULL)
@@ -47,18 +48,29 @@ void RollFileWriter::RotateLogsIfNeeded() {
     return;
   }
 
-  CloseFile();
-  
-  for (int older = myMaxNum, newer = older-1; newer >= 0; older--, newer--) {
+  //NOTE: It's not possible to close log file as it's handle
+  //NOTE: may have beed inherited by child process
+  //NOTE: the easiest way is to reset file length to
+  //NOTE: emulate reopen
+
+  //Move older, closed files
+  for (int older = myMaxNum, newer = older-1; newer >= 1; older--, newer--) {
     //first remove older file, if it exists
     DeleteFile(GetLogFileName(older));
     MoveFile(GetLogFileName(newer), GetLogFileName(older));
   }
-  
-  //remove current log file to ensure to start log from scratch
-  DeleteFile(GetLogFileName());
 
-  ReopenFile();
+  //remove file .1
+  DeleteFile(GetLogFileName(1));
+  //copy currect log to file.1. 
+  //This is possible as file is opened with share_read
+  CopyFile(GetLogFileName(), GetLogFileName(1), FALSE);
+  
+  //cleanup current file
+  int fd = _fileno(myFileStream);
+  if (fd >= 0) {
+    _chsize(fd, 0);
+  }
 }
 
 void RollFileWriter::WriteLine(const CString& line) {

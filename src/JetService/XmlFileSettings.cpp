@@ -22,10 +22,7 @@ XmlFileSettings::~XmlFileSettings()
 {
 }
 
-
-int XmlFileSettings::executeCommand() {
-  LOG.LogDebugFormat(L"Loading service settings from %s", myConfigFile);
-
+int XmlFileSettings::parseDocument(rapidxml::xml_document<TCHAR>* doc) {
   FILE* file;
   if (0 != _wfopen_s(&file, myConfigFile, L"r")) {
     LOG.LogWarnFormat(L"Failed to open settings file %s", myConfigFile);
@@ -41,10 +38,27 @@ int XmlFileSettings::executeCommand() {
   TCHAR* buff = &buffer[0];
 
   LOG.LogDebugFormat(L"Loaded settings:\n%s", CString(buff));
+  
+  try {
+    doc->parse<0>(buff); 
+  } catch(parse_error e) {
+    CString what(e.what());
+    LOG.LogDebugFormat(L"Failed to parse document. %s", what);
+    return 1;
+  } catch(...) {
+    LOG.LogDebugFormat(L"Failed to parse document");
+    return 1;
+  }
 
+  return 0;
+}
+
+int XmlFileSettings::executeCommand() {
+  LOG.LogDebugFormat(L"Loading service settings from %s", myConfigFile);
+ 
   xml_document<TCHAR> doc;
-  doc.parse<0>(buff); 
-    
+  parseDocument(&doc);  
+  //FILE handle should be closed at that point.
   return executeCommand(&doc);
 }
 

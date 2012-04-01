@@ -99,6 +99,7 @@
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="RollFileWriter.h" />
     <ClInclude Include="ServiceAction.h" />
     <ClInclude Include="ServiceCommand.h" />
     <ClInclude Include="ServiceControlManagerCommand.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="PipeReader.cpp" />
     <ClCompile Include="ProcessAction.cpp" />
     <ClCompile Include="ProcessCommand.cpp" />
+    <ClCompile Include="RollFileWriter.cpp" />
     <ClCompile Include="ServiceAction.cpp" />
     <ClCompile Include="ServiceCommand.cpp" />
     <ClCompile Include="ServiceControlManagerCommand.cpp" />

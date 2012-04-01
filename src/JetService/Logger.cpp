@@ -30,7 +30,7 @@ private:
 
 
 LoggerSuverity Logger::ourSuverity = LogSError;
-FILE* Logger::ourFileStream = NULL;
+RollFileWriter Logger::ourFileWriter;
 LoggerCriticalSection Logger::ourCriticalSection;
 
 Logger::Logger(CString prefix) : myPrefix(prefix)
@@ -57,14 +57,6 @@ bool Logger::IsInfoEnabled() {
 void Logger::LogDebug(const CString message) const {
 	Logger::Log(LogSDebug, myPrefix, message);
 }
-void Logger::LogDebug(const CString message, const CString m2) const {
-  if (!IsDebugEnabled()) return;
-  LogDebug(message + m2);
-}
-void Logger::LogDebug(const CString message, const CString m2, const CString m3) const {
-  if (!IsDebugEnabled()) return;
-  LogDebug(message + m2 + m3);
-}
 
 void Logger::LogDebugFormat(const CString message, ...) const {
   if (!IsDebugEnabled()) return;
@@ -80,14 +72,7 @@ void Logger::LogDebugFormat(const CString message, ...) const {
 void Logger::LogInfo(const CString message) const {
 	Logger::Log(LogSInfo, myPrefix, message);
 }
-void Logger::LogInfo(const CString message, const CString m2) const {
-  if (!IsInfoEnabled()) return;
-  LogInfo(message + m2);
-}
-void Logger::LogInfo(const CString message, const CString m2, const CString m3) const {
-  if (!IsInfoEnabled()) return;
-  LogInfo(message + m2 + m3);
-}
+
 void Logger::LogInfoFormat(const CString message, ...) const {
   if (!IsInfoEnabled()) return;
 
@@ -99,10 +84,10 @@ void Logger::LogInfoFormat(const CString message, ...) const {
   LogInfo(str);
 }
 
-
 void Logger::LogWarn(const CString message) const {
 	Logger::Log(LogSWarn, myPrefix, message);
 }
+
 void Logger::LogWarnFormat(const CString message, ...) const {
   if (!IsWarnEnabled()) return;
 
@@ -165,14 +150,6 @@ CString Logger::GetErrorText(DWORD win32Error) {
   }
 }
 
-void Logger::FormatTimestamp(CString& buff) {
-  SYSTEMTIME time;
-  GetLocalTime(&time);
-  buff.Format(L"[%04d-%02d-%02d %02d:%02d:%02d,%03d] ", 
-    (DWORD)time.wYear, (DWORD)time.wMonth, (DWORD)time.wDay, 
-    (DWORD)time.wHour, (DWORD)time.wMinute, (DWORD)time.wSecond, (DWORD)time.wMilliseconds);
-}
-
 void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& message) {    
   if (!Logger::ToLog(suv)) return;
   CString log;
@@ -202,33 +179,15 @@ void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& messa
 	log.Append(L"\n");
 
   ourCriticalSection.EnterCriticalSection();
-  {
-    wprintf_s(L"%s", log);
-    if (ourFileStream != NULL) {      
-      CString time;
-      FormatTimestamp(time);      
-      fwprintf(ourFileStream, L"%s%s", time, log);
-      fflush(ourFileStream);
-    }
-  }
+  LogMessageInternal(log);
   ourCriticalSection.LeaveCriticalSection();	
 }
 
-void Logger::SetLogFile(const CString& file) {
-  Logger LOG(L"Logger#SetLogFile");
-  if (ourFileStream != NULL) {
-    fclose(ourFileStream);
-    ourFileStream = NULL;
-  }
+void Logger::LogMessageInternal(const CString& log) {
+  wprintf_s(L"%s", log);
+  ourFileWriter.WriteLine(log);
+}
 
-  FILE* stream =_wfsopen(file, L"a", _SH_DENYWR);
-  if (stream == NULL) {
-    LOG.LogWarnFormat(L"Failed to open settings file %s", file);
-    return;
-  }
-  
-  LOG.LogInfoFormat(L"Logging will be redirected to: %s", file);
-  ourFileStream = stream;
-  fwprintf(ourFileStream, L"\n\n\n");
-  fflush(ourFileStream);
+void Logger::SetLogFile(const CString& file) {
+  ourFileWriter.SetOutputFile(file);
 }

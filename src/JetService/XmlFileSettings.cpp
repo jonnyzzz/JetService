@@ -29,7 +29,7 @@ int XmlFileSettings::executeCommand() {
   vector<TCHAR> buffer;
   { 
     FILE* file;
-    if (0 != _wfopen_s(&file, myConfigFile, L"r")) {
+    if (0 != _wfopen_s(&file, myConfigFile, L"rN")) {
       LOG.LogWarnFormat(L"Failed to open settings file %s", myConfigFile);
       return 1;
     }

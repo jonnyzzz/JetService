@@ -99,6 +99,7 @@
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RollFileWriter.h" />
     <ClInclude Include="ServiceAction.h" />
     <ClInclude Include="ServiceCommand.h" />
@@ -173,6 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="JetServiceSettings.xml" />
+    <None Include="resources\ProductIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resourece.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

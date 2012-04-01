@@ -2,6 +2,9 @@
 #include "RollFileWriter.h"
 #include <share.h>
 #include <io.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "Logger.h"
 
 const Logger LOG(L"RollFileWriter");
@@ -11,6 +14,7 @@ RollFileWriter::RollFileWriter()
   , myMaxNum(3)
   , myFileName(L"")
   , myFileStream(NULL)
+  , myFileDescriptor(0)
 {
 }
 
@@ -66,10 +70,9 @@ void RollFileWriter::RotateLogsIfNeeded() {
   //This is possible as file is opened with share_read
   CopyFile(GetLogFileName(), GetLogFileName(1), FALSE);
   
-  //cleanup current file
-  int fd = _fileno(myFileStream);
-  if (fd >= 0) {
-    _chsize(fd, 0);
+  //cleanup current file  
+  if (myFileDescriptor > 0) {
+    _chsize(myFileDescriptor, 0);
   }
 }
 
@@ -78,7 +81,6 @@ void RollFileWriter::WriteLine(const CString& line) {
 
   CString time;
   FormatTimestamp(time);      
-  
   fwprintf(myFileStream, L"%s%s", time, line);
   fflush(myFileStream);  
 
@@ -86,33 +88,31 @@ void RollFileWriter::WriteLine(const CString& line) {
 }
 
 void RollFileWriter::SetOutputFile(const CString& file) {  
-  CloseFile();
+  if (myFileStream != NULL) {  
+    fclose(myFileStream);
+    _close(myFileDescriptor);
+    myFileDescriptor = 0;
+    myFileStream = NULL;
+    myFileName = L"";
+  }
 
-  myFileName = file;
-  ReopenFile();
-    
-  LOG.LogInfoFormat(L"Logging will be redirected to: %s", myFileName);  
-  WriteLine(L"\n\n\n");  
-}
-
-
-void RollFileWriter::CloseFile() {
-  if (myFileStream == NULL) return;
-  
-  fclose(myFileStream);
-  myFileStream = NULL;
-}
-
-
-void RollFileWriter::ReopenFile() {
-  CString file = GetLogFileName();
-  if (file.GetLength() == 0) return;
-  
-  FILE* stream =_wfsopen(file, L"a", _SH_DENYWR);
-  if (stream == NULL) {
+  int fd;
+  if (0 != _wsopen_s(&fd, file, _O_WRONLY | _O_CREAT | _O_APPEND | _O_NOINHERIT | _O_U8TEXT, _SH_DENYWR, _S_IREAD | _S_IWRITE)) {
     LOG.LogWarnFormat(L"Failed to open settings file %s", file);
     return;
   }
-  
-  myFileStream = stream;
+
+  FILE* pfile = _wfdopen(fd, L"a");
+  if (pfile == NULL) {
+    LOG.LogWarnFormat(L"Failed to open settings file %s", file);
+    _close(fd);
+    return;
+  }
+
+  myFileDescriptor = fd;
+  myFileStream = _wfdopen(fd, L"a");
+  myFileName = file;
+    
+  LOG.LogInfoFormat(L"Logging will be redirected to: %s", myFileName);  
+  WriteLine(L"\n\n\n");  
 }

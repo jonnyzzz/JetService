@@ -19,11 +19,10 @@ private:
   void RotateLogsIfNeeded();
   CString GetLogFileName(int index = 0);
 
-  void CloseFile();
-  void ReopenFile();
 
 private:
   CString myFileName;
+  int myFileDescriptor;
   FILE* myFileStream;
 
   const int myMaxSize;

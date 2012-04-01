@@ -6,6 +6,10 @@
 const Logger LOG(L"RollFileWriter");
 
 RollFileWriter::RollFileWriter()
+  : myMaxSize(1024)
+  , myMaxNum(3)
+  , myFileName(L"")
+  , myFileStream(NULL)
 {
 }
 
@@ -22,6 +26,40 @@ void RollFileWriter::FormatTimestamp(CString& buff) {
     (DWORD)time.wHour, (DWORD)time.wMinute, (DWORD)time.wSecond, (DWORD)time.wMilliseconds);
 }
 
+CString RollFileWriter::GetLogFileName(int index) {
+  if (index == 0) return myFileName;
+  return CreateFormatted(L"%s.%d", myFileName, index);
+}
+
+void RollFileWriter::RotateLogsIfNeeded() {
+  if (myFileStream == NULL) return;
+
+  long sz = ftell(myFileStream);
+  if (sz < 0) {
+    //error occured
+    //let's try to reopen logs
+    SetOutputFile(myFileName);
+    return;
+  }
+
+  if (sz < myMaxSize) {
+    //not enuogh length
+    return;
+  }
+
+  CloseFile();
+  
+  for (int older = myMaxNum, newer = older-1; newer >= 0; older--, newer--) {
+    //first remove older file, if it exists
+    DeleteFile(GetLogFileName(older));
+    MoveFile(GetLogFileName(newer), GetLogFileName(older));
+  }
+  
+  //remove current log file to ensure to start log from scratch
+  DeleteFile(GetLogFileName());
+
+  ReopenFile();
+}
 
 void RollFileWriter::WriteLine(const CString& line) {
   if (myFileStream == NULL) return;
@@ -30,25 +68,39 @@ void RollFileWriter::WriteLine(const CString& line) {
   FormatTimestamp(time);      
   
   fwprintf(myFileStream, L"%s%s", time, line);
-  fflush(myFileStream);     
+  fflush(myFileStream);  
+
+  RotateLogsIfNeeded();
+}
+
+void RollFileWriter::SetOutputFile(const CString& file) {  
+  CloseFile();
+
+  myFileName = file;
+  ReopenFile();
+    
+  LOG.LogInfoFormat(L"Logging will be redirected to: %s", myFileName);  
+  WriteLine(L"\n\n\n");  
 }
 
 
-void RollFileWriter::SetOutputFile(const CString& file) {  
-  if (myFileStream != NULL) {
-    fclose(myFileStream);
-    myFileStream = NULL;
-  }
+void RollFileWriter::CloseFile() {
+  if (myFileStream == NULL) return;
+  
+  fclose(myFileStream);
+  myFileStream = NULL;
+}
 
+
+void RollFileWriter::ReopenFile() {
+  CString file = GetLogFileName();
+  if (file.GetLength() == 0) return;
+  
   FILE* stream =_wfsopen(file, L"a", _SH_DENYWR);
   if (stream == NULL) {
     LOG.LogWarnFormat(L"Failed to open settings file %s", file);
     return;
   }
-    
-  LOG.LogInfoFormat(L"Logging will be redirected to: %s", file);
-  myFileName = file;
-  myFileStream = stream;
   
-  WriteLine(L"\n\n\n");  
+  myFileStream = stream;
 }

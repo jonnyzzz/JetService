@@ -14,6 +14,9 @@ public:
   virtual int executeCommand(SC_HANDLE scm);
 
 private:
+  void updateServiceDescription();
+
+private:
   const CreateServiceSettings* mySettings;
 
 };

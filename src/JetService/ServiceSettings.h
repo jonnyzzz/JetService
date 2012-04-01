@@ -7,6 +7,7 @@ public:
 public:
   virtual CString getServiceName() const = 0;
   virtual CString getServiceDisplayName() const = 0;
+  virtual CString getServiceDescription() const = 0;
 };
 
 

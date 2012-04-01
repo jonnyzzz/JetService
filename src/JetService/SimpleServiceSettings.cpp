@@ -2,8 +2,9 @@
 #include "SimpleServiceSettings.h"
 
 
-SimpleServiceSettings::SimpleServiceSettings(const CString& name, const CString& descr)
+SimpleServiceSettings::SimpleServiceSettings(const CString& name, const CString& dname, const CString& descr)
   : myName(name)
+  , myDName(dname)
   , myDescription(descr)
 {
 }
@@ -16,6 +17,10 @@ SimpleServiceSettings::~SimpleServiceSettings(void)
 
 CString SimpleServiceSettings::getServiceName() const {
   return myName;
+}
+
+CString SimpleServiceSettings::getServiceDescription() const {
+  return myDName;
 }
 
 CString SimpleServiceSettings::getServiceDisplayName() const{
@@ -46,6 +51,11 @@ CString SimpleCreateServiceSettings::getServiceName() const {
 CString SimpleCreateServiceSettings::getServiceDisplayName() const{
   return myBase->getServiceDisplayName();
 }
+
+CString SimpleCreateServiceSettings::getServiceDescription() const {
+  return myBase->getServiceDescription();
+}
+
 
 bool SimpleCreateServiceSettings::isAutostart() const {
   return myAutostart;
@@ -103,6 +113,11 @@ CString SimpleRunServiceSettings::getServiceDisplayName() const {
   return myBase->getServiceDisplayName();
 }
 
+CString SimpleRunServiceSettings::getServiceDescription() const {
+  return myBase->getServiceDescription();
+}
+
+
 CString SimpleRunServiceSettings::getServiceTaskSettingsPath() const {
   return myTaskPath;
 }
@@ -130,6 +145,10 @@ CString SimpleServiceTaskSettings::getServiceName() const {
 
 CString SimpleServiceTaskSettings::getServiceDisplayName() const {
   return myBase->getServiceDisplayName();
+}
+
+CString SimpleServiceTaskSettings::getServiceDescription() const {
+  return myBase->getServiceDescription();
 }
 
 CString SimpleServiceTaskSettings::getServiceTaskSettingsPath() const {

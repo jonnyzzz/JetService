@@ -77,7 +77,33 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
   }
 
   LOG.LogInfoFormat(L"Service %s was created", mySettings->getServiceName());
+  updateServiceDescription();
+
   CloseServiceHandle(service);
 
   return 0;
 }
+
+
+void CreateServiceCommand::updateServiceDescription() {
+  //Another possbile approach is to call ChangeServiceConfig2 
+  //that is only supported from WinXP/2003
+  LOG.LogDebug(L"Updating service description");
+
+  CString path = CreateFormatted(L"SYSTEM\\CurrentControlSet\\Services\\%s", mySettings->getServiceName());
+  CRegKey reg(HKEY_LOCAL_MACHINE);
+  if (ERROR_SUCCESS != reg.Open(reg, path, KEY_WRITE)) {
+    LOG.LogWarnFormat(L"Failed to open registry key %s", path);
+    return;
+  }
+
+  CString key = L"Description";
+  if (ERROR_SUCCESS != reg.SetStringValue(key, mySettings->getServiceDescription())) {
+    LOG.LogWarnFormat(L"Failed to set %s for %s", key, path);
+    return;
+  }
+
+  reg.Flush();
+  LOG.LogDebug(L"Service description is updated");
+}
+

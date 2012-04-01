@@ -5,15 +5,17 @@
 class SimpleServiceSettings : public ServiceSettings
 {
 public:
-  SimpleServiceSettings(const CString& name, const CString& descr);
+  SimpleServiceSettings(const CString& name, const CString& dname, const CString& descr);
   virtual ~SimpleServiceSettings();
 
 public:  
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
+  virtual CString getServiceDescription() const;
 
 private:
   const CString myName;
+  const CString myDName;
   const CString myDescription;
 };
 
@@ -27,6 +29,7 @@ public:
 public:
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
+  virtual CString getServiceDescription() const;
   virtual bool isAutostart() const;
   virtual bool runAsSystem() const;
   virtual CString getUserName() const;
@@ -56,6 +59,7 @@ public:
 public:
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
+  virtual CString getServiceDescription() const;
   virtual CString getServiceTaskSettingsPath() const;
 private:
   const ServiceSettings* const myBase;
@@ -76,6 +80,7 @@ public:
  
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
+  virtual CString getServiceDescription() const;
   virtual CString getServiceTaskSettingsPath() const;
 
   virtual CString getWorkDir() const;

@@ -36,6 +36,16 @@ int FileServiceSettings::executeCommand(xml_document<TCHAR>* doc) {
     name = nodeText(nameNode);
   }
 
+  CString dname;
+  {
+    xml_node<TCHAR>* descrNode = root->first_node(L"displayName");
+    if (descrNode == NULL) {
+      LOG.LogDebug(L"Failed to find <jetservice>/<displayName> element in settings");
+      dname = name;
+    } else {
+      dname = nodeText(descrNode);
+    }
+  }
 
   CString descr;
   {
@@ -48,9 +58,10 @@ int FileServiceSettings::executeCommand(xml_document<TCHAR>* doc) {
   }
 
   LOG.LogDebugFormat(L"Parsed service name: %s", name);
+  LOG.LogDebugFormat(L"Parsed service display name: %s", dname);
   LOG.LogDebugFormat(L"Parsed service description: %s", descr);
 
-  SimpleServiceSettings settings(name, descr);
+  SimpleServiceSettings settings(name, dname, descr);
   return executeCommand(&settings);  
 }
 

@@ -22,25 +22,36 @@ XmlFileSettings::~XmlFileSettings()
 {
 }
 
-int XmlFileSettings::parseDocument(rapidxml::xml_document<TCHAR>* doc) {
-  FILE* file;
-  if (0 != _wfopen_s(&file, myConfigFile, L"r")) {
-    LOG.LogWarnFormat(L"Failed to open settings file %s", myConfigFile);
-    return 1;
+int XmlFileSettings::executeCommand() {
+  LOG.LogDebugFormat(L"Loading service settings from %s", myConfigFile);
+
+   /* "Read file into vector<char>"  See linked thread above*/
+  vector<TCHAR> buffer;
+  { 
+    FILE* file;
+    if (0 != _wfopen_s(&file, myConfigFile, L"r")) {
+      LOG.LogWarnFormat(L"Failed to open settings file %s", myConfigFile);
+      return 1;
+    }
+
+    wifstream myfile(file);
+    for (istreambuf_iterator<TCHAR> it = istreambuf_iterator<TCHAR>(myfile); it != istreambuf_iterator<TCHAR>(); it++) {
+      buffer.push_back(*it);
+    }
+    myfile.close();
+    fclose(file);
   }
 
-  wifstream myfile(file);
-  /* "Read file into vector<char>"  See linked thread above*/
-  vector<TCHAR> buffer((istreambuf_iterator<TCHAR>(myfile)), istreambuf_iterator<TCHAR>( ));
   buffer.push_back(L'\0');
   buffer.push_back(L'\0');
-
+  
   TCHAR* buff = &buffer[0];
 
   LOG.LogDebugFormat(L"Loaded settings:\n%s", CString(buff));
   
+  xml_document<TCHAR> doc;
   try {
-    doc->parse<0>(buff); 
+    doc.parse<0>(buff); 
   } catch(parse_error e) {
     CString what(e.what());
     LOG.LogDebugFormat(L"Failed to parse document. %s", what);
@@ -49,15 +60,7 @@ int XmlFileSettings::parseDocument(rapidxml::xml_document<TCHAR>* doc) {
     LOG.LogDebugFormat(L"Failed to parse document");
     return 1;
   }
-
-  return 0;
-}
-
-int XmlFileSettings::executeCommand() {
-  LOG.LogDebugFormat(L"Loading service settings from %s", myConfigFile);
- 
-  xml_document<TCHAR> doc;
-  parseDocument(&doc);  
+  
   //FILE handle should be closed at that point.
   return executeCommand(&doc);
 }

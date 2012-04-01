@@ -19,9 +19,6 @@ public:
 protected:
   CString nodeText(rapidxml::xml_node<TCHAR>* node);
     
-private: 
-  int parseDocument(rapidxml::xml_document<TCHAR>* doc);
-
 private:
   const CString myConfigFile;
 

@@ -22,7 +22,7 @@ protected:
 
   void SafeCloseHandle(HANDLE h);
 
-private:
+protected:
   static void SafeCloseHandleImpl(HANDLE& h);
   static bool DuplicateHandleNonInheritable(HANDLE& h);  
 
@@ -46,7 +46,7 @@ protected:
   virtual HANDLE GetHostProcessHandleImpl() const = 0;
 
 public:
-  void CloseChildProcessHandle();
+  virtual void CloseChildProcessHandle();
   void CloseHostProcessHandle();
 
 };
@@ -62,6 +62,13 @@ public:
 public:
   virtual HANDLE GetChildProcessHandleImpl() const;
   virtual HANDLE GetHostProcessHandleImpl() const;
+  virtual void CloseChildProcessHandle();
+public: 
+  HANDLE GetChildStdOutHandle();
+  HANDLE GetChildStdErrHandle();
+
+private:
+  HANDLE myChildStdErrHandle;
 
 };
 

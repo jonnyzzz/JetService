@@ -43,14 +43,14 @@ HANDLE ProcessCommand::CreateProcessToken() {
 }
 
 
-STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessHandle* pstdin, ChildProcessHandle* pstdout, ChildProcessHandle* pstderr) {
+STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessInHandle* pstdin, ChildProcessOutHandle* pout) {
   STARTUPINFO info;
   ZeroMemory(&info, sizeof(info));
   info.cb = sizeof(info);
   //TODO: Create pipes and transfer process output.
   info.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
-  info.hStdOutput = pstdout->GetChildProcessHandle();
-  info.hStdError = pstderr->GetChildProcessHandle();
+  info.hStdOutput = pout->GetChildStdOutHandle();
+  info.hStdError = pout->GetChildStdErrHandle();
   info.hStdInput = pstdin->GetChildProcessHandle();
   return info;
 }
@@ -82,7 +82,7 @@ int ProcessCommand::executeCommand() {
     return 1;
   }
 
-  STARTUPINFO startupInfo = CreateProcessStartupInfo(&stdInHandle, &stdOutHandle, &stdOutHandle);
+  STARTUPINFO startupInfo = CreateProcessStartupInfo(&stdInHandle, &stdOutHandle);
   PROCESS_INFORMATION processInfo;
 
   LOG.LogDebug(L"Starting process");

@@ -26,6 +26,7 @@ Pipe::Pipe(void)
 }
 
 bool Pipe::DuplicateHandleNonInheritable(HANDLE& h) {
+  //from http://support.microsoft.com/kb/190351
   HANDLE process = GetCurrentProcess();
   if (0 == DuplicateHandle(process, h, process, &h, 0, FALSE, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE)) {   
     LOG.LogError(L"Fail to duplicate handle");
@@ -122,10 +123,18 @@ void ChildProcessHandle::CloseHostProcessHandle() {
 
 //////
 
-ChildProcessOutHandle::ChildProcessOutHandle() {  
+ChildProcessOutHandle::ChildProcessOutHandle() : myChildStdErrHandle(NULL) {  
+  if (!IsValid()) return;
+  HANDLE process = GetCurrentProcess();
+  if (0 == DuplicateHandle(process, GetChildProcessHandleImpl(), process, &myChildStdErrHandle, 0, TRUE, DUPLICATE_SAME_ACCESS)) {
+    LOG.LogError(L"Failed to duplicate handle for process stderr");
+    MakeInvalid();
+    myChildStdErrHandle = NULL;
+  }  
 }
 
 ChildProcessOutHandle::~ChildProcessOutHandle() {
+  SafeCloseHandleImpl(myChildStdErrHandle);
 }
 
 HANDLE ChildProcessOutHandle::GetChildProcessHandleImpl() const {
@@ -134,6 +143,19 @@ HANDLE ChildProcessOutHandle::GetChildProcessHandleImpl() const {
 
 HANDLE ChildProcessOutHandle::GetHostProcessHandleImpl() const {
   return GetReadHandle();
+}
+
+HANDLE ChildProcessOutHandle::GetChildStdOutHandle() {
+  return GetChildProcessHandle();
+}
+
+HANDLE ChildProcessOutHandle::GetChildStdErrHandle() {
+  return myChildStdErrHandle;
+}
+
+void ChildProcessOutHandle::CloseChildProcessHandle() {
+  ChildProcessHandle::CloseChildProcessHandle();
+  SafeCloseHandleImpl(myChildStdErrHandle);
 }
 
 

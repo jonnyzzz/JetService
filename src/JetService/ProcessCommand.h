@@ -17,7 +17,7 @@ public:
 
 private:  
   HANDLE CreateProcessToken();
-  STARTUPINFO CreateProcessStartupInfo(ChildProcessHandle* pstdin, ChildProcessHandle* pstdout, ChildProcessHandle* pstderr);
+  STARTUPINFO CreateProcessStartupInfo(ChildProcessInHandle* pstdin, ChildProcessOutHandle* pout);
 
 private:
   const ServiceTaskSettings* const mySettings;  

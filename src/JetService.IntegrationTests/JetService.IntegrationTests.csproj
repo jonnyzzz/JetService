@@ -44,12 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\CommandsIntegrationTest.cs" />
+    <Compile Include="src\Tests\CommandsIntegrationTest.cs" />
     <Compile Include="src\Files.cs" />
     <Compile Include="src\JetServiceCommandRunner.cs" />
     <Compile Include="src\ProcessExecutor.cs" />
     <Compile Include="src\ServiceSettings.cs" />
     <Compile Include="src\TempFilesHolder.cs" />
+    <Compile Include="src\Tests\ServiceSettingsXmlTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

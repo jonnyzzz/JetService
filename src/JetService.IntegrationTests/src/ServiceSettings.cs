@@ -38,16 +38,28 @@ namespace JetService.IntegrationTests
     }
 
 
-    public static void Serialize(string file, ServiceSettings settings)
+    public override string ToString()
+    {
+      var sw = new StringWriter();
+      Serialize(sw);
+      return sw.ToString();
+    }
+
+    public void Serialize(string file)
     {
       using(var wr = File.CreateText(file))
       {
-        var f = new XmlSerializerFactory();
-        var ser = f.CreateSerializer(typeof (ServiceSettings));
-        if (ser == null)
-          throw new Exception("Failed to get serializer");
-        ser.Serialize(wr, settings);
+        Serialize(wr);
       }
+    }
+
+    private void Serialize(TextWriter wr)
+    {
+      var f = new XmlSerializerFactory();
+      var ser = f.CreateSerializer(typeof (ServiceSettings));
+      if (ser == null)
+        throw new Exception("Failed to get serializer");
+      ser.Serialize(wr, this);
     }
   }
 }

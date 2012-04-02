@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace JetService.IntegrationTests
+namespace JetService.IntegrationTests.Tests
 {
   [TestFixture]
   public class CommandsIntegrationTest

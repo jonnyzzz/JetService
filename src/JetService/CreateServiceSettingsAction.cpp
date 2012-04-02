@@ -9,7 +9,7 @@ const Logger LOG(L"CreateServiceSettingsAction");
 
 
 CreateServiceSettingsAction::CreateServiceSettingsAction(const CString& commandName) 
-  : SimpleConsoleAction(commandName)
+  : ServiceSettingsAction(commandName)
 {
 }
 
@@ -19,32 +19,7 @@ CreateServiceSettingsAction::~CreateServiceSettingsAction()
 }
 
 
-class ValidateServiceTaskSettings : public FileTaskSettings {
-public:
-
-  ValidateServiceTaskSettings(const Argz* argz, CreateServiceSettingsAction*  action, const CreateServiceSettings* settings) 
-    : FileTaskSettings(settings)
-    , myBaseSettings(settings)
-    , myAction(action)
-    , myArgz(argz)
-  {
-  }
-  virtual ~ValidateServiceTaskSettings() {}
-
-public:
-  virtual int executeCommand(const ServiceTaskSettings* settings) {
-    return myAction->ExecuteAction(myArgz, myBaseSettings, settings);
-  }
-
-private:
-  const CreateServiceSettings* const myBaseSettings;
-  const Argz* const myArgz;
-  CreateServiceSettingsAction* const myAction;
-};
-
-
-
-int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const RunServiceSettings* baseSettings) {
+int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {
   CString serviceCommand;
   {
     int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
@@ -78,8 +53,6 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const RunServiceS
     settings.setAutostart(true);
   }
 
-  ValidateServiceTaskSettings validate(az, this, &settings);
-
-  return static_cast<Command*>(&validate)->executeCommand();
+  return ExecuteAction(az, &settings, baseSettings);  
 }
 

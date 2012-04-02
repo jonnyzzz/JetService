@@ -168,6 +168,12 @@
     <ClInclude Include="ValidateCreateServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceSettingsAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ValidateServiceTaskAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -300,6 +306,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ValidateCreateServiceAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceSettingsAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ValidateServiceTaskAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

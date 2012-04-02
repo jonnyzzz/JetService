@@ -113,6 +113,7 @@
     <ClInclude Include="ServiceExecuteProcessTask.h" />
     <ClInclude Include="ServiceMain.h" />
     <ClInclude Include="ServiceSettings.h" />
+    <ClInclude Include="ServiceSettingsAction.h" />
     <ClInclude Include="ServiceStatus.h" />
     <ClInclude Include="ServiceTask.h" />
     <ClInclude Include="SettingsServiceTask.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadedServiceTask.h" />
     <ClInclude Include="ValidateCreateServiceAction.h" />
+    <ClInclude Include="ValidateServiceTaskAction.h" />
     <ClInclude Include="XmlFileSettings.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +162,7 @@
     <ClCompile Include="ServiceEventSTOPHandler.cpp" />
     <ClCompile Include="ServiceExecuteProcessTask.cpp" />
     <ClCompile Include="ServiceMain.cpp" />
+    <ClCompile Include="ServiceSettingsAction.cpp" />
     <ClCompile Include="ServiceStatus.cpp" />
     <ClCompile Include="ServiceTask.cpp" />
     <ClCompile Include="SettingsServiceTask.cpp" />
@@ -174,6 +177,7 @@
     </ClCompile>
     <ClCompile Include="ThreadedServiceTask.cpp" />
     <ClCompile Include="ValidateCreateServiceAction.cpp" />
+    <ClCompile Include="ValidateServiceTaskAction.cpp" />
     <ClCompile Include="XmlFileSettings.cpp" />
   </ItemGroup>
   <ItemGroup>

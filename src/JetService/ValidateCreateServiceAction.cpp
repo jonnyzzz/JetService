@@ -5,7 +5,7 @@
 const Logger LOG(L"ValidateCreateServiceAction");
 
 ValidateCreateServiceAction::ValidateCreateServiceAction()
-  : CreateServiceSettingsAction(L"validate-create")
+  : CreateServiceSettingsAction(L"validate-create-settings")
 {
 }
 

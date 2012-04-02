@@ -20,11 +20,11 @@ CString SimpleServiceSettings::getServiceName() const {
 }
 
 CString SimpleServiceSettings::getServiceDescription() const {
-  return myDName;
+  return myDescription;
 }
 
 CString SimpleServiceSettings::getServiceDisplayName() const{
-  return myDescription;
+  return myDName;
 }
 
 

@@ -10,6 +10,7 @@
 #include "ProcessAction.h"
 #include "ServiceAction.h"
 #include "ConsoleCommandsRunner.h"
+#include "ValidateCreateServiceAction.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
@@ -28,12 +29,14 @@ int _tmain(int argc, _TCHAR* argv[])
   CreateServiceAction createAction;
   ServiceAction       serviceAction;
   ProcessAction       processAction;
+  ValidateCreateServiceAction validateAction;
 
   ConsoleAction* actions[] = {
     &serviceAction,
     &createAction, 
     &deleteAction,
     &processAction,
+    &validateAction,
     NULL
   };
 

@@ -23,13 +23,14 @@ private:
 
 class SimpleCreateServiceSettings : public CreateServiceSettings {
 public:
-  SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand);
+  SimpleCreateServiceSettings(const RunServiceSettings* baseSettings, const CString& serviceCommand);
   virtual ~SimpleCreateServiceSettings();
 
 public:
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
   virtual CString getServiceDescription() const;
+  virtual CString getServiceTaskSettingsPath() const;
   virtual bool isAutostart() const;
   virtual bool runAsSystem() const;
   virtual CString getUserName() const;
@@ -43,7 +44,7 @@ public:
   void setRunAsSystem(bool runAsSystem);
 
 private:
-  const ServiceSettings* myBase;
+  const RunServiceSettings* myBase;
   const CString myServiceExecutableCommand;
   CString myUserName;
   CString myPassword;

@@ -32,7 +32,7 @@ CString SimpleServiceSettings::getServiceDisplayName() const{
 ////////////////////////////////////////
 
 
-SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand)
+SimpleCreateServiceSettings::SimpleCreateServiceSettings(const RunServiceSettings* baseSettings, const CString& serviceCommand)
   : myBase(baseSettings)
   , myUserName(L"")
   , myPassword(L"")
@@ -56,6 +56,9 @@ CString SimpleCreateServiceSettings::getServiceDescription() const {
   return myBase->getServiceDescription();
 }
 
+CString SimpleCreateServiceSettings::getServiceTaskSettingsPath() const {
+  return myBase->getServiceTaskSettingsPath();
+}
 
 bool SimpleCreateServiceSettings::isAutostart() const {
   return myAutostart;

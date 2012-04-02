@@ -10,8 +10,17 @@ public:
   virtual CString getServiceDescription() const = 0;
 };
 
+class RunServiceSettings : public ServiceSettings {
+public:  
+  virtual ~RunServiceSettings() {}
 
-class CreateServiceSettings : public ServiceSettings {
+public:
+  virtual CString getServiceTaskSettingsPath() const = 0;
+
+};
+
+
+class CreateServiceSettings : public RunServiceSettings {
 public:
   virtual ~CreateServiceSettings() {}
 public:
@@ -20,16 +29,6 @@ public:
   virtual CString getUserName() const = 0;
   virtual CString getPassword() const = 0;
   virtual CString getServiceExecutable() const = 0;
-};
-
-
-class RunServiceSettings : public ServiceSettings {
-public:  
-  virtual ~RunServiceSettings() {}
-
-public:
-  virtual CString getServiceTaskSettingsPath() const = 0;
-
 };
 
 

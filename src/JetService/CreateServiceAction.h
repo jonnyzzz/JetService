@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SimpleConsoleAction.h"
+#include "CreateServiceSettingsAction.h"
 
-class CreateServiceAction : public SimpleConsoleAction
+class CreateServiceAction : public CreateServiceSettingsAction
 {
 public:
   CreateServiceAction();
@@ -11,7 +11,7 @@ public:
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer);  
-  virtual int ExecuteAction(const Argz* argz, const RunServiceSettings* settings);
+  virtual int ExecuteAction(const Argz* argz, const CreateServiceSettings* settings, const ServiceTaskSettings* task);
 
 };
 

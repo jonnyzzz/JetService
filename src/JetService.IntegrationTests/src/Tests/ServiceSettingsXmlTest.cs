@@ -72,6 +72,23 @@ namespace JetService.IntegrationTests.Tests
                        }, (s, dir) => File.WriteAllText(Path.Combine(dir, s.Execution.Program), "mokkk"));
     }
 
+    [Test]
+    public void Test_Execute_Test_Exe()
+    {
+      DoSettingsTest(new ServiceSettings
+                       {
+                         Name = "jetService-test",
+                         DisplayName = "Jet Service Test",
+                         Description = "This is a jet service",
+                         Execution = new ServiceSettings.ExecutionElement
+                                       {
+                                         Arguments = null,
+                                         Program = Files.TestProgram,
+                                         WorkDir = null
+                                       }
+                       });
+    }
+
     private static void DoFailedSettingsTest(ServiceSettings s, Action<ServiceSettings, string> layout = null)
     {
       var r = DoRawSettingsTest(s, layout);
@@ -93,7 +110,11 @@ namespace JetService.IntegrationTests.Tests
         dir =>
           {
             var ee = resolve(dir, s.Execution);
-            File.WriteAllText(ee.Program, "mock");
+            if (!File.Exists(ee.Program))
+            {
+              File.WriteAllText(ee.Program, "mock");
+            }
+
 
             var r = ExecuteWithSettings(s, dir);
             Assert.That(r.ExitCode, Is.EqualTo(0));
@@ -137,4 +158,4 @@ namespace JetService.IntegrationTests.Tests
       return r;
     }
   }
-};
+}

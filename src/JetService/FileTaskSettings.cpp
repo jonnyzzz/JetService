@@ -116,20 +116,34 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
       return 1;
     }
 
-    LPCTSTR extraPaths[] = { baseDir, NULL};
     const int sz = max(MAX_PATH+1, 65535);
     TCHAR buff[sz+1];
-    if (!CopyStringChars(program, buff, sz)) {
-      LOG.LogErrorFormat(L"Program path is too long: %s", program);
-      return 1;
-    }
+
+    if (program.GetLength() >= 3 && iswalpha(program.GetAt(0)) && program.GetAt(1) == L':') {
+      DWORD attrs = GetFileAttributes(program);
+      if (attrs == INVALID_FILE_ATTRIBUTES) {
+        LOG.LogErrorFormat(L"File does not exists: %s", program);
+        return 1;
+      } 
+
+      if ((attrs & FILE_ATTRIBUTE_DIRECTORY) != 0) {
+        LOG.LogErrorFormat(L"File is a directory: %s", program);
+        return 1;
+      }      
+    } else {
+      LPCTSTR extraPaths[] = { baseDir, NULL};
+      if (!CopyStringChars(program, buff, sz)) {
+        LOG.LogErrorFormat(L"Program path is too long: %s", program);
+        return 1;
+      }
   
-    if (FALSE == PathFindOnPath(buff, extraPaths)) {
-      LOG.LogErrorFormat(L"Failed to find executable for: %s", program);
-      return 1;
+      if (FALSE == PathFindOnPath(buff, extraPaths)) {
+        LOG.LogErrorFormat(L"Failed to find executable for: %s", program);
+        return 1;
+      }
+      program = buff;
     }
-    program = buff;
-    *buff=L'\0';
+    
     int n = GetFullPathName(program, sz, buff, NULL);
     if (n <= 0 || n >= sz) {
       LOG.LogErrorFormat(L"Failed to resolve program full path: %s", program);

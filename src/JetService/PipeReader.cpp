@@ -24,6 +24,11 @@ PipeReader::PipeReader(HANDLE pipe, const InterruptHolder* interrupt)
 
 PipeReader::~PipeReader(void)
 {
+  LOG.LogDebug(L"PipeReader::~PipeReader => inheritor object is disposed!");
+  WaitForExit();
+}
+
+void PipeReader::WaitForExit() {
   if (myThread == NULL) return;
   Interrupt();
   if (WAIT_OBJECT_0 == WaitForSingleObject(myThread, 500)) {
@@ -37,7 +42,6 @@ PipeReader::~PipeReader(void)
     LOG.LogWarn(L"Failed to wait for pipe reader thread to exit");
   }
 }
-
 
 DWORD PipeReader::ThreadProc() {
   if (IsInterrupted()) return 0;

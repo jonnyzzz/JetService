@@ -135,6 +135,8 @@ int ProcessCommand::executeCommand() {
 
   CloseHandle(processInfo.hProcess);
   CloseHandle(processInfo.hThread);
+  
+  outputRedirect.WaitForExit();
   return 0;
 }
 

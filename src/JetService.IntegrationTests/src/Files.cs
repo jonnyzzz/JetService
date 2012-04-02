@@ -1,10 +1,21 @@
 using System;
 using System.IO;
+using JetService.IntegrationTests.Executable;
 
 namespace JetService.IntegrationTests
 {
   public static class Files
   {
+    private static readonly Lazy<string> myTestProgram = new Lazy<string>(
+      () =>
+        {
+          string file = new Uri(typeof(TestProgram).Assembly.CodeBase).LocalPath;
+          if (!File.Exists(file)) throw new Exception("Faied to find TestProgram");
+          return file;
+        });
+
+    public static string TestProgram { get { return myTestProgram.Value; } }
+
     private static readonly Lazy<string> myHomePath = new Lazy<string>(
       () =>
         {

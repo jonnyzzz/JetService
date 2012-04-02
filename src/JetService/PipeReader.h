@@ -9,6 +9,9 @@ public:
   virtual ~PipeReader(void);
 
 public:
+  void WaitForExit();
+
+public:
   DWORD ThreadProc();
 
 protected:

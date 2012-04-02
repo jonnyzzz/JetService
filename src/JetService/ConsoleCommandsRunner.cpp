@@ -50,6 +50,11 @@ int ConsoleCommandsRunner::executeCommand() {
     }
   }
 
+  if (command == L"help") {
+    usage();
+    return 0;
+  }
+
   LOG.LogWarnFormat(L"Unknown command: %s", command);
   return usage();
 }
@@ -61,6 +66,10 @@ int ConsoleCommandsRunner::usage() {
   myWriter->WriteFormat(L"  %s <command> [/debug] [/logfile=<log file>] ", myArgz->GetExecutableName());
   myWriter->Write();
   myWriter->Write(L"  where <command> could be one of the following: ");
+  myWriter->Write(L"    help");
+  myWriter->Write(L"      shows this usage instructions");
+  myWriter->Write();
+
   for(ConsoleAction** p = myActions; *p != NULL; p++) {    
     (*p)->PrintUsage(myWriter);
     myWriter->Write();
@@ -69,3 +78,4 @@ int ConsoleCommandsRunner::usage() {
   return 1;
 
 }
+

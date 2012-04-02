@@ -3,7 +3,7 @@
 
 CString getExecutableFileName(CString file) {  
   int p1 = file.ReverseFind(L'\\');
-  int p2 = file.ReverseFind(L'\\');
+  int p2 = file.ReverseFind(L'/');
 
   int p = max(p1,p2);
   if (p <= 0) return file;

@@ -8,7 +8,8 @@ namespace JetService.IntegrationTests
     [Test]
     public void TestListCommands()
     {
-      JetServiceCommandRunner.ExecuteCommand("help");
+      var r = JetServiceCommandRunner.ExecuteCommand("help");
+      Assert.That(r.ExitCode, Is.EqualTo(0));
     }
   }
 }

@@ -12,24 +12,34 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void std_out_captured()
     {
-      var r = ExecuteWithSettings(TestProgram.TEST_STDOUT);
+      var r = ExecuteWithSettings(TestAction.TEST_STDOUT);
 
       Console.Out.WriteLine(r.LogText);
+      Assert.That(r.LogText.Contains("This is service std-out 44"));
       r.AssertSuccess();
     }
 
     [Test]
     public void std_err_captured()
     {
-      var r = ExecuteWithSettings(TestProgram.TEST_STDERR);
+      var r = ExecuteWithSettings(TestAction.TEST_STDERR);
 
       Console.Out.WriteLine(r.LogText);
+      Assert.That(r.LogText.Contains("This is service std-err 42"));
       r.AssertSuccess();
     }
 
+    [Test]
+    public void std_in_closed()
+    {
+      var r = ExecuteWithSettings(TestAction.TEST_STDIN_READ);
+      Console.Out.WriteLine(r.LogText);
+      Assert.IsFalse(r.LogText.Contains(TestProgramUtil.THREAD_NOT_FINISHED));
+      Assert.IsTrue(r.LogText.Contains("Try to read from console:Completed"));
+      r.AssertSuccess();
+    }
 
-
-    private static JetServiceCommandRunner.Result ExecuteWithSettings(string arguemnts)
+    private static JetServiceCommandRunner.Result ExecuteWithSettings(TestAction action, params string[] arguemnts)
     {
       return TempFilesHolder.WithTempDirectory(
         dir =>
@@ -43,7 +53,7 @@ namespace JetService.IntegrationTests.Tests
                         Execution = new ServiceSettings.ExecutionElement
                                       {
                                         Program = Files.TestProgram,
-                                        Arguments = arguemnts,
+                                        Arguments = action.ToString() + string.Join(" ", arguemnts),
                                         WorkDir = dir
                                       }
                       };

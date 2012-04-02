@@ -10,9 +10,9 @@ Pipe::Pipe(void)
 {
   SECURITY_ATTRIBUTES attrs;
   ZeroMemory(&attrs, sizeof(attrs));
+  attrs.nLength = sizeof(attrs);
   attrs.bInheritHandle = TRUE;
   attrs.lpSecurityDescriptor = NULL;
-  attrs.nLength = sizeof(attrs);
   
   const DWORD BUFF_SZ = 0; //let OS decide 
   if (0 == CreatePipe(&myReadHandle, &myWriteHandle, &attrs, BUFF_SZ)) {
@@ -20,9 +20,19 @@ Pipe::Pipe(void)
     myReadHandle = NULL;
     myWriteHandle = NULL;
     myIsValid = false;
-  } else {
-    myIsValid = true;
+    return;
+  } 
+  myIsValid = DuplicateHandleNonInheritable(myReadHandle) && DuplicateHandleNonInheritable(myWriteHandle);  
+}
+
+bool Pipe::DuplicateHandleNonInheritable(HANDLE& h) {
+  HANDLE process = GetCurrentProcess();
+  if (0 == DuplicateHandle(process, h, process, &h, 0, FALSE, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE)) {   
+    LOG.LogError(L"Fail to duplicate handle");
+    SafeCloseHandleImpl(h);    
+    return false;
   }
+  return true;
 }
 
 Pipe::Pipe(const Pipe& pipe) {
@@ -50,7 +60,9 @@ void Pipe::SafeCloseHandle(HANDLE handle) {
 
 void Pipe::SafeCloseHandleImpl(HANDLE& handle) {
   if (handle != NULL) {
-    CloseHandle(handle);
+    if (0 == CloseHandle(handle)) {
+      LOG.LogWarn(L"Failed to close handle");
+    }
     handle = NULL;
   }
 }
@@ -95,7 +107,8 @@ HANDLE ChildProcessHandle::GetChildProcessHandle() {
 
 HANDLE ChildProcessHandle::GetHostProcessHandle() {
   //TODO: make non-inheritable
-  return GetHostProcessHandleImpl();
+  HANDLE h = GetHostProcessHandleImpl();  
+  return h;
 }
 
 void ChildProcessHandle::CloseChildProcessHandle() {

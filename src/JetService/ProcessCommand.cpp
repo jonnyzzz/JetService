@@ -48,7 +48,7 @@ STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessHandle* pstdin,
   ZeroMemory(&info, sizeof(info));
   info.cb = sizeof(info);
   //TODO: Create pipes and transfer process output.
-  info.dwFlags = STARTF_USESTDHANDLES;
+  info.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
   info.hStdOutput = pstdout->GetChildProcessHandle();
   info.hStdError = pstderr->GetChildProcessHandle();
   info.hStdInput = pstdin->GetChildProcessHandle();

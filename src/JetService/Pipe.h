@@ -24,7 +24,7 @@ protected:
 
 private:
   static void SafeCloseHandleImpl(HANDLE& h);
-  
+  static bool DuplicateHandleNonInheritable(HANDLE& h);  
 
 private:
   HANDLE myReadHandle;

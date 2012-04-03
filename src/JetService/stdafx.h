@@ -15,7 +15,7 @@
 
 #include <atlbase.h>
 #include <atlstr.h>
-
+#include <Ntsecapi.h>
 
 CString CreateFormatted(const CString tmpl, ...);
 bool CopyStringChars(const CString& text, TCHAR* buff, int sz);

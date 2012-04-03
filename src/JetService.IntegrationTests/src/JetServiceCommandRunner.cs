@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using NUnit.Framework;
 
 namespace JetService.IntegrationTests
 {
@@ -23,7 +22,6 @@ namespace JetService.IntegrationTests
         tempFile =>
           {
             var r = ProcessExecutor.ExecuteProcess(Files.JetServiceExe, command + " /logfile=" + tempFile + " /debug " + String.Join(" ", arguments));
-            //Console.Out.WriteLine("r = {0}", r);
             return new Result
                      {
                        BaseResult = r,

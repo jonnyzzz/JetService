@@ -17,12 +17,16 @@ CreateServiceCommand::~CreateServiceCommand()
 int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
   LOG.LogDebugFormat(L"Creating and registering service: name=%s...", mySettings->getServiceName());
   
+  CString sUserName = mySettings->getUserName();
+  CString sPassword = mySettings->getPassword();
+
   LPCWSTR userName = NULL;
   LPCWSTR password = NULL;
 
   if (!mySettings->runAsSystem()) {
-    userName = mySettings->getUserName();
-    password = mySettings->getPassword();
+    //use declared variables to avoid strings from distruct
+    userName = sUserName;
+    password = sPassword;
   }
 
   SC_HANDLE service = CreateService(

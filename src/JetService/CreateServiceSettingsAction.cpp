@@ -30,6 +30,7 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
 
   if (az->HasArgument(L"/runAsSystem")) {
     settings.setRunAsSystem(true);
+    LOG.LogInfo(L"Installing service unser LOCAL_SYSTEM account");
   } else {
     CString p;
     if (!az->GetNamedArgument(L"user", p)) {
@@ -42,6 +43,8 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
       return 1;
     }
     settings.setPassword(p);
+
+    LOG.LogInfoFormat(L"Installing service under %s account", settings.getUserName());
   }
 
   CString p(L"true");

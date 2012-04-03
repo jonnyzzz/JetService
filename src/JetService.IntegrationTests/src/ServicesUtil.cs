@@ -16,7 +16,7 @@ namespace JetService.IntegrationTests
         Assert.Ignore("Not enough righst to install service");
         return;
       }
-      Natives.CloseHandle(scm);
+      Natives.CloseServiceHandle(scm);
     }
 
     public static IEnumerable<string> ListServices()
@@ -33,5 +33,36 @@ namespace JetService.IntegrationTests
       }
     }
 
+    public static void RemoveServices(Func<string, bool> predicate)
+    {
+      const string ns = @"root\cimv2";
+      const string query = "select * from Win32_Service";
+
+      var scope = new ManagementScope(string.Format(@"\\{0}\{1}", Environment.MachineName, ns));
+      scope.Connect();
+
+      using (var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query)))
+      {
+        foreach (var mo in searcher.Get().Cast<ManagementObject>())
+        {
+          string name = mo["Name"].ToString();
+          if (predicate(name))
+          {
+            mo.Delete();
+          }
+        }
+      }
+    }
+
+
+    public static ProcessExecutor.Result StartService(ServiceSettings s)
+    {
+      return ProcessExecutor.ExecuteProcess("net.exe", "start " + s.Name).Dump();
+    }
+
+    public static ProcessExecutor.Result StopService(ServiceSettings s)
+    {
+      return ProcessExecutor.ExecuteProcess("net.exe", "stop " + s.Name).Dump();
+    }
   }
 }

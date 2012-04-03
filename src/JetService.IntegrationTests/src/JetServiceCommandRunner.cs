@@ -10,6 +10,7 @@ namespace JetService.IntegrationTests
       public ProcessExecutor.Result BaseResult { get; set; }
       public string LogText { get; set; }
       public int ExitCode { get { return BaseResult.ExitCode; } }
+      public string LogFilePath { get; set; }
       public void AssertSuccess()
       {
         BaseResult.AssertNoErrorOutput().AssertExitedSuccessfully();
@@ -26,6 +27,7 @@ namespace JetService.IntegrationTests
                      {
                        BaseResult = r,
                        LogText = File.ReadAllText(tempFile),
+                       LogFilePath = tempFile,
                      };
           });
     }

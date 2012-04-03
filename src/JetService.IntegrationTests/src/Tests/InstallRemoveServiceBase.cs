@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using JetService.IntegrationTests.Executable;
 using NUnit.Framework;
 
@@ -13,17 +14,58 @@ namespace JetService.IntegrationTests.Tests
       return str;
     }
 
+    protected void NOP<A>(A a)
+    {
+    }
+
+    protected void NOP<A, B>(A a, B b)
+    {
+    }
+
+    protected void NOP<A, B, C>(A a, B b, C c)
+    {
+    }
+
+
+    protected void StartStopService(ServiceSettings service, string log, Action afterStarted) {
+      try
+      {
+        try
+        {
+          ServicesUtil.StartService(service).AssertExitedSuccessfully();
+        } finally
+        {
+          if (log != null)
+          {
+            using(var s = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using(var r = new StreamReader(s))
+            Console.Out.WriteLine("Start service log:\r\n{0}", r.ReadToEnd());
+          }
+        }
+        afterStarted();
+      } catch(Exception e)
+      {
+        Console.Out.WriteLine("Failed " + e);
+        throw;
+      } finally
+      {
+        ServicesUtil.StopService(service).AssertExitedSuccessfully();
+      }
+    }
+
+    protected delegate void OnServiceInstalled(ServiceSettings setting, string dir, string logFile);
+
     protected void InstallRemoveService(string[] installServiceArguments,
                                         TestAction action, 
                                         string[] testProgramArguments,
-                                        Action<ServiceSettings, string> afterInstalled)
+                                        OnServiceInstalled afterInstalled)
     {
       ServicesUtil.AssertHasInstallServiceRights();
 
       TempFilesHolder.WithTempDirectory(
         dir =>
         {
-          var hash = Guid.NewGuid().ToString();
+          var hash = (int)(DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds % 9999;
           var settingsXml = new ServiceSettings
                               {
                                 Name = "jetService-test-" + hash,
@@ -48,7 +90,7 @@ namespace JetService.IntegrationTests.Tests
 
           try
           {
-            afterInstalled(settingsXml, dir);
+            afterInstalled(settingsXml, dir, r.LogFilePath);
           }
           catch (Exception e)
           {
@@ -61,9 +103,21 @@ namespace JetService.IntegrationTests.Tests
             Console.Out.WriteLine(r.LogText);
             r.AssertSuccess();
             
-            Assert.IsFalse(IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
+            Assert.IsFalse(IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);            
           }
         });
+    }
+
+    [TestFixtureTearDown]
+    public void FixtureTearDown()
+    {
+      try
+      {
+        ServicesUtil.RemoveServices(x => x.StartsWith("jetService-test"));
+      } catch(Exception e) 
+      {
+        Console.Out.WriteLine("Failed to cleanup services. {0}", e);
+      }
     }
 
     private static bool IsServiceInstalled(ServiceSettings settingsXml)

@@ -29,7 +29,7 @@ namespace JetService.IntegrationTests
       var u = new User
                  {
                    UserName = "jetsvc" + rand,
-                   Password = "jeti" + rand + "!"
+                   Password = "jeti" + rand + "z"
                  };
       ThreadUtil.ExecuteSTA(() => CreateAdminUser(u, group));
       try
@@ -52,10 +52,10 @@ namespace JetService.IntegrationTests
       var dirEntry = new DirectoryEntry("WinNT://" + Environment.MachineName);
 
       DirectoryEntries entries = dirEntry.Children;
-      DirectoryEntry newUser = entries.Add(u.UserName, "user");
+      DirectoryEntry newUser = entries.Add(u.UserName, "User");
 
       newUser.Properties["FullName"].Add("JetService test user: " + u.UserName);
-      newUser.Invoke("SetPassword", u.Password);
+      newUser.Invoke("SetPassword", new object[] { u.Password });
       newUser.Invoke("Put", new object[] { "UserFlags", 0x10000 }); //password never expires      
       newUser.CommitChanges();
       Console.Out.WriteLine("Created user: {0}", u);

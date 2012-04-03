@@ -12,7 +12,7 @@ namespace JetService.IntegrationTests.Tests
       InstallRemoveService(A("/runAsSystem"),
                            TestAction.TEST_STDOUT,
                            A(),
-                           (s, dir) => { }
+                           (s, dir, log) => { }
         );
     }
 
@@ -23,7 +23,7 @@ namespace JetService.IntegrationTests.Tests
         u => InstallRemoveService(A("/user=.\\" + u.UserName,  "/password=" + u.Password),
                                   TestAction.TEST_STDOUT,
                                   A(),
-                                  (s, dir) => { }
+                                  (s, dir, log) => { }
                ));
     }
   }

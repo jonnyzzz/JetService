@@ -8,9 +8,9 @@ namespace JetService.IntegrationTests
     [DllImport("advapi32.dll", EntryPoint = "OpenSCManagerW", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern IntPtr OpenSCManager(string machineName, string databaseName, SCM_ACCESS dwAccess);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("advapi32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool CloseHandle(IntPtr hObject);
+    public static extern bool CloseServiceHandle(IntPtr hSCObject);
 
     [Flags]
     public enum SCM_ACCESS : uint

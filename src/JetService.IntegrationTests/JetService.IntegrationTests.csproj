@@ -60,6 +60,9 @@
     <Compile Include="src\Tests\ExecuteWithoutServiceTest.cs" />
     <Compile Include="src\Tests\InstallRemoveServiceBase.cs" />
     <Compile Include="src\Tests\InstallRemoveServiceTest.cs" />
+    <Compile Include="src\Tests\RunUnderServiceTestBase.cs" />
+    <Compile Include="src\Tests\RunUnderSystemTest.cs" />
+    <Compile Include="src\Tests\RunUnderUserTest.cs" />
     <Compile Include="src\Tests\ServiceSettingsXmlTest.cs" />
     <Compile Include="src\Tests\SettingsXmlTestBase.cs" />
     <Compile Include="src\Tests\UserManagerTest.cs" />

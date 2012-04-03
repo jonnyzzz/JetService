@@ -3,10 +3,10 @@
 #include "PipeReader.h"
 #include "Logger.h"
 
-class LogPipeReader : public PipeReader, private Logger
+class LogPipeReader : public ReaderCallback, private Logger
 {
 public:
-  LogPipeReader(CString category, HANDLE pipe, const InterruptHolder* interrupt = NULL);
+  LogPipeReader(CString category);
   virtual ~LogPipeReader();
 
 public:

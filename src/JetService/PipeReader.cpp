@@ -5,12 +5,22 @@
 
 const Logger LOG(L"PipeReader");
 
+
+ReaderCallback::ReaderCallback() {
+}
+
+ReaderCallback::~ReaderCallback() {
+}
+
+/////
+
 DWORD WINAPI PipeReaderThreadProc(LPVOID lpParameter) {
   return ((PipeReader*)lpParameter)->ThreadProc();  
 }
 
-PipeReader::PipeReader(HANDLE pipe, const InterruptHolder* interrupt)
+PipeReader::PipeReader(ReaderCallback* readerCallback, HANDLE pipe, const InterruptHolder* interrupt)
   : InterruptHolder(interrupt)
+  , myReaderCallback(readerCallback)
   , myPipe(pipe)  
   , myThread(NULL)
   , myThreadId(0)
@@ -93,6 +103,10 @@ DWORD PipeReader::ThreadProc() {
   return 0;
 }
 
+
+void PipeReader::ProcessNextPortion(const CString& text) {
+  myReaderCallback->ProcessNextPortion(text);
+}
 
 void PipeReader::ProcessBuffer(CString& buffer) {
   bool processed = true;

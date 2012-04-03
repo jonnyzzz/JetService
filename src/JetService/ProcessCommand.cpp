@@ -109,7 +109,8 @@ int ProcessCommand::executeCommand() {
   //closee handles as we do not like to process process output
   stdInHandle.CloseHostProcessHandle();
  
-  LogPipeReader outputRedirect(L"stdout", stdOutHandle.GetHostProcessHandle(), this);
+  LogPipeReader outputReader(L"stdout");
+  PipeReader outputRedirect(&outputReader, stdOutHandle.GetHostProcessHandle(), this);
 
   while(true) {    
     if (IsInterrupted()) {

@@ -2,9 +2,8 @@
 #include "LogPipeReader.h"
 
 
-LogPipeReader::LogPipeReader(CString category, HANDLE pipe, const InterruptHolder* interrupt)
+LogPipeReader::LogPipeReader(CString category)
   : Logger(category)
-  , PipeReader(pipe, interrupt)
 {
 }
 

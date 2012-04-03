@@ -3,8 +3,8 @@
 
 class Command {
 public:
-  Command() {}
-  virtual ~Command() {}
+  Command();
+  virtual ~Command();
 
 public:
   virtual int executeCommand() = 0;

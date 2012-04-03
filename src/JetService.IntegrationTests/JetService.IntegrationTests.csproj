@@ -50,8 +50,11 @@
     <Compile Include="src\ProcessExecutor.cs" />
     <Compile Include="src\ServiceSettings.cs" />
     <Compile Include="src\TempFilesHolder.cs" />
+    <Compile Include="src\Tests\CreateServiceSettingsXmlTest.cs" />
     <Compile Include="src\Tests\ExecuteWithoutServiceTest.cs" />
+    <Compile Include="src\Tests\InstallRemoveServiceTest.cs" />
     <Compile Include="src\Tests\ServiceSettingsXmlTest.cs" />
+    <Compile Include="src\Tests\SettingsXmlTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JetService.IntegrationTests.Executable\JetService.IntegrationTests.Executable.csproj">

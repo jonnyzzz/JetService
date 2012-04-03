@@ -45,7 +45,7 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
   }
 
   CString p(L"true");
-  az->GetNamedArgument(L"autorun", p);
+  az->GetNamedArgument(L"autorun", p) || az->GetNamedArgument(L"autostart", p);
   if (p.CompareNoCase(L"false") == 0) {
     settings.setAutostart(false);
   } 

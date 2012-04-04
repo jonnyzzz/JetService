@@ -6,7 +6,7 @@
 class FileTaskSettings : public XmlFileSettings
 {
 public:
-  FileTaskSettings(const RunServiceSettings* runSettings);
+  FileTaskSettings(const ServiceSettings* runSettings);
   virtual ~FileTaskSettings();
 
 public:
@@ -19,7 +19,7 @@ private:
   int GetBaseDirectory(CString& baseFile);
 
 private:
-  const RunServiceSettings* const myRunSettings;
+  const ServiceSettings* const myRunSettings;
 
 };
 

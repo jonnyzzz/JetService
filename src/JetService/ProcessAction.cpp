@@ -21,7 +21,7 @@ void ProcessAction::PrintUsage(ConsoleWriter* writer) {
 
 class Settings : public FileTaskSettings {
 public:
-  Settings(const RunServiceSettings* settings) : FileTaskSettings(settings) {}
+  Settings(const ServiceSettings* settings) : FileTaskSettings(settings) {}
   virtual ~Settings() {}
 
 public:
@@ -32,7 +32,7 @@ public:
   }
 };
 
-int ProcessAction::ExecuteAction(const Argz* az, const RunServiceSettings* settings){
+int ProcessAction::ExecuteAction(const Argz* az, const ServiceSettings* settings){
   Settings cmd(settings);
   return static_cast<Command*>(&cmd)->executeCommand();
 }

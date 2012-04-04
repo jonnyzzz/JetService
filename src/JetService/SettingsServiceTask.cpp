@@ -20,7 +20,7 @@ SettingsServiceTask::~SettingsServiceTask(void)
 
 class SettingsLoader : public FileTaskSettings {
 public:
-  SettingsLoader(const RunServiceSettings* runSettings, SettingsServiceTask *task) 
+  SettingsLoader(const ServiceSettings* runSettings, SettingsServiceTask *task) 
     : FileTaskSettings(runSettings)
    , myTask(task) {
   }

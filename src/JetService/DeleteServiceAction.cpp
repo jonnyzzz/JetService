@@ -23,7 +23,7 @@ void DeleteServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write(      L"      removes installed service");  
 }
 
-int DeleteServiceAction::ExecuteAction(const Argz* az, const RunServiceSettings* settings){
+int DeleteServiceAction::ExecuteAction(const Argz* az, const ServiceSettings* settings){
   DeleteServiceCommand cmd(settings);
   return static_cast<Command*>(&cmd)->executeCommand();
 }

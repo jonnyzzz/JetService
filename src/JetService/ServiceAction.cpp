@@ -22,14 +22,14 @@ void ServiceAction::PrintUsage(ConsoleWriter* writer) {
   writer->Write      (L"      internal, called to run as windows service");  
 }
 
-void ServiceAction::JetServiceMain(const Argz* az, const RunServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  
+void ServiceAction::JetServiceMain(const Argz* az, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  
   LOG.LogDebug(L"Executing JetServiceMain");
   
   Argz saz(dwArgc, lpszArgv);
   ServiceMain(settings).JetServiceMain(&saz);
 }
 
-int ServiceAction::ExecuteAction(const Argz* argz, const RunServiceSettings* settings) {
+int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settings) {
   LOG.LogDebug(L"ExecuteAction entered");
 
   CString serviceName = settings->getServiceName();

@@ -8,7 +8,7 @@ using namespace rapidxml;
 const Logger LOG(L"FileTaskSettings");
 
 
-FileTaskSettings::FileTaskSettings(const RunServiceSettings* runSettings)
+FileTaskSettings::FileTaskSettings(const ServiceSettings* runSettings)
   : XmlFileSettings(runSettings->getServiceTaskSettingsPath())
   , myRunSettings(runSettings)
 {

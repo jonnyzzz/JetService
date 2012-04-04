@@ -43,11 +43,11 @@ void ServiceEventContextEx::SetServiceTask(ServiceTask* task) {
   myTask = task;
 }
 
-const RunServiceSettings* ServiceEventContextEx::GetServiceSettings() const {
+const ServiceSettings* ServiceEventContextEx::GetServiceSettings() const {
   return mySettings;
 }
 
-void ServiceEventContextEx::SetServiceSettings(const RunServiceSettings* settings) {
+void ServiceEventContextEx::SetServiceSettings(const ServiceSettings* settings) {
   mySettings = settings;
 }
     

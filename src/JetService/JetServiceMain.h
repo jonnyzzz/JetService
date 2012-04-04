@@ -13,9 +13,9 @@ template<int N>
 struct JetServiceState {
   static ServiceAction* myState;
   static const Argz* myParam1;
-  static const RunServiceSettings* myParam2;
+  static const ServiceSettings* myParam2;
 
-  static bool setState(int n, ServiceAction* state, const Argz* param1, const RunServiceSettings* param2) {
+  static bool setState(int n, ServiceAction* state, const Argz* param1, const ServiceSettings* param2) {
     if (n > N) return false;
     if (N == n) {
       myState = state;
@@ -39,11 +39,11 @@ template<int N>
 const Argz* JetServiceState<N>::myParam1 = NULL;
 
 template<int N>
-const RunServiceSettings* JetServiceState<N>::myParam2 = NULL;
+const ServiceSettings* JetServiceState<N>::myParam2 = NULL;
 
 template<>
 struct JetServiceState<0> { 
   static LPSERVICE_MAIN_FUNCTION getFunction(int n) { return NULL; }
-  static bool setState(int n, ServiceAction* state, const Argz* param1, const RunServiceSettings* param2) { return false; }
+  static bool setState(int n, ServiceAction* state, const Argz* param1, const ServiceSettings* param2) { return false; }
 };
 

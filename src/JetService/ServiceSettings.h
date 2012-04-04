@@ -8,19 +8,11 @@ public:
   virtual CString getServiceName() const = 0;
   virtual CString getServiceDisplayName() const = 0;
   virtual CString getServiceDescription() const = 0;
-};
-
-class RunServiceSettings : public ServiceSettings {
-public:  
-  virtual ~RunServiceSettings() {}
-
-public:
+  
   virtual CString getServiceTaskSettingsPath() const = 0;
-
 };
 
-
-class CreateServiceSettings : public RunServiceSettings {
+class CreateServiceSettings : public ServiceSettings {
 public:
   virtual ~CreateServiceSettings() {}
 public:
@@ -32,7 +24,7 @@ public:
 };
 
 
-class ServiceTaskSettings : public RunServiceSettings {
+class ServiceTaskSettings : public ServiceSettings {
 public:
   virtual ~ServiceTaskSettings() {}
 

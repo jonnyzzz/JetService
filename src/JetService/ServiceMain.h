@@ -6,13 +6,13 @@
 
 class ServiceMain {
 public:
-  ServiceMain(const RunServiceSettings* settings);
+  ServiceMain(const ServiceSettings* settings);
   virtual ~ServiceMain();
 
 public:
   void JetServiceMain(const Argz* serviceArgz);
 
 private:
-  const RunServiceSettings* const mySettings;  
+  const ServiceSettings* const mySettings;  
 };
 

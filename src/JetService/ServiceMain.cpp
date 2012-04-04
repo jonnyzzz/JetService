@@ -10,7 +10,7 @@
 
 const Logger LOG(L"ServiceMain");
 
-ServiceMain::ServiceMain(const RunServiceSettings* settings) 
+ServiceMain::ServiceMain(const ServiceSettings* settings) 
   : mySettings(settings)  
 {
 }

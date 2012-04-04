@@ -22,7 +22,7 @@ ServiceSettingsAction::~ServiceSettingsAction()
 class ValidateServiceTaskSettings : public FileTaskSettings {
 public:
 
-  ValidateServiceTaskSettings(const Argz* argz, ServiceSettingsAction*  action, const RunServiceSettings* settings) 
+  ValidateServiceTaskSettings(const Argz* argz, ServiceSettingsAction*  action, const ServiceSettings* settings) 
     : FileTaskSettings(settings)
     , myAction(action)
     , myArgz(argz)
@@ -41,7 +41,7 @@ private:
 };
 
 
-int ServiceSettingsAction::ExecuteAction(const Argz* az, const RunServiceSettings* baseSettings) {
+int ServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceSettings* baseSettings) {
   ValidateServiceTaskSettings validate(az, this, baseSettings);
   return static_cast<Command*>(&validate)->executeCommand();
 }

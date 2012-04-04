@@ -11,14 +11,14 @@ public:
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer);  
-  virtual int ExecuteAction(const Argz* argz, const RunServiceSettings* settings);
+  virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings);
 
 public:
   int GenerateServiceCommandLine(const Argz* argz, CString& result);
 
 public:
   static const CString JetServiceCommand;
-  void JetServiceMain(const Argz* argz, const RunServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv);
+  void JetServiceMain(const Argz* argz, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv);
 
 private:
   JetServiceState<3> myState;

@@ -17,7 +17,7 @@ protected:
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer) = 0;  
-  virtual int ExecuteAction(const Argz* argz, const RunServiceSettings* settings) = 0;
+  virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings) = 0;
 
 public:
   static const CString SettingsKeyName;

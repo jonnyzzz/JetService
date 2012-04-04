@@ -2,10 +2,11 @@
 #include "SimpleServiceSettings.h"
 
 
-SimpleServiceSettings::SimpleServiceSettings(const CString& name, const CString& dname, const CString& descr)
+SimpleServiceSettings::SimpleServiceSettings(const CString& name, const CString& dname, const CString& descr, const CString& path)
   : myName(name)
   , myDName(dname)
   , myDescription(descr)
+  , mySettingsFilePath(path)
 {
 }
 
@@ -23,16 +24,19 @@ CString SimpleServiceSettings::getServiceDescription() const {
   return myDescription;
 }
 
-CString SimpleServiceSettings::getServiceDisplayName() const{
+CString SimpleServiceSettings::getServiceDisplayName() const {
   return myDName;
 }
 
+CString SimpleServiceSettings::getServiceTaskSettingsPath() const {
+  return mySettingsFilePath;
+}
 
 
 ////////////////////////////////////////
 
 
-SimpleCreateServiceSettings::SimpleCreateServiceSettings(const RunServiceSettings* baseSettings, const CString& serviceCommand)
+SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand)
   : myBase(baseSettings)
   , myUserName(L"")
   , myPassword(L"")
@@ -48,7 +52,7 @@ CString SimpleCreateServiceSettings::getServiceName() const {
   return myBase->getServiceName();
 }
 
-CString SimpleCreateServiceSettings::getServiceDisplayName() const{
+CString SimpleCreateServiceSettings::getServiceDisplayName() const {
   return myBase->getServiceDisplayName();
 }
 
@@ -96,39 +100,9 @@ void SimpleCreateServiceSettings::setRunAsSystem(bool runAsSystem) {
   myRunAsSystem = runAsSystem;
 }
 
-/////////
-
-
-
-SimpleRunServiceSettings::SimpleRunServiceSettings(const ServiceSettings* base, const CString& taskPath)
-  : myBase(base)
-  , myTaskPath(taskPath){
-}
-
-SimpleRunServiceSettings::~SimpleRunServiceSettings() {
-}
-
-CString SimpleRunServiceSettings::getServiceName() const {
-  return myBase->getServiceName();
-}
-
-CString SimpleRunServiceSettings::getServiceDisplayName() const {
-  return myBase->getServiceDisplayName();
-}
-
-CString SimpleRunServiceSettings::getServiceDescription() const {
-  return myBase->getServiceDescription();
-}
-
-
-CString SimpleRunServiceSettings::getServiceTaskSettingsPath() const {
-  return myTaskPath;
-}
-
-
 ///////////////////
 
-SimpleServiceTaskSettings::SimpleServiceTaskSettings(const RunServiceSettings* baseSettings, 
+SimpleServiceTaskSettings::SimpleServiceTaskSettings(const ServiceSettings* baseSettings, 
                             const CString& workDir, 
                             const CString& programPath, 
                             const CString& arguments)
@@ -169,6 +143,4 @@ CString SimpleServiceTaskSettings::getProgramPath() const {
 CString SimpleServiceTaskSettings::GetProgramArguments() const {
   return myArguments;
 }
-
-
 

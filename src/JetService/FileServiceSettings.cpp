@@ -61,7 +61,7 @@ int FileServiceSettings::executeCommand(xml_document<TCHAR>* doc) {
   LOG.LogDebugFormat(L"Parsed service display name: %s", dname);
   LOG.LogDebugFormat(L"Parsed service description: %s", descr);
 
-  SimpleServiceSettings settings(name, dname, descr);
+  SimpleServiceSettings settings(name, dname, descr, myConfigFile);
   return executeCommand(&settings);  
 }
 

@@ -35,9 +35,8 @@ private:
   const CString mySettingsPath;
 };
 
-int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {
-  SimpleRunServiceSettings rs(settings, mySettingsPath);
-  return myAction->ExecuteAction(myArgz, &rs);
+int FileSettingsWrapper::executeCommand(const ServiceSettings* settings) {  
+  return myAction->ExecuteAction(myArgz, settings);
 }
 
 int SimpleConsoleAction::GetSettingsFile(const Argz* az, CString& result) {

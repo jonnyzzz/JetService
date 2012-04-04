@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CreateServiceSettingsAction.h"
+#include "CreateServiceCheckAccountAction.h"
 
-class CreateServiceAction : public CreateServiceSettingsAction
+class CreateServiceAction : public CreateServiceCheckAccountAction
 {
 public:
   CreateServiceAction();

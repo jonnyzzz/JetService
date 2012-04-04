@@ -4,6 +4,8 @@
 
 const Logger LOG(L"LSAPolicyCommand");
 
+const LSAPolicyRight LSAPolicyRight::ADD_PRIVILEGE = LSAPolicyRight(L"Add privilege", POLICY_ALL_ACCESS);
+
 LSAPolicyCommand::LSAPolicyCommand(const LSAPolicyRight& right)
   : myRight(right)
 {
@@ -18,8 +20,14 @@ LSAPolicyCommand::~LSAPolicyCommand()
 int LSAPolicyCommand::executeCommand() {
   LOG.LogDebugFormat(L"Opening LSAPolicy with %s right", (CString)myRight);
 
-  LSA_HANDLE handle;
-  NTSTATUS status = LsaOpenPolicy(NULL, NULL, myRight, &handle);
+  LSA_OBJECT_ATTRIBUTES attrs;
+  ZeroMemory(&attrs, sizeof(attrs));
+  attrs.Length = sizeof(attrs);
+
+  LSA_HANDLE handle;  
+  NTSTATUS status = LsaOpenPolicy(NULL, &attrs, myRight, &handle);
+  
+  LOG.LogDebug(L"LsaOpenPolicy called");
   if (status != ERROR_SUCCESS) {
     CString message = CreateFormatted(L"Failed to open LSAPolicy with %s right.", (CString)myRight);
     if (status == ERROR_ACCESS_DENIED) {
@@ -30,6 +38,7 @@ int LSAPolicyCommand::executeCommand() {
     return 1;
   }
 
+  LOG.LogDebug(L"Opened LSA policy");
   int ret = executeCommand(handle);
   
   LsaClose(handle);

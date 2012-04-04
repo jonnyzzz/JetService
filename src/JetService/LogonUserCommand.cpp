@@ -28,7 +28,7 @@ int LogonUserCommand::executeCommand() {
     myMode,
     LOGON32_PROVIDER_DEFAULT,
     &userToken)) {
-      DWORD err = GetLastError();
+      DWORD err = GetLastError(); 
       CString msg = CreateFormatted(L"Failed to Logon user %s\\%s.", mySettings->getDomain(), mySettings->getUserName());      
       switch (err) {
       case ERROR_PRIVILEGE_NOT_HELD:
@@ -39,6 +39,7 @@ int LogonUserCommand::executeCommand() {
         return 1;
       }
   }
+  LOG.LogDebugFormat(L"User %s logged in as %s", mySettings->getUserName(), (CString)myMode);
 
   int ret = executeCommand(userToken);
   CloseHandle(userToken);

@@ -4,6 +4,7 @@
 #include "SimpleServiceSettings.h"
 #include "ServiceAction.h"
 #include "LogonUserCommand.h"
+#include "LSAGrantPrivilegeCommand.h"
 #include "Logger.h"
 
 const Logger LOG(L"CreateServiceSettingsAction");
@@ -18,17 +19,6 @@ CreateServiceSettingsAction::CreateServiceSettingsAction(const CString& commandN
 CreateServiceSettingsAction::~CreateServiceSettingsAction()
 {
 }
-
-class CheckUserAccount : public LogonUserCommand {
-public:
-  CheckUserAccount(const CreateServiceSettings* settings) : LogonUserCommand(settings, LogonUserMode::AS_SERVICE) {}
-  virtual ~CheckUserAccount() {}
-public:
-  virtual int executeCommand(HANDLE userToken) {
-    LOG.LogInfo(L"User logged in as service");
-    return 0;
-  }
-};
 
 int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {
   CString serviceCommand;
@@ -67,16 +57,11 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
   }
 
   settings.setAutostart(az->GetBooleanArgument(L"autostart", true) && az->GetBooleanArgument(L"autorun", true));
-
-  if (az->GetBooleanArgument(L"checkUserAccount", true) && !settings.runAsSystem()) {
-    CheckUserAccount check(&settings);
-    int ret = static_cast<Command*>(&check)->executeCommand();
-    if (ret != 0) {
-      LOG.LogInfo(L"To disable user account check add '/checkUserAccount=false' commandline argument"); 
-      return ret;
-    }
-  }
+  
+ 
 
   return ExecuteAction(az, &settings, baseSettings);  
 }
+
+
 

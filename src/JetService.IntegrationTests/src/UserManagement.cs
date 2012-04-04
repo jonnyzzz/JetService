@@ -2,12 +2,21 @@ using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
+using System.Security.Principal;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests
 {
   public static class UserManagement
   {
+    public static SecurityIdentifier SID
+    {
+      get
+      {
+        return WindowsIdentity.GetCurrent().User;
+      }
+    }
+
     public static bool CheckUserExists(User u)
     {
       return ThreadUtil.ExecuteSTA(() =>

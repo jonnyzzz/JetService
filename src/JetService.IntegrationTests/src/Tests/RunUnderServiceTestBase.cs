@@ -5,6 +5,8 @@ using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
 {
+
+
   public abstract class RunUnderServiceTestBase : InstallRemoveServiceBase
   {
     protected abstract void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled);
@@ -31,7 +33,5 @@ namespace JetService.IntegrationTests.Tests
             Assert.IsTrue(File.Exists(file));
           });
     }
-
-
   }
 }

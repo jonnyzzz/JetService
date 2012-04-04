@@ -61,7 +61,7 @@ namespace JetService.IntegrationTests.Tests
         DefaultSettins, "/runAsSystem");
     }
 
-    [Test]
+    [Test, Ignore("Intoduce test command for it")]
     public void Test_Valid_UnknownUser_CheckUser()
     {
       DoSettingsTest(
@@ -178,6 +178,7 @@ namespace JetService.IntegrationTests.Tests
       myInfo = info;
       var list = cmd.ToList();
       list.Add("/checkUserAccount=" + info.CheckUserAccount);
+      list.Add("/giveUserRights=false");
       DoSettingsTest(s, list.ToArray());
       myInfo = null;
     }

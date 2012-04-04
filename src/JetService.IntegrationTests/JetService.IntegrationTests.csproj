@@ -66,6 +66,7 @@
     <Compile Include="src\Tests\ServiceSettingsXmlTest.cs" />
     <Compile Include="src\Tests\SettingsXmlTestBase.cs" />
     <Compile Include="src\Tests\UserManagerTest.cs" />
+    <Compile Include="src\Tests\ValidateUserSIDTest.cs" />
     <Compile Include="src\ThreadUtil.cs" />
     <Compile Include="src\UserManagement.cs" />
   </ItemGroup>

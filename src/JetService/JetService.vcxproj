@@ -81,6 +81,7 @@
     <ClInclude Include="ConsoleCommandsRunner.h" />
     <ClInclude Include="ConsoleWriter.h" />
     <ClInclude Include="CreateServiceAction.h" />
+    <ClInclude Include="CreateServiceCheckAccountAction.h" />
     <ClInclude Include="CreateServiceCommand.h" />
     <ClInclude Include="CreateServiceSettingsAction.h" />
     <ClInclude Include="DeleteServiceAction.h" />
@@ -92,8 +93,11 @@
     <ClInclude Include="JetServiceMain.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LogonUserCommand.h" />
+    <ClInclude Include="LogonUserSIDCommand.h" />
     <ClInclude Include="LogPipeReader.h" />
+    <ClInclude Include="LSAGrantPrivilegeCommand.h" />
     <ClInclude Include="LSAPolicyCommand.h" />
+    <ClInclude Include="LSAUserCommand.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeReader.h" />
     <ClInclude Include="ProcessAction.h" />
@@ -128,6 +132,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadedServiceTask.h" />
     <ClInclude Include="ValidateCreateServiceAction.h" />
+    <ClInclude Include="ValidateLogonSIDAction.h" />
     <ClInclude Include="ValidateServiceTaskAction.h" />
     <ClInclude Include="XmlFileSettings.h" />
   </ItemGroup>
@@ -138,6 +143,7 @@
     <ClCompile Include="ConsoleCommandsRunner.cpp" />
     <ClCompile Include="ConsoleWriter.cpp" />
     <ClCompile Include="CreateServiceAction.cpp" />
+    <ClCompile Include="CreateServiceCheckAccountAction.cpp" />
     <ClCompile Include="CreateServiceCommand.cpp" />
     <ClCompile Include="CreateServiceSettingsAction.cpp" />
     <ClCompile Include="DeleteServiceAction.cpp" />
@@ -149,8 +155,11 @@
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LogonUserCommand.cpp" />
+    <ClCompile Include="LogonUserSIDCommand.cpp" />
     <ClCompile Include="LogPipeReader.cpp" />
+    <ClCompile Include="LSAGrantPrivilegeCommand.cpp" />
     <ClCompile Include="LSAPolicyCommand.cpp" />
+    <ClCompile Include="LSAUserCommand.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PipeReader.cpp" />
     <ClCompile Include="ProcessAction.cpp" />
@@ -181,6 +190,7 @@
     </ClCompile>
     <ClCompile Include="ThreadedServiceTask.cpp" />
     <ClCompile Include="ValidateCreateServiceAction.cpp" />
+    <ClCompile Include="ValidateLogonSIDAction.cpp" />
     <ClCompile Include="ValidateServiceTaskAction.cpp" />
     <ClCompile Include="XmlFileSettings.cpp" />
   </ItemGroup>

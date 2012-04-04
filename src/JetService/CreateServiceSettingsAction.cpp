@@ -34,17 +34,25 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
   } else {
     CString p;
     if (!az->GetNamedArgument(L"user", p)) {
-      LOG.LogWarn(L"/user=<user> parameter must be specified.");
+      LOG.LogError(L"/user=<user> parameter must be specified.");
       return 1;
     }
     settings.setUserName(p);
+    
     if (!az->GetNamedArgument(L"password", p)) {
-      LOG.LogWarn(L"/password=<password> parameter must be specified.");
+      LOG.LogError(L"/password=<password> parameter must be specified.");
       return 1;
     }
     settings.setPassword(p);
 
-    LOG.LogInfoFormat(L"Installing service under %s account", settings.getUserName());
+    if (~az->GetNamedArgument(L"domain", p)) {
+      LOG.LogWarnFormat(L"Domain not specified. Will use localhost");
+      settings.setDomain(L".");
+    } else {
+      settings.setDomain(p);
+    }
+
+    LOG.LogInfoFormat(L"Installing service under %s (domain=%s) account", settings.getUserName(), settings.getDomain());
   }
 
   CString p(L"true");

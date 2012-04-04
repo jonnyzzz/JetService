@@ -19,6 +19,7 @@ public:
   virtual bool isAutostart() const = 0;
   virtual bool runAsSystem() const = 0;
   virtual CString getUserName() const = 0;
+  virtual CString getDomain() const = 0;
   virtual CString getPassword() const = 0;
   virtual CString getServiceExecutable() const = 0;
 };

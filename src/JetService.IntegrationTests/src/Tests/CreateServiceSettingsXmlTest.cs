@@ -31,6 +31,7 @@ namespace JetService.IntegrationTests.Tests
       public bool RunAsService { get; set; }
       public string UserName { get; set; }
       public string Password { get; set; }
+      public string Domain { get; set; }
     }
 
     [Test]
@@ -72,6 +73,21 @@ namespace JetService.IntegrationTests.Tests
     }
 
     [Test]
+    public void Test_Valid_UserDomain()
+    {
+      DoSettingsTest(
+        new ServiceInfo
+          {
+            IsAutostart = true,
+            RunAsService = false,
+            UserName = "User444",
+            Password = "Pass554",
+            Domain= ".",
+          },
+          DefaultSettins, "/user=User444", "/password=Pass554", "/domain=.");
+    }
+
+    [Test]
     public void Test_Valid_User_autostart()
     {
       DoSettingsTest(
@@ -102,6 +118,7 @@ namespace JetService.IntegrationTests.Tests
       {
         lines.Add("[j]: UserName:" + myInfo.UserName + "!~");
         lines.Add("[j]: Password:" + myInfo.Password + "!~");
+        lines.Add("[j]: Domain:" + (myInfo.Domain ?? ".") + "!~");
       } else
       {
         foreach (var line in new[] { "[j]: Password:", "[j]: UserName:" })

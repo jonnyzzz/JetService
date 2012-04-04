@@ -17,7 +17,7 @@ CreateServiceCommand::~CreateServiceCommand()
 int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
   LOG.LogDebugFormat(L"Creating and registering service: name=%s...", mySettings->getServiceName());
   
-  CString sUserName = mySettings->getUserName();
+  CString sUserName = CreateFormatted(L"%s\\%s", mySettings->getDomain(), mySettings->getUserName());
   CString sPassword = mySettings->getPassword();
 
   LPCWSTR userName = NULL;
@@ -27,6 +27,7 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
     //use declared variables to avoid strings from distruct
     userName = sUserName;
     password = sPassword;
+    LOG.LogInfoFormat(L"Installing service for user: %s", userName);
   }
 
   SC_HANDLE service = CreateService(

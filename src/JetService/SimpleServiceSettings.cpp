@@ -39,6 +39,7 @@ CString SimpleServiceSettings::getServiceTaskSettingsPath() const {
 SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand)
   : myBase(baseSettings)
   , myUserName(L"")
+  , myDomain(L".")
   , myPassword(L"")
   , myAutostart(true)
   , myRunAsSystem(false)
@@ -68,12 +69,16 @@ bool SimpleCreateServiceSettings::isAutostart() const {
   return myAutostart;
 }
 
-bool SimpleCreateServiceSettings::runAsSystem() const{
+bool SimpleCreateServiceSettings::runAsSystem() const {
   return myRunAsSystem;
 }
 
-CString SimpleCreateServiceSettings::getUserName() const{
+CString SimpleCreateServiceSettings::getUserName() const {
   return myUserName;
+}
+
+CString SimpleCreateServiceSettings::getDomain() const {
+  return myDomain;
 }
 
 CString SimpleCreateServiceSettings::getPassword() const {
@@ -86,6 +91,10 @@ CString SimpleCreateServiceSettings::getServiceExecutable() const {
 
 void SimpleCreateServiceSettings::setUserName(const CString& name) {
   myUserName = name;
+}
+
+void SimpleCreateServiceSettings::setDomain(const CString& domain) {
+  myDomain = domain;
 }
 
 void SimpleCreateServiceSettings::setPassword(const CString& pwd) {

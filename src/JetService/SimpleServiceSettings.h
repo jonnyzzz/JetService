@@ -36,11 +36,13 @@ public:
   virtual bool isAutostart() const;
   virtual bool runAsSystem() const;
   virtual CString getUserName() const;
+  virtual CString getDomain() const;
   virtual CString getPassword() const;
   virtual CString getServiceExecutable() const;
 
 public:
   void setUserName(const CString& name);
+  void setDomain(const CString& name);
   void setPassword(const CString& pwd);
   void setAutostart(bool autostart);
   void setRunAsSystem(bool runAsSystem);
@@ -49,6 +51,7 @@ private:
   const ServiceSettings* const myBase;
   CString myServiceExecutableCommand;
   CString myUserName;
+  CString myDomain;
   CString myPassword;
   bool myAutostart;
   bool myRunAsSystem;

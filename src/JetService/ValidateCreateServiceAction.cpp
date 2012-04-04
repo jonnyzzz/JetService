@@ -27,6 +27,7 @@ int ValidateCreateServiceAction::ExecuteAction(const Argz* argz, const CreateSer
   LOG.LogInfoFormat(L"[j]: RunAsService:%s!~", settings->runAsSystem() ? L"true": L"false" );
   if (!settings->runAsSystem()) {
     LOG.LogInfoFormat(L"[j]: UserName:%s!~", settings->getUserName());
+    LOG.LogInfoFormat(L"[j]: Domain:%s!~", settings->getDomain());
     LOG.LogInfoFormat(L"[j]: Password:%s!~", settings->getPassword());
   }
   LOG.LogInfoFormat(L"[e]: Program:%s!~", taskSettings->getProgramPath());

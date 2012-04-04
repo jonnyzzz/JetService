@@ -19,7 +19,7 @@ CreateServiceAction::~CreateServiceAction(void)
 
 
 void CreateServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->WriteFormat(L"    %s /%s=<path to settings file> /user=<user> /password=<password> [/autostart=false]", myName, SettingsKeyName);
+  writer->WriteFormat(L"    %s /%s=<path to settings file> /user=<user> [/domain=<domain>] /password=<password> [/autostart=false]", myName, SettingsKeyName);
   writer->Write      (L"      installs service to the system to run under given user/password ");
   writer->Write();
   writer->WriteFormat(L"    %s /%s=<path to settings file> /runAsSystem [/autostart=false]", myName, SettingsKeyName);

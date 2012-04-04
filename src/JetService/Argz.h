@@ -13,6 +13,7 @@ public:
   int GetArgumentCount() const;
   bool HasArgument(const CString& text) const;  
   bool GetNamedArgument(const CString& text, CString& dest) const;
+  bool GetBooleanArgument(const CString& name, bool def) const;
 
   Argz SkipFirstParameter() const;
 

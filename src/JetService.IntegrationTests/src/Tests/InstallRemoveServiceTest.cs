@@ -19,8 +19,8 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void InstallRemoveServiceTest_AsUserAdmin()
     {
-      UserManagement.WithNewUser(UserGroup.Admin, 
-        u => InstallRemoveService(A("/user=" + u.UserName, "/password=" + u.Password),
+      UserManagement.WithNewUser(UserGroup.Admin,
+        u => InstallRemoveService(A("/user=" + u.UserName, "/password=" + u.Password, "/checkUserAccount=false"),
                                   TestAction.TEST_STDOUT,
                                   A(),
                                   (s, dir, log) => { }

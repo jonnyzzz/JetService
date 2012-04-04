@@ -177,6 +177,9 @@
     <ClInclude Include="LSAPolicyCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LogonUserCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -318,6 +321,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSAPolicyCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LogonUserCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -91,6 +91,7 @@
     <ClInclude Include="InterruptHolder.h" />
     <ClInclude Include="JetServiceMain.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="LogonUserCommand.h" />
     <ClInclude Include="LogPipeReader.h" />
     <ClInclude Include="LSAPolicyCommand.h" />
     <ClInclude Include="Pipe.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="InterruptHolder.cpp" />
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LogonUserCommand.cpp" />
     <ClCompile Include="LogPipeReader.cpp" />
     <ClCompile Include="LSAPolicyCommand.cpp" />
     <ClCompile Include="Pipe.cpp" />

@@ -84,6 +84,13 @@ CString Argz::MakeArgument(const CString& name, const CString& value) {
   return MakeKey(name) + L"=" + value;
 }
 
+bool Argz::GetBooleanArgument(const CString& name, bool def) const {
+  CString  p;
+  if (!GetNamedArgument(name, p)) return def;
+  p = p.MakeLower();
+  return p == L"true";
+}
+
 bool Argz::IsDebug() const {
   return HasArgument(L"/debug");
 }

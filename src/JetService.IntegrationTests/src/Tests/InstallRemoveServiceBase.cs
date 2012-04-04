@@ -70,7 +70,7 @@ namespace JetService.IntegrationTests.Tests
                               {
                                 Name = "jetService-test-" + hash,
                                 Description = "This is a jet service " + hash,
-                                Execution = new ServiceSettings.ExecutionElement
+                                Execution = new ExecutionElement
                                               {
                                                 Arguments = action + " " + string.Join(" ", testProgramArguments),
                                                 Program = Files.TestProgram,

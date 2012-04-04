@@ -14,7 +14,7 @@ namespace JetService.IntegrationTests.Tests
                          Name = "jetService-test",
                          DisplayName = "Jet Service Test",
                          Description = "This is a jet service",
-                         Execution = new ServiceSettings.ExecutionElement
+                         Execution = new ExecutionElement
                                        {
                                          Arguments = null,
                                          Program = "Prog.exe",
@@ -30,7 +30,7 @@ namespace JetService.IntegrationTests.Tests
                        {
                          Name = "jetService-test",
                          Description = "This is a jet service",
-                         Execution = new ServiceSettings.ExecutionElement
+                         Execution = new ExecutionElement
                                        {
                                          Arguments = null,
                                          Program = "Prog.exe",
@@ -42,11 +42,11 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_No_Program()
     {
-      DoFailedSettingsTest(new ServiceSettings
+      DoRawFailedSettingsTest(new ServiceSettings
                              {
                                Name = "jetService-test",
                                Description = "This is a jet service",
-                               Execution = new ServiceSettings.ExecutionElement
+                               Execution = new ExecutionElement
                                              {
                                                Arguments = null,
                                                Program = "Not-Existings-Prog.exe",
@@ -58,11 +58,11 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_No_Workdir()
     {
-      DoFailedSettingsTest(new ServiceSettings
+      DoRawFailedSettingsTest(new ServiceSettings
                              {
                                Name = "jetService-test",
                                Description = "This is a jet service",
-                               Execution = new ServiceSettings.ExecutionElement
+                               Execution = new ExecutionElement
                                              {
                                                Arguments = null,
                                                Program = "Prog.exe",
@@ -79,7 +79,7 @@ namespace JetService.IntegrationTests.Tests
                          Name = "jetService-test",
                          DisplayName = "Jet Service Test",
                          Description = "This is a jet service",
-                         Execution = new ServiceSettings.ExecutionElement
+                         Execution = new ExecutionElement
                                        {
                                          Arguments = null,
                                          Program = Files.TestProgram,
@@ -88,7 +88,7 @@ namespace JetService.IntegrationTests.Tests
                        });
     }
 
-    protected override void AssertServiceParameters(ServiceSettings s, JetServiceCommandRunner.Result r, ServiceSettings.ExecutionElement ee)
+    protected override void AssertServiceParameters(ServiceSettings s, JResult r, ExecutionElement ee)
     {
       var lines = new[]
                     {

@@ -24,19 +24,6 @@ namespace JetService.IntegrationTests
       Execution = new ExecutionElement();
     }
 
-    [XmlRoot("execution")]
-    public class ExecutionElement
-    {
-      [XmlElement("workdir")]
-      public string WorkDir { get; set; }
-
-      [XmlElement("program")]
-      public string Program { get; set; }
-
-      [XmlElement("arguments")]
-      public string Arguments { get; set; }
-    }
-
 
     public override string ToString()
     {
@@ -61,5 +48,18 @@ namespace JetService.IntegrationTests
         throw new Exception("Failed to get serializer");
       ser.Serialize(wr, this);
     }
+  }
+
+  [XmlRoot("execution")]
+  public class ExecutionElement
+  {
+    [XmlElement("workdir")]
+    public string WorkDir { get; set; }
+
+    [XmlElement("program")]
+    public string Program { get; set; }
+
+    [XmlElement("arguments")]
+    public string Arguments { get; set; }
   }
 }

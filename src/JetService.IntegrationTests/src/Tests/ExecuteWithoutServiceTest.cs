@@ -39,7 +39,7 @@ namespace JetService.IntegrationTests.Tests
       r.AssertSuccess();
     }
 
-    private static JetServiceCommandRunner.Result ExecuteWithSettings(TestAction action, params string[] arguemnts)
+    private static JResult ExecuteWithSettings(TestAction action, params string[] arguemnts)
     {
       return TempFilesHolder.WithTempDirectory(
         dir =>
@@ -50,7 +50,7 @@ namespace JetService.IntegrationTests.Tests
                         Name = "some-test-service",
                         DisplayName = "some-test name",
                         Description = "some-descr",
-                        Execution = new ServiceSettings.ExecutionElement
+                        Execution = new ExecutionElement
                                       {
                                         Program = Files.TestProgram,
                                         Arguments = action.ToString() + string.Join(" ", arguemnts),

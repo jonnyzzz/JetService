@@ -3,6 +3,7 @@
 #include "FileTaskSettings.h"
 #include "SimpleServiceSettings.h"
 #include "ServiceAction.h"
+#include "LogonUserCommand.h"
 #include "Logger.h"
 
 const Logger LOG(L"CreateServiceSettingsAction");
@@ -18,6 +19,16 @@ CreateServiceSettingsAction::~CreateServiceSettingsAction()
 {
 }
 
+class CheckUserAccount : public LogonUserCommand {
+public:
+  CheckUserAccount(const CreateServiceSettings* settings) : LogonUserCommand(settings, LogonUserMode::AS_SERVICE) {}
+  virtual ~CheckUserAccount() {}
+public:
+  virtual int executeCommand(HANDLE userToken) {
+    LOG.LogInfo(L"User logged in as service");
+    return 0;
+  }
+};
 
 int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {
   CString serviceCommand;
@@ -45,7 +56,7 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
     }
     settings.setPassword(p);
 
-    if (~az->GetNamedArgument(L"domain", p)) {
+    if (!az->GetNamedArgument(L"domain", p)) {
       LOG.LogWarnFormat(L"Domain not specified. Will use localhost");
       settings.setDomain(L".");
     } else {
@@ -55,13 +66,15 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
     LOG.LogInfoFormat(L"Installing service under %s (domain=%s) account", settings.getUserName(), settings.getDomain());
   }
 
-  CString p(L"true");
-  az->GetNamedArgument(L"autorun", p) || az->GetNamedArgument(L"autostart", p);
-  if (p.CompareNoCase(L"false") == 0) {
-    settings.setAutostart(false);
-  } 
-  if (p.CompareNoCase(L"true") == 0) {
-    settings.setAutostart(true);
+  settings.setAutostart(az->GetBooleanArgument(L"autostart", true) && az->GetBooleanArgument(L"autorun", true));
+
+  if (az->GetBooleanArgument(L"checkUserAccount", true) && !settings.runAsSystem()) {
+    CheckUserAccount check(&settings);
+    int ret = static_cast<Command*>(&check)->executeCommand();
+    if (ret != 0) {
+      LOG.LogInfo(L"To disable user account check add '/checkUserAccount=false' commandline argument"); 
+      return ret;
+    }
   }
 
   return ExecuteAction(az, &settings, baseSettings);  

@@ -47,9 +47,7 @@ namespace JetService.IntegrationTests
         {
           string name = mo["Name"].ToString();
           if (predicate(name))
-          {
             mo.Delete();
-          }
         }
       }
     }

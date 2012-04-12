@@ -103,8 +103,11 @@ namespace JetService.IntegrationTests.Tests
             Console.Out.WriteLine(r.LogText);
             r.AssertSuccess();
 
-            if (!IsServiceInstalled(settingsXml))
-              Thread.Sleep(TimeSpan.FromSeconds(3));
+            for (int x = 0; x < 3; x++)
+            {
+              if (IsServiceInstalled(settingsXml)) break;
+              Thread.Sleep(TimeSpan.FromSeconds(1 + x));
+            }
 
             Assert.IsFalse(IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);            
           }

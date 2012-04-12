@@ -11,7 +11,7 @@ namespace JetService.IntegrationTests
       for(int i = 0; i < 6; i++)
       {
         if (predicate()) return;
-        Thread.Sleep(TimeSpan.FromSeconds(1 + 2* i));
+        Thread.Sleep(TimeSpan.FromSeconds(.42 + i));
       }
       Assert.Fail(string.Format(message, argz));
     }

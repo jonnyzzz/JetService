@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading;
 using JetService.IntegrationTests.Executable;
 using NUnit.Framework;
@@ -21,15 +18,20 @@ namespace JetService.IntegrationTests.Tests
             File.AppendAllText(log, "=====\r\n\r\n");
             try
             {
+              Action<string> logLine = str => Console.Out.WriteLine("[service log] {0}", str);              
               using (var s = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
               using (var r = new StreamReader(s))
               {
                 string str;
                 while ((str = r.ReadLine()) != null)
                 {
-                  Console.Out.WriteLine("[service log: ]{0}", str.Trim());
+                  logLine(str);                  
                   Thread.Sleep(100);
                   if (stopRead) break;
+                }
+                foreach (var tmp in r.ReadToEnd().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
+                {
+                  logLine(tmp);
                 }
               }
             } catch(Exception e)
@@ -161,12 +163,12 @@ namespace JetService.IntegrationTests.Tests
     private static void EnsureServiceInstalled(ServiceSettings settingsXml)
     {
       Thread.Sleep(TimeSpan.FromSeconds(1));
-      Assert.IsTrue(IsServiceInstalled(settingsXml), "Service must be installed: {0}", settingsXml.Name);
+      Assert.IsTrue(ServicesUtil.IsServiceInstalled(settingsXml), "Service must be installed: {0}", settingsXml.Name);
     }
 
     private static void EnsureServiceRemoved(ServiceSettings settingsXml)
     {
-      WaitFor.WaitForAssert(() => IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
+      WaitFor.WaitForAssert(() => !ServicesUtil.IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
     }
 
     [TestFixtureTearDown]
@@ -179,12 +181,6 @@ namespace JetService.IntegrationTests.Tests
       {
         Console.Out.WriteLine("Failed to cleanup services. {0}", e);
       }
-    }
-
-    private static bool IsServiceInstalled(ServiceSettings settingsXml)
-    {
-      var allServices = ServicesUtil.ListServices();
-      return allServices.Any(x => x.IsNamed(settingsXml.Name));
     }
   }
 }

@@ -83,7 +83,7 @@ namespace JetService.IntegrationTests.Tests
       s.Serialize(settings);
       Console.Out.WriteLine("Settings: {0}", s);
 
-      var r = JetServiceCommandRunner.ExecuteCommand(ValidateCommandName, "/settings=" + settings + " " + string.Join(" ", cmd));
+      var r = JetServiceCommandRunner.ExecuteCommand(dir, ValidateCommandName, "/settings=" + settings + " " + string.Join(" ", cmd));
       Console.Out.WriteLine(r.LogText);
       return r;
     }

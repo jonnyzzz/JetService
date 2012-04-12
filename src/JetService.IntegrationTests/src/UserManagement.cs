@@ -2,6 +2,8 @@ using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
+using System.IO;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using NUnit.Framework;
 
@@ -9,11 +11,19 @@ namespace JetService.IntegrationTests
 {
   public static class UserManagement
   {
-    public static SecurityIdentifier SID
+
+    public static void GiveAllPermissions(string fs)
     {
-      get
+      if (Directory.Exists(fs))
       {
-        return WindowsIdentity.GetCurrent().User;
+        DirectorySecurity ds = Directory.GetAccessControl(fs);
+        IdentityReference rr = new NTAccount("everyone");
+        ds.AddAccessRule(new FileSystemAccessRule(rr, FileSystemRights.FullControl, AccessControlType.Allow));
+      } 
+
+      if (File.Exists(fs))
+      {
+        GiveAllPermissions(Path.GetDirectoryName(fs));
       }
     }
 

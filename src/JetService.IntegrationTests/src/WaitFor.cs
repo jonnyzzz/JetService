@@ -15,5 +15,15 @@ namespace JetService.IntegrationTests
       }
       Assert.Fail(string.Format(message, argz));
     }
+
+    public static void WaitForAssert(TimeSpan maxTime, TimeSpan interval, Func<bool> predicate, string message, params object[] argz)
+    {
+      for(TimeSpan sp = TimeSpan.Zero; sp < maxTime; sp += interval)
+      {
+        if (predicate()) return;
+        Thread.Sleep(interval);                
+      }
+      Assert.Fail(string.Format(message, argz));
+    }
   }
 }

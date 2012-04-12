@@ -6,7 +6,7 @@ namespace JetService.IntegrationTests.Tests
   [TestFixture]
   public class RunUnderSystemTest : RunUnderServiceTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled)
+    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
     {
       InstallRemoveService(Stubs.A("/runAsSystem"),
                      testAction,

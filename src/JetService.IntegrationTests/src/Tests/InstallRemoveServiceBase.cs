@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using JetService.IntegrationTests.Executable;
 using NUnit.Framework;
@@ -9,37 +11,82 @@ namespace JetService.IntegrationTests.Tests
 {
   public class InstallRemoveServiceBase
   {
-    protected void StartStopService(ServiceSettings service, string log, Action afterStarted) {
-      try
-      {
-        try
-        {
-          ServicesUtil.StartService(service).AssertExitedSuccessfully();
-        } finally
-        {
-          if (log != null)
+    protected void StartStopService(ServiceSettings service, string log, Action afterStarted)
+    {
+      var stopRead = false;
+      var logsReader = new Thread(
+        () =>
           {
-            using(var s = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using(var r = new StreamReader(s))
-            Console.Out.WriteLine("Start service log:\r\n{0}", r.ReadToEnd());
-          }
-        }
-        afterStarted();
-      } catch(Exception e)
+            if (log == null) return;
+            File.AppendAllText(log, "=====\r\n\r\n");
+            try
+            {
+              using (var s = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+              using (var r = new StreamReader(s))
+              {
+                string str;
+                while ((str = r.ReadLine()) != null)
+                {
+                  Console.Out.WriteLine("[service log: ]{0}", str.Trim());
+                  Thread.Sleep(100);
+                  if (stopRead) break;
+                }
+              }
+            } catch(Exception e)
+            {
+              Console.Out.WriteLine("Failed to read service log: " + e);
+            }
+          });
+
+      logsReader.Name = "Service logs reader";
+      logsReader.IsBackground = true;
+      using (var c = new Catcher())
       {
-        Console.Out.WriteLine("Failed " + e);
-        throw;
-      } finally
-      {
-        ServicesUtil.StopService(service).AssertExitedSuccessfully();
+        c.Execute(
+          logsReader.Start,
+          () =>
+            {
+              stopRead = true;
+              logsReader.Join();
+
+            }
+          );
+
+        c.Execute(
+          () => ServicesUtil.StartService(service).AssertExitedSuccessfully(),
+          () =>
+            {
+              if (ServicesUtil.IsServiceRunning(service))
+              {
+                Console.Out.WriteLine("Stopping service...");
+                ServicesUtil.StopService(service).AssertExitedSuccessfully();
+              }
+              else
+              {
+                Console.Out.WriteLine("Service is stopped. Nothing to stop");
+              }
+            }
+          );
+
+        c.Execute(afterStarted);
       }
     }
 
     protected delegate void OnServiceInstalled(ServiceSettings setting, string dir, string logFile);
 
+    protected delegate string[] GenerateServiceExecutableArguments(TestAction action, string serviceName);
+
     protected void InstallRemoveService(string[] installServiceArguments,
-                                        TestAction action, 
+                                        TestAction action,
                                         string[] testProgramArguments,
+                                        OnServiceInstalled afterInstalled)
+    {
+      InstallRemoveService(installServiceArguments, action, (a,b)=>testProgramArguments, afterInstalled);
+    }
+
+    protected void InstallRemoveService(string[] installServiceArguments,
+                                        TestAction action,
+                                        GenerateServiceExecutableArguments testProgramArguments,
                                         OnServiceInstalled afterInstalled)
     {
       ServicesUtil.AssertHasInstallServiceRights();
@@ -47,49 +94,79 @@ namespace JetService.IntegrationTests.Tests
       TempFilesHolder.WithTempDirectory(
         dir =>
         {
-          var hash = (int)(DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds % 9999;
-          var settingsXml = new ServiceSettings
-                              {
-                                Name = "jetService-test-" + hash,
-                                Description = "This is a jet service " + hash,
-                                Execution = new ExecutionElement
-                                              {
-                                                Arguments = action + " " + string.Join(" ", testProgramArguments),
-                                                Program = Files.TestProgram,
-                                                WorkDir = dir
-                                              }
-                              };
+          UserManagement.GiveAllPermissions(dir);
+          var settingsXml = CreateSettingsXml(action, testProgramArguments, dir);
           var settings = Path.Combine(dir, "settings.xml");
           settingsXml.Serialize(settings);
           Console.Out.WriteLine("Settings: {0}", settingsXml);
 
-
-          var r = JetServiceCommandRunner.ExecuteCommand("install", "/settings=" + settings + " " + string.Join(" ", installServiceArguments));
-          Console.Out.WriteLine(r.LogText);
-          r.AssertSuccess();
-
-
-          Thread.Sleep(TimeSpan.FromSeconds(1));
-          Assert.IsTrue(IsServiceInstalled(settingsXml), "Service must be installed: {0}", settingsXml.Name);
-
-          try
+          using (var c = new Catcher())
           {
-            afterInstalled(settingsXml, dir, r.LogFilePath);
-          }
-          catch (Exception e)
-          {
-            Console.Out.WriteLine("Failed: " + e.Message + e);
-            throw;
-          }
-          finally
-          {
-            r = JetServiceCommandRunner.ExecuteCommand("delete", "/settings=" + settings);
-            Console.Out.WriteLine(r.LogText);
-            r.AssertSuccess();
+            c.Execute(
+              () => { }, 
+              () =>EnsureServiceRemoved(settingsXml)
+              );
 
-            WaitFor.WaitForAssert(() => IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
+            var logFile = c.Execute(
+              () =>
+                {
+                  var r = JetServiceCommandRunner.ExecuteCommand(dir, "install",
+                                                                 "/settings=" + settings + " " +
+                                                                 string.Join(" ", installServiceArguments));
+                  Console.Out.WriteLine(r.LogText);
+                  r.AssertSuccess();
+                  return r.LogFilePath;
+                },
+              () =>
+                {
+                  //wait for service to exit before stopping it
+                  for (int i = 0; i < 100; i++)
+                  {
+                    if(ServicesUtil.IsServiceRunning(settingsXml)) break;
+                    Thread.Sleep(100);
+                  }
+
+                  var r = JetServiceCommandRunner.ExecuteCommand(dir, "delete", "/settings=" + settings);
+                  Console.Out.WriteLine(r.LogText);
+                  r.AssertSuccess();
+                }
+              );
+
+            c.Execute(() => EnsureServiceInstalled(settingsXml));
+            c.Execute(() => afterInstalled(settingsXml, dir, logFile));
           }
         });
+    }
+
+    private static ServiceSettings CreateSettingsXml(TestAction action,
+                                                     GenerateServiceExecutableArguments testProgramArguments, string dir)
+    {
+      var hash = (int) (DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds%9999;
+      string serviceName = "jetService-test-" + hash;
+      var settingsXml = new ServiceSettings
+                          {
+                            Name = serviceName,
+                            Description = "This is a jet service " + hash,
+                            Execution = new ExecutionElement
+                                          {
+                                            Arguments =
+                                              action + " " + string.Join(" ", testProgramArguments(action, serviceName)),
+                                            Program = Files.TestProgram,
+                                            WorkDir = dir
+                                          }
+                          };
+      return settingsXml;
+    }
+
+    private static void EnsureServiceInstalled(ServiceSettings settingsXml)
+    {
+      Thread.Sleep(TimeSpan.FromSeconds(1));
+      Assert.IsTrue(IsServiceInstalled(settingsXml), "Service must be installed: {0}", settingsXml.Name);
+    }
+
+    private static void EnsureServiceRemoved(ServiceSettings settingsXml)
+    {
+      WaitFor.WaitForAssert(() => IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
     }
 
     [TestFixtureTearDown]
@@ -107,7 +184,7 @@ namespace JetService.IntegrationTests.Tests
     private static bool IsServiceInstalled(ServiceSettings settingsXml)
     {
       var allServices = ServicesUtil.ListServices();
-      return allServices.Select(x => x.ToLower()).Contains(settingsXml.Name.ToLower());
+      return allServices.Any(x => x.IsNamed(settingsXml.Name));
     }
   }
 }

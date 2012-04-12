@@ -8,8 +8,12 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void TestListCommands()
     {
-      var r = JetServiceCommandRunner.ExecuteCommand("help");
-      Assert.That(r.ExitCode, Is.EqualTo(0));
+      TempFilesHolder.WithTempDirectory(
+        dir =>
+          {
+            var r = JetServiceCommandRunner.ExecuteCommand(dir, "help");
+            Assert.That(r.ExitCode, Is.EqualTo(0));
+          });
     }
   }
 }

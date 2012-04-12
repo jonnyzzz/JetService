@@ -6,7 +6,7 @@ namespace JetService.IntegrationTests.Tests
   [TestFixture]
   public class RunUnderAdminUserTest : RunUnderServiceTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled)
+    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
     {
       UserManagement.WithNewUser(UserGroup.Admin,
                                  u => InstallRemoveService(
@@ -20,7 +20,7 @@ namespace JetService.IntegrationTests.Tests
   [TestFixture]
   public class RunUnderUserUserTest : RunUnderServiceTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled)
+    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
     {
       UserManagement.WithNewUser(UserGroup.User,
                                  u => InstallRemoveService(

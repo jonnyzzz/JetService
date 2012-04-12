@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,12 +14,18 @@ namespace JetService.IntegrationTests.Executable
 
     TEST_IM_ALIVE,
     TEST_RUN_10500,
+    TEST_STOP_SERVICE,
 
     UNKNOWN
   }
 
   public class TestProgram : TestProgramUtil
   {
+    private static void WaitServiceToStart()
+    {
+      Thread.Sleep(TimeSpan.FromSeconds(10.5));
+    }
+
     static int Main(string[] args)
     {
       TestAction result;
@@ -44,11 +51,28 @@ namespace JetService.IntegrationTests.Executable
         case TestAction.TEST_IM_ALIVE:
           Console.Error.WriteLine("I'm alive");
           File.WriteAllText(args[1]??"file.yxy", "I'm alive");
-          goto case TestAction.TEST_RUN_10500;
-        
-        case TestAction.TEST_RUN_10500:
           Thread.Sleep(TimeSpan.FromSeconds(10.5));
           Console.Error.WriteLine("I'm alive");
+          return 0;
+        
+        case TestAction.TEST_RUN_10500:          
+          Console.Error.WriteLine("I'm alive");
+          WaitServiceToStart();
+          return 0;
+
+        case TestAction.TEST_STOP_SERVICE:
+          Console.Error.WriteLine("I'm alive");
+          File.WriteAllText(args[1]??"file.yxy", "I'm alive");          
+          WaitServiceToStart();
+
+          var ps = ProcessExecutor.ExecuteProcess("net.exe", "stop " + (args[2] ?? "no-service"));
+          ps.Dump();
+
+          Console.Out.WriteLine("net.exe exit code is: {0}", ps.ExitCode);
+          Console.Out.WriteLine("Service should be stopped now");
+          Console.Error.WriteLine("I'm alive");
+          //Service should be stopped and process must be killed
+          Thread.Sleep(TimeSpan.FromDays(1));
           return 0;
 
         default:

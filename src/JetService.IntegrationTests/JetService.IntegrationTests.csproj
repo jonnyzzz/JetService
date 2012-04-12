@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Catcher.cs" />
     <Compile Include="src\Natives.cs" />
+    <Compile Include="src\ServiceInfo.cs" />
     <Compile Include="src\ServicesUtil.cs" />
     <Compile Include="src\Stubs.cs" />
     <Compile Include="src\Tests\CommandsIntegrationTest.cs" />

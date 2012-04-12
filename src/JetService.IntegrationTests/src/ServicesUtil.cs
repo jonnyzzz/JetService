@@ -19,7 +19,7 @@ namespace JetService.IntegrationTests
       Natives.CloseServiceHandle(scm);
     }
 
-    public static IEnumerable<string> ListServices()
+    public static IEnumerable<ServiceInfo> ListServices()
     {
       const string ns = @"root\cimv2";
       const string query = "select * from Win32_Service";
@@ -29,7 +29,14 @@ namespace JetService.IntegrationTests
 
       using (var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query)))
       {
-        return searcher.Get().Cast<ManagementObject>().Select(x => x["Name"].ToString()).ToArray();
+        return searcher
+          .Get().Cast<ManagementObject>()
+          .Select(x => new ServiceInfo
+                         {
+                           Name = x["Name"].ToString(),
+                           Status = x["State"].ToString(),
+                         })
+          .ToArray();
       }
     }
 
@@ -42,16 +49,19 @@ namespace JetService.IntegrationTests
       scope.Connect();
 
       using (var searcher = new ManagementObjectSearcher(scope, new ObjectQuery(query)))
-      {
-        foreach (var mo in searcher.Get().Cast<ManagementObject>())
+      {        
+        foreach (ManagementObject mo in searcher.Get())
         {
           string name = mo["Name"].ToString();
           if (predicate(name))
-            mo.Delete();
-        }
-      }
+          {
+            Console.Out.WriteLine("Found leaked service to remove: {0}", name);
+            mo.InvokeMethod("delete", null);    
+            mo.Delete();            
+          }
+        }        
+      }      
     }
-
 
     public static ProcessExecutor.Result StartService(ServiceSettings s)
     {
@@ -61,6 +71,11 @@ namespace JetService.IntegrationTests
     public static ProcessExecutor.Result StopService(ServiceSettings s)
     {
       return ProcessExecutor.ExecuteProcess("net.exe", "stop " + s.Name).Dump();
+    }
+
+    public static bool IsServiceRunning(ServiceSettings s)
+    {
+      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => !x.IsStopped);
     }
   }
 }

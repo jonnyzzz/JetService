@@ -14,20 +14,19 @@ LSAGrantPrivilegeCommand::~LSAGrantPrivilegeCommand()
 {
 }
 
-#define STATIC_UNICODE_STRING(x, value) \
-  LSA_UNICODE_STRING x; {\
-    ZeroMemory(&x, sizeof(x)); \
-    x.Buffer = SE_SERVICE_LOGON_NAME; \
-    x.Length = wcslen(x.Buffer) * sizeof(WCHAR); \
-    x.MaximumLength = (1 + wcslen(x.Buffer)) * sizeof(WCHAR); \
-  }   \
-
+void LSAGrantPrivilegeCommand::InitializeUnicodeString(LSA_UNICODE_STRING& x, LPWSTR value) {
+  ZeroMemory(&x, sizeof(x));
+  x.Buffer = value;
+  x.Length = wcslen(x.Buffer) * sizeof(WCHAR);
+  x.MaximumLength = (1 + wcslen(x.Buffer)) * sizeof(WCHAR);
+}
 
 int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, HANDLE userToken, PSID sid) {
   LOG.LogDebug(L"Start changing user previleges");
 
   {
-    STATIC_UNICODE_STRING(right, SE_SERVICE_LOGON_NAME);
+    LSA_UNICODE_STRING right;
+    InitializeUnicodeString(right, SE_SERVICE_LOGON_NAME);
 
     NTSTATUS st = LsaAddAccountRights(lsa, sid, &right, 1);
     LOG.LogDebug(L"Called LsaAddAccountRights");
@@ -48,7 +47,9 @@ int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, HANDLE userToken, P
   LOG.LogDebug(L"Added previleges");
 
   {
-    STATIC_UNICODE_STRING(right, SE_DENY_SERVICE_LOGON_NAME);
+    LSA_UNICODE_STRING right;
+    InitializeUnicodeString(right, SE_DENY_SERVICE_LOGON_NAME);
+
     NTSTATUS st = LsaRemoveAccountRights(lsa, sid, FALSE, &right, 1);
 
     if (st != ERROR_SUCCESS) {    

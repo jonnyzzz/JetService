@@ -37,8 +37,7 @@ int CreateServiceCheckAccountAction:: ExecuteAction(const Argz* az, const Create
   int ret = static_cast<Command*>(&check)->executeCommand();
   if (ret == 0) return 0;
 
-  //TODO: fix me
-  if (az->GetBooleanArgument(L"giveUserRights", false)) {
+  if (az->GetBooleanArgument(L"giveUserRights", true)) {
     return TryAddExecuteAsService(az, settings);    
   } else {
     LOG.LogInfo(L"To disable user account check add '/checkUserAccount=false' commandline argument"); 

@@ -6,10 +6,10 @@
 #include "Pipe.h"
 
 
-class ProcessCommand : public Command, protected InterruptHolder
+class ProcessCommand : public Command, public InterruptHolder
 {
 public:
-  ProcessCommand(const ServiceTaskSettings* settings, const InterruptHolder* interrupt);
+  ProcessCommand(const ServiceTaskSettings* settings, InterruptHolder* interrupt = NULL);
   virtual ~ProcessCommand(void);
 
 public:

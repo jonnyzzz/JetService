@@ -15,7 +15,7 @@ public:
 class PipeReader : public InterruptHolder
 {
 public:
-  PipeReader(ReaderCallback* readerCallback, HANDLE pipe, const InterruptHolder* interrupt = NULL);
+  PipeReader(ReaderCallback* readerCallback, HANDLE pipe, InterruptHolder* interrupt = NULL);
   virtual ~PipeReader(void);
 
 public:

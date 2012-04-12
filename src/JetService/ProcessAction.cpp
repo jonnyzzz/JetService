@@ -26,6 +26,7 @@ public:
 
 public:
   int executeCommand(const ServiceTaskSettings* settings) {
+    //TODO: Register console control handler to stop on CTRL+C or CTRL+BREAK commands
     InterruptHolder interrupt;
     ProcessCommand cmd(settings, &interrupt);
     return static_cast<Command*>(&cmd)->executeCommand();

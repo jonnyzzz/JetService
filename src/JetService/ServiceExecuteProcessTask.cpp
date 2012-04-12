@@ -17,11 +17,6 @@ ServiceExecuteProcessTask::~ServiceExecuteProcessTask()
 {
 }
 
-void ServiceExecuteProcessTask::ExecuteProcess() {
-  //make explicit
-  SettingsServiceTask::ExecuteProcess();
-}
-
 void ServiceExecuteProcessTask::ExecuteProcess(const ServiceTaskSettings* settings) {
   //Hack: we should return running as preparations completed, not at this moment.
   //Hack: ProcessCommand api is neede for it.

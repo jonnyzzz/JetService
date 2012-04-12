@@ -2,7 +2,7 @@
 
 class InterruptHolder {
 public:
-  InterruptHolder(const InterruptHolder* parent = NULL);
+  InterruptHolder(InterruptHolder* parent = NULL);
   virtual ~InterruptHolder();
 
 public:
@@ -11,7 +11,7 @@ public:
   CString IsInterruptedString() const;
 
 private:
-  const InterruptHolder* const myParent;
+  InterruptHolder* const myParent;
   volatile bool myStopFlag;
 };
 

@@ -4,7 +4,7 @@
 #include "InterruptHolder.h"
 
 
-class ThreadedServiceTask : public ServiceTask, protected InterruptHolder
+class ThreadedServiceTask : public ServiceTask, public InterruptHolder
 {
 public:
   ThreadedServiceTask(const ServiceEventContext* context);

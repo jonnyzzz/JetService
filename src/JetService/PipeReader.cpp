@@ -18,7 +18,7 @@ DWORD WINAPI PipeReaderThreadProc(LPVOID lpParameter) {
   return ((PipeReader*)lpParameter)->ThreadProc();  
 }
 
-PipeReader::PipeReader(ReaderCallback* readerCallback, HANDLE pipe, const InterruptHolder* interrupt)
+PipeReader::PipeReader(ReaderCallback* readerCallback, HANDLE pipe, InterruptHolder* interrupt)
   : InterruptHolder(interrupt)
   , myReaderCallback(readerCallback)
   , myPipe(pipe)  
@@ -30,7 +30,6 @@ PipeReader::PipeReader(ReaderCallback* readerCallback, HANDLE pipe, const Interr
     LOG.LogErrorFormat(L"Failed to start pipe read thread. %s", LOG.GetLastError());    
   }
 }
-
 
 PipeReader::~PipeReader(void)
 {

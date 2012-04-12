@@ -10,8 +10,7 @@ public:
   virtual ~ServiceExecuteProcessTask();
 
 
-public:
-  virtual void ExecuteProcess();
+public:  
   virtual void ExecuteProcess(const ServiceTaskSettings* settings);
 
 private:

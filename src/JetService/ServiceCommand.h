@@ -20,6 +20,7 @@ public:
   
   static const SC_Right ALL_ACCESS; //SERVICE_ALL_ACCESS
   static const SC_Right SERVICE_DELETE; //DELETE
+  static const SC_Right MODIFY_DACL; 
   //static const SC_Right CHANGE_CONFIG; //SERVICE_CHANGE_CONFIG 
   //static const SC_Right INTERROGATE; //SERVICE_INTERROGATE
   //static const SC_Right QUERY_CONFIG; //SERVICE_QUERY_CONFIG

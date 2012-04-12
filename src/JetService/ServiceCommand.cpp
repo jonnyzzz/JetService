@@ -5,6 +5,7 @@
 const SC_Right SC_Right::ALL_ACCESS = SC_Right(L"All access", SCM_Right::ALL_ACCESS, SERVICE_ALL_ACCESS);
 //TODO: weaker permission to remove service?
 const SC_Right SC_Right::SERVICE_DELETE = SC_Right(L"Delete", SCM_Right::ENUMERATE_SERVICE, DELETE);
+const SC_Right SC_Right::MODIFY_DACL = SC_Right(L"Modify DACL", SCM_Right::ENUMERATE_SERVICE, READ_CONTROL | WRITE_DAC);
 //const SC_Right SC_Right::CHANGE_CONFIG = SC_Right(L"Change config", SERVICE_CHANGE_CONFIG);
 //const SC_Right SC_Right::INTERROGATE = SC_Right(L"Interrogate", SERVICE_INTERROGATE);
 //const SC_Right SC_Right::QUERY_CONFIG = SC_Right(L"Query config", SERVICE_QUERY_CONFIG);

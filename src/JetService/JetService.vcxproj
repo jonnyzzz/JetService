@@ -116,6 +116,7 @@
     <ClInclude Include="ServiceEventINRERROGATEHandler.h" />
     <ClInclude Include="ServiceEventSTOPHandler.h" />
     <ClInclude Include="ServiceExecuteProcessTask.h" />
+    <ClInclude Include="ServiceGrantDACLCommand.h" />
     <ClInclude Include="ServiceMain.h" />
     <ClInclude Include="ServiceSettings.h" />
     <ClInclude Include="ServiceSettingsAction.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="ServiceEventINRERROGATEHandler.cpp" />
     <ClCompile Include="ServiceEventSTOPHandler.cpp" />
     <ClCompile Include="ServiceExecuteProcessTask.cpp" />
+    <ClCompile Include="ServiceGrantDACLCommand.cpp" />
     <ClCompile Include="ServiceMain.cpp" />
     <ClCompile Include="ServiceSettingsAction.cpp" />
     <ClCompile Include="ServiceStatus.cpp" />

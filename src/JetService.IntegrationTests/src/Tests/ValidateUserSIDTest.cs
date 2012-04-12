@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
@@ -6,15 +5,12 @@ namespace JetService.IntegrationTests.Tests
   [TestFixture]
   public class ValidateUserSIDTest : SettingsXmlTestBase
   {
-
     [Test]
     public void TestUserSID()
-    {
-      Console.Out.WriteLine("Identity: {0}",UserManagement.SID);
+    {      
       UserManagement.WithNewUser(UserGroup.Admin,
         u => DoSettingsTest(DefaultSettins, "/user=" + u.UserName, "/password=" + u.Password, "/giveUserRights=false", "/checkUserAccount=false"));
     }
-
 
     protected override string ValidateCommandName
     {

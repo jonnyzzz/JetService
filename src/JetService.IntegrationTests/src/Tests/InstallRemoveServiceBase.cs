@@ -9,24 +9,6 @@ namespace JetService.IntegrationTests.Tests
 {
   public class InstallRemoveServiceBase
   {
-    protected string[] A(params string[] str)
-    {
-      return str;
-    }
-
-    protected void NOP<A>(A a)
-    {
-    }
-
-    protected void NOP<A, B>(A a, B b)
-    {
-    }
-
-    protected void NOP<A, B, C>(A a, B b, C c)
-    {
-    }
-
-
     protected void StartStopService(ServiceSettings service, string log, Action afterStarted) {
       try
       {
@@ -86,6 +68,8 @@ namespace JetService.IntegrationTests.Tests
           Console.Out.WriteLine(r.LogText);
           r.AssertSuccess();
 
+
+          Thread.Sleep(TimeSpan.FromSeconds(1));
           Assert.IsTrue(IsServiceInstalled(settingsXml), "Service must be installed: {0}", settingsXml.Name);
 
           try
@@ -103,13 +87,7 @@ namespace JetService.IntegrationTests.Tests
             Console.Out.WriteLine(r.LogText);
             r.AssertSuccess();
 
-            for (int x = 0; x < 3; x++)
-            {
-              if (IsServiceInstalled(settingsXml)) break;
-              Thread.Sleep(TimeSpan.FromSeconds(1 + x));
-            }
-
-            Assert.IsFalse(IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);            
+            WaitFor.WaitForAssert(() => IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
           }
         });
     }
@@ -119,7 +97,7 @@ namespace JetService.IntegrationTests.Tests
     {
       try
       {
-        ServicesUtil.RemoveServices(x => x.StartsWith("jetService-test"));
+        ServicesUtil.RemoveServices(x => x.ToLower().StartsWith("jetService-test".ToLower()));
       } catch(Exception e) 
       {
         Console.Out.WriteLine("Failed to cleanup services. {0}", e);

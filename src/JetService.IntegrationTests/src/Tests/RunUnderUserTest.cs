@@ -10,7 +10,7 @@ namespace JetService.IntegrationTests.Tests
     {
       UserManagement.WithNewUser(UserGroup.Admin,
                                  u => InstallRemoveService(
-                                   A("/user=" + u.UserName, "/password=" + u.Password),
+                                   Stubs.A("/user=" + u.UserName, "/password=" + u.Password),
                                    testAction,
                                    argz,
                                    onInstalled));
@@ -24,7 +24,7 @@ namespace JetService.IntegrationTests.Tests
     {
       UserManagement.WithNewUser(UserGroup.User,
                                  u => InstallRemoveService(
-                                   A("/user=" + u.UserName, "/password=" + u.Password),
+                                   Stubs.A("/user=" + u.UserName, "/password=" + u.Password),
                                    testAction,
                                    argz,
                                    onInstalled));

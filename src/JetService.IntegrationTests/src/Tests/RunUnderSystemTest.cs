@@ -8,7 +8,7 @@ namespace JetService.IntegrationTests.Tests
   {
     protected override void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled)
     {
-      InstallRemoveService(A("/runAsSystem"),
+      InstallRemoveService(Stubs.A("/runAsSystem"),
                      testAction,
                      argz,
                      onInstalled);

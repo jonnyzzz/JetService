@@ -9,9 +9,9 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void InstallRemoveServiceTest_AsSystem()
     {
-      InstallRemoveService(A("/runAsSystem"),
+      InstallRemoveService(Stubs.A("/runAsSystem"),
                            TestAction.TEST_STDOUT,
-                           A(),
+                           Stubs.A(),
                            (s, dir, log) => { }
         );
     }
@@ -20,9 +20,9 @@ namespace JetService.IntegrationTests.Tests
     public void InstallRemoveServiceTest_AsUserAdmin()
     {
       UserManagement.WithNewUser(UserGroup.Admin,
-        u => InstallRemoveService(A("/user=" + u.UserName, "/password=" + u.Password, "/checkUserAccount=false", "/giveUserRights=false"),
+        u => InstallRemoveService(Stubs.A("/user=" + u.UserName, "/password=" + u.Password, "/checkUserAccount=false", "/giveUserRights=false"),
                                   TestAction.TEST_STDOUT,
-                                  A(),
+                                  Stubs.A(),
                                   (s, dir, log) => { }
                ));
     }

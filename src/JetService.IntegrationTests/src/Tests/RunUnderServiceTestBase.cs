@@ -5,8 +5,6 @@ using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
 {
-
-
   public abstract class RunUnderServiceTestBase : InstallRemoveServiceBase
   {
     protected abstract void ExecuteTestImpl(TestAction testAction, string[] argz, OnServiceInstalled onInstalled);
@@ -19,7 +17,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void TestProcessStartStop()
     {
-       DoExecuteTest(TestAction.TEST_RUN_10500, A(), NOP);
+       DoExecuteTest(TestAction.TEST_RUN_10500, Stubs.A(), Stubs.NOP);
     }
 
     [Test]
@@ -29,7 +27,7 @@ namespace JetService.IntegrationTests.Tests
         file =>
           {
             File.Delete(file);
-            DoExecuteTest(TestAction.TEST_IM_ALIVE, A(file), NOP);
+            DoExecuteTest(TestAction.TEST_IM_ALIVE, Stubs.A(file), Stubs.NOP);
             Assert.IsTrue(File.Exists(file));
           });
     }

@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Natives.cs" />
     <Compile Include="src\ServicesUtil.cs" />
+    <Compile Include="src\Stubs.cs" />
     <Compile Include="src\Tests\CommandsIntegrationTest.cs" />
     <Compile Include="src\Files.cs" />
     <Compile Include="src\JetServiceCommandRunner.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="src\Tests\ValidateUserSIDTest.cs" />
     <Compile Include="src\ThreadUtil.cs" />
     <Compile Include="src\UserManagement.cs" />
+    <Compile Include="src\WaitFor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JetService.IntegrationTests.Executable\JetService.IntegrationTests.Executable.csproj">

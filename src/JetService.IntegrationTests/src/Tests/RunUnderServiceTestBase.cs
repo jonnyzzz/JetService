@@ -57,5 +57,18 @@ namespace JetService.IntegrationTests.Tests
           Assert.IsTrue(File.Exists(file));
         });
     }
+
+    [Test]
+    public void TestSTDInProcessShouldNotHungInService()
+    {
+      DoExecuteTest(TestAction.TEST_SERVICE_STDIN_READ, Stubs.A(),
+                    (s, dir) =>
+                      {
+                        WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
+                                              () => !ServicesUtil.IsServiceRunning(s),
+                                              "Service must exit itself");
+                        ;
+                      });
+    }
   }
 }

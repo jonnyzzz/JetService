@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,6 +14,7 @@ namespace JetService.IntegrationTests.Executable
     TEST_IM_ALIVE,
     TEST_RUN_10500,
     TEST_STOP_SERVICE,
+    TEST_SERVICE_STDIN_READ,
 
     UNKNOWN
   }
@@ -41,6 +41,10 @@ namespace JetService.IntegrationTests.Executable
         case TestAction.TEST_STDERR:
           Console.Out.WriteLine("This is service std-err 42");
           return 0;
+
+        case TestAction.TEST_SERVICE_STDIN_READ:
+          WaitServiceToStart();
+          goto case TestAction.TEST_STDIN_READ;
 
         case TestAction.TEST_STDIN_READ:
           Console.Error.WriteLine("Try to read from console");

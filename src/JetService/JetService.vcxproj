@@ -93,7 +93,6 @@
     <ClInclude Include="JetServiceMain.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LogonUserCommand.h" />
-    <ClInclude Include="LogonUserSIDCommand.h" />
     <ClInclude Include="LogPipeReader.h" />
     <ClInclude Include="LSAGrantPrivilegeCommand.h" />
     <ClInclude Include="LSAPolicyCommand.h" />
@@ -155,7 +154,6 @@
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LogonUserCommand.cpp" />
-    <ClCompile Include="LogonUserSIDCommand.cpp" />
     <ClCompile Include="LogPipeReader.cpp" />
     <ClCompile Include="LSAGrantPrivilegeCommand.cpp" />
     <ClCompile Include="LSAPolicyCommand.cpp" />

@@ -1,21 +1,20 @@
 #pragma once
 
 #include "ServiceSettings.h"
-#include "LogonUserSIDCommand.h"
 #include "LSAPolicyCommand.h"
 
 
-class LSAUserCommand: public LogonUserSIDCommand
+class LSAUserCommand : public LSAPolicyCommand
 {
 public:
   LSAUserCommand(const CreateServiceSettings* settings, const LSAPolicyRight& lsaRight);
   virtual ~LSAUserCommand();
 
 public:  
-  virtual int executeCommand(HANDLE userToken, PSID sid);
-  virtual int executeCommand(LSA_HANDLE lsa, HANDLE userToken, PSID sid) = 0;
+  virtual int executeCommand(LSA_HANDLE handle);
+  virtual int executeCommand(LSA_HANDLE lsa, PSID sid) = 0;
 
-private:
+protected:
   const CreateServiceSettings* mySettings;
   const LSAPolicyRight& myLSARight;
 };

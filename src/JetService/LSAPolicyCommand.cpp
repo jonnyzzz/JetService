@@ -4,7 +4,8 @@
 
 const Logger LOG(L"LSAPolicyCommand");
 
-const LSAPolicyRight LSAPolicyRight::ADD_PRIVILEGE = LSAPolicyRight(L"Add privilege", POLICY_ALL_ACCESS);
+const LSAPolicyRight LSAPolicyRight::CHANGE_PRIVILEGES = LSAPolicyRight(L"Change privileges", POLICY_ALL_ACCESS);
+const LSAPolicyRight LSAPolicyRight::READ_PRIVILEGES = LSAPolicyRight(L"Read privileges", POLICY_READ);
 
 LSAPolicyCommand::LSAPolicyCommand(const LSAPolicyRight& right)
   : myRight(right)

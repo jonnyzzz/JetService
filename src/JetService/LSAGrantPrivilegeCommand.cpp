@@ -5,7 +5,7 @@
 const Logger LOG(L"LSAGrantPrivilegeCommand");
 
 LSAGrantPrivilegeCommand::LSAGrantPrivilegeCommand(const CreateServiceSettings* settings)
-  : LSAUserCommand(settings, LSAPolicyRight::ADD_PRIVILEGE)
+  : LSAUserCommand(settings, LSAPolicyRight::CHANGE_PRIVILEGES)
 {
 }
 
@@ -21,7 +21,7 @@ void LSAGrantPrivilegeCommand::InitializeUnicodeString(LSA_UNICODE_STRING& x, LP
   x.MaximumLength = (1 + wcslen(x.Buffer)) * sizeof(WCHAR);
 }
 
-int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, HANDLE userToken, PSID sid) {
+int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, PSID sid) {
   LOG.LogDebug(L"Start changing user previleges");
 
   {
@@ -66,6 +66,7 @@ int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, HANDLE userToken, P
   }
 
   LOG.LogDebug(L"Removed deny previleges");
+  LOG.LogInfoFormat(L"User %s\\%s was given logon as service privilege", mySettings->getDomain(), mySettings->getUserName());
   return 0;
 }
 

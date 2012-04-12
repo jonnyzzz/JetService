@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using JetService.IntegrationTests.Executable;
 using NUnit.Framework;
 
@@ -101,7 +102,10 @@ namespace JetService.IntegrationTests.Tests
             r = JetServiceCommandRunner.ExecuteCommand("delete", "/settings=" + settings);
             Console.Out.WriteLine(r.LogText);
             r.AssertSuccess();
-            
+
+            if (!IsServiceInstalled(settingsXml))
+              Thread.Sleep(TimeSpan.FromSeconds(3));
+
             Assert.IsFalse(IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);            
           }
         });

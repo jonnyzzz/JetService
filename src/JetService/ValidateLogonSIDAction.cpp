@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "ValidateLogonSIDAction.h"
-#include "LogonUserSIDCommand.h"
+#include "LSAUserCommand.h"
 #include "Logger.h"
 #include "Sddl.h"
 
@@ -21,12 +21,12 @@ void ValidateLogonSIDAction::PrintUsage(ConsoleWriter* writer) {
   //NOP as the command in hidden
 }
 
-class DumpSIDCommand : public LogonUserSIDCommand {
+class DumpSIDCommand : public LSAUserCommand {
 public:
-  DumpSIDCommand(const CreateServiceSettings* settings) : LogonUserSIDCommand(settings) {}
+  DumpSIDCommand(const CreateServiceSettings* settings) : LSAUserCommand(settings, LSAPolicyRight::READ_PRIVILEGES) {}
   virtual ~DumpSIDCommand() {}
 public:
-  virtual int executeCommand(HANDLE userToken, PSID sid) {
+  virtual int executeCommand(LSA_HANDLE lsa, PSID sid) {
     LPTSTR sSid;
     if (0 == ConvertSidToStringSid(sid, &sSid)) {
       LOG.LogErrorFormat(L"Failed to convert SID to string. %s", LOG.GetLastError());

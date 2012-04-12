@@ -10,7 +10,7 @@ public:
   virtual ~LSAGrantPrivilegeCommand();
 
 public:
-  virtual int executeCommand(LSA_HANDLE lsa, HANDLE userToken, PSID sid);
+  virtual int executeCommand(LSA_HANDLE lsa, PSID sid);
 
 protected:
   static void InitializeUnicodeString(LSA_UNICODE_STRING& x, LPWSTR value);

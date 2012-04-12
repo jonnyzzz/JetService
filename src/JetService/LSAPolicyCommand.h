@@ -12,7 +12,8 @@ public:
   operator ACCESS_MASK() const { return myRight; }
   operator CString() const { return myName;}
 
-  static const LSAPolicyRight ADD_PRIVILEGE;
+  static const LSAPolicyRight CHANGE_PRIVILEGES;
+  static const LSAPolicyRight READ_PRIVILEGES;
 };
 
 

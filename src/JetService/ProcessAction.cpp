@@ -2,6 +2,7 @@
 #include "ProcessAction.h"
 #include "ProcessCommand.h"
 #include "ProcessInterruptTerminateHandler.h"
+#include "ProcessInterruptConsoleControlHandler.h"
 #include "FileTaskSettings.h"
 
 
@@ -30,7 +31,9 @@ public:
     //TODO: Register console control handler to stop on CTRL+C or CTRL+BREAK commands
     InterruptHolder interrupt;
     ProcessInterruptTerminateHandler inthndl;
-    ProcessCommand cmd(settings, &inthndl, &interrupt);
+    ProcessInterruptConsoleControlHandler intSignal;
+
+    ProcessCommand cmd(settings, &intSignal, &interrupt);
     return static_cast<Command*>(&cmd)->executeCommand();
   }
 };

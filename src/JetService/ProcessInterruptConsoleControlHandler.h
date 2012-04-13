@@ -10,7 +10,7 @@ public:
   virtual ~ProcessInterruptConsoleControlHandler(void);
 
 public:
-  virtual void InterruptProcess(PROCESS_INFORMATION& info) = 0;
+  virtual void InterruptProcess(PROCESS_INFORMATION& info);
 
 private:
   bool myCtrlEventFailed;

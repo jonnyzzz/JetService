@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ProcessAction.h"
 #include "ProcessCommand.h"
+#include "ProcessInterruptTerminateHandler.h"
 #include "FileTaskSettings.h"
 
 
@@ -28,7 +29,8 @@ public:
   int executeCommand(const ServiceTaskSettings* settings) {
     //TODO: Register console control handler to stop on CTRL+C or CTRL+BREAK commands
     InterruptHolder interrupt;
-    ProcessCommand cmd(settings, &interrupt);
+    ProcessInterruptTerminateHandler inthndl;
+    ProcessCommand cmd(settings, &inthndl, &interrupt);
     return static_cast<Command*>(&cmd)->executeCommand();
   }
 };

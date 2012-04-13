@@ -5,11 +5,19 @@
 #include "InterruptHolder.h"
 #include "Pipe.h"
 
+class ProcessInterruptHandler {
+public:
+  ///ProcessCommand will call the method
+  ///on and on while process is still running 
+  ///after interrupt flag was set. 
+  ///Implementation may take care with it
+  virtual void InterruptProcess(PROCESS_INFORMATION& info) = 0;
+};
 
 class ProcessCommand : public Command, public InterruptHolder
 {
 public:
-  ProcessCommand(const ServiceTaskSettings* settings, InterruptHolder* interrupt = NULL);
+  ProcessCommand(const ServiceTaskSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt = NULL);
   virtual ~ProcessCommand(void);
 
 public:
@@ -26,5 +34,6 @@ private:
 
 private:
   const ServiceTaskSettings* const mySettings;  
+  ProcessInterruptHandler* const myInterruptHandler;
 };
 

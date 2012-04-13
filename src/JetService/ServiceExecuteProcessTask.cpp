@@ -3,6 +3,7 @@
 #include "ServiceEventContext.h"
 #include "ServiceStatus.h"
 #include "ProcessCommand.h"
+#include "ProcessInterruptTerminateHandler.h"
 #include "Logger.h"
 
 const Logger LOG(L"ServiceExecuteProcessTask");
@@ -22,7 +23,8 @@ void ServiceExecuteProcessTask::ExecuteProcess(const ServiceTaskSettings* settin
   //Hack: ProcessCommand api is neede for it.
   myContext->GetServiceStatus()->SetStatus(StatusValue::RUNNING);
 
-  ProcessCommand cmd(settings, this);
+  ProcessInterruptTerminateHandler inthndl;
+  ProcessCommand cmd(settings, &inthndl, this);
   int ret = cmd.executeCommand();
   if (ret != 0) {
     LOG.LogError(L"Failed to start process");

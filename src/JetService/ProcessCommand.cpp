@@ -6,9 +6,10 @@
 
 const Logger LOG(L"ProcessCommand");
 
-ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings, InterruptHolder* interrupt)
+ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt)
   : mySettings(settings)
   , InterruptHolder(interrupt)
+  , myInterruptHandler(handler)
 {
 }
 
@@ -138,9 +139,7 @@ int ProcessCommand::WaitForProcessToExit(PROCESS_INFORMATION& processInfo) {
   while(true) {    
     if (IsInterrupted()) {
       LOG.LogInfo(L"Terminating process. Interrupted flag is set");
-      //TODO:implement kill process
-      TerminateProcess(processInfo.hProcess, 42);
-      //this is asynchronious process. we need to wait for a while for process to exit.
+      myInterruptHandler->InterruptProcess(processInfo);
     }
 
     DWORD waitResult = WaitForSingleObject(processInfo.hProcess, 500);

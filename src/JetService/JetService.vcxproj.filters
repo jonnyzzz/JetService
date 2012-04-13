@@ -198,6 +198,9 @@
     <ClInclude Include="ProcessInterruptTerminateHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessInterruptConsoleControlHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -360,6 +363,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProcessInterruptTerminateHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessInterruptConsoleControlHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

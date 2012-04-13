@@ -101,6 +101,7 @@
     <ClInclude Include="PipeReader.h" />
     <ClInclude Include="ProcessAction.h" />
     <ClInclude Include="ProcessCommand.h" />
+    <ClInclude Include="ProcessInterruptConsoleControlHandler.h" />
     <ClInclude Include="ProcessInterruptTerminateHandler.h" />
     <ClInclude Include="rapidxml\rapidxml.hpp" />
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="PipeReader.cpp" />
     <ClCompile Include="ProcessAction.cpp" />
     <ClCompile Include="ProcessCommand.cpp" />
+    <ClCompile Include="ProcessInterruptConsoleControlHandler.cpp" />
     <ClCompile Include="ProcessInterruptTerminateHandler.cpp" />
     <ClCompile Include="RollFileWriter.cpp" />
     <ClCompile Include="ServiceAction.cpp" />

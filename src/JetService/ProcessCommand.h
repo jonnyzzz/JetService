@@ -16,7 +16,9 @@ public:
   virtual int executeCommand();
 
 private:  
-  int executeCommand(HANDLE processUserHandle);
+  int DoStartProcessAsUser(HANDLE processUserHandle);
+
+
 
   HANDLE CreateProcessStartUserToken();
   STARTUPINFO CreateProcessStartupInfo(ChildProcessInHandle* pstdin, ChildProcessOutHandle* pout);

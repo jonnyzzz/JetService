@@ -64,12 +64,12 @@ int ProcessCommand::executeCommand() {
     return 1;
   }
 
-  int ret = executeCommand(processToken);
+  int ret = DoStartProcessAsUser(processToken);
   CloseHandle(processToken);
   return ret;
 }
 
-int ProcessCommand::executeCommand(HANDLE processUserToken) {
+int ProcessCommand::DoStartProcessAsUser(HANDLE processUserToken) {
   CString commandLine;
   CString workdir = mySettings->getWorkDir();
   commandLine.AppendFormat(L"\"%s\" %s", mySettings->getProgramPath(), mySettings->GetProgramArguments());

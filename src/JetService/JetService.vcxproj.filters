@@ -27,27 +27,6 @@
     <ClInclude Include="Argz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceControlManagerCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateServiceCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeleteServiceCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileServiceSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="rapidxml\rapidxml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,145 +39,166 @@
     <ClInclude Include="rapidxml\rapidxml_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleServiceSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeleteServiceAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleConsoleWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleConsoleAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateServiceAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleCommandsRunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceMain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="InstanceCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JetServiceMain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceStatus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StatusValue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEventHandlerCollection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEventINRERROGATEHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEventContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEventSTOPHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XmlFileSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileTaskSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadedServiceTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InterruptHolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleThreadedServiceTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsServiceTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceExecuteProcessTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PipeReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogPipeReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RollFileWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreateServiceSettingsAction.h">
+    <ClInclude Include="Console\Impl\ConsoleCommandsRunner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ValidateCreateServiceAction.h">
+    <ClInclude Include="Console\Impl\SimpleConsoleWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceSettingsAction.h">
+    <ClInclude Include="Console\ConsoleAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ValidateServiceTaskAction.h">
+    <ClInclude Include="Console\ConsoleWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LSAPolicyCommand.h">
+    <ClInclude Include="Console\CreateServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LogonUserCommand.h">
+    <ClInclude Include="Console\CreateServiceCheckAccountAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LSAUserCommand.h">
+    <ClInclude Include="Console\CreateServiceSettingsAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LSAGrantPrivilegeCommand.h">
+    <ClInclude Include="Console\DeleteServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ValidateLogonSIDAction.h">
+    <ClInclude Include="Console\ServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreateServiceCheckAccountAction.h">
+    <ClInclude Include="Console\ServiceSettingsAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceGrantDACLCommand.h">
+    <ClInclude Include="Console\SimpleConsoleAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessInterruptTerminateHandler.h">
+    <ClInclude Include="Console\ValidateCreateServiceAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessInterruptConsoleControlHandler.h">
+    <ClInclude Include="Console\ValidateLogonSIDAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Console\ValidateServiceTaskAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\RollFileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\LogPipeReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\Pipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\PipeReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\ProcessAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\ProcessCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\ProcessInterruptConsoleControlHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\ProcessInterruptTerminateHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Command\CreateServiceCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Command\DeleteServiceCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Command\ServiceCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Command\ServiceControlManagerCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Command\ServiceGrantDACLCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventHandlerCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventINRERROGATEHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventSTOPHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Task\ServiceExecuteProcessTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Task\ServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Task\SettingsServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Task\SimpleThreadedServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Task\ThreadedServiceTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\JetServiceMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\ServiceMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\ServiceStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\StatusValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\FileServiceSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\FileTaskSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\ServiceSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SimpleServiceSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\XmlFileSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\LogonUserCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\LSAGrantPrivilegeCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\LSAPolicyCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\LSAUserCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,157 +215,157 @@
     <ClCompile Include="Argz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceControlManagerCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateServiceCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteServiceCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileServiceSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleServiceSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteServiceAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleConsoleWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleConsoleAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateServiceAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceAction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleCommandsRunner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceMain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InstanceCount.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StatusValue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEventHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEventHandlerCollection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEventINRERROGATEHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEventContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEventSTOPHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XmlFileSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileTaskSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadedServiceTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InterruptHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleThreadedServiceTask.cpp">
+    <ClCompile Include="Console\Impl\ConsoleCommandsRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsServiceTask.cpp">
+    <ClCompile Include="Console\Impl\SimpleConsoleWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceExecuteProcessTask.cpp">
+    <ClCompile Include="Console\ConsoleAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessCommand.cpp">
+    <ClCompile Include="Console\ConsoleWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessAction.cpp">
+    <ClCompile Include="Console\CreateServiceAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pipe.cpp">
+    <ClCompile Include="Console\CreateServiceCheckAccountAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PipeReader.cpp">
+    <ClCompile Include="Console\CreateServiceSettingsAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LogPipeReader.cpp">
+    <ClCompile Include="Console\DeleteServiceAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RollFileWriter.cpp">
+    <ClCompile Include="Console\ServiceAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreateServiceSettingsAction.cpp">
+    <ClCompile Include="Console\ServiceSettingsAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ValidateCreateServiceAction.cpp">
+    <ClCompile Include="Console\SimpleConsoleAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceSettingsAction.cpp">
+    <ClCompile Include="Console\ValidateCreateServiceAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ValidateServiceTaskAction.cpp">
+    <ClCompile Include="Console\ValidateLogonSIDAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LSAPolicyCommand.cpp">
+    <ClCompile Include="Console\ValidateServiceTaskAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LogonUserCommand.cpp">
+    <ClCompile Include="Logger\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LSAUserCommand.cpp">
+    <ClCompile Include="Logger\RollFileWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LSAGrantPrivilegeCommand.cpp">
+    <ClCompile Include="Process\LogPipeReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ValidateLogonSIDAction.cpp">
+    <ClCompile Include="Process\Pipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreateServiceCheckAccountAction.cpp">
+    <ClCompile Include="Process\PipeReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceGrantDACLCommand.cpp">
+    <ClCompile Include="Process\ProcessAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessInterruptTerminateHandler.cpp">
+    <ClCompile Include="Process\ProcessCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessInterruptConsoleControlHandler.cpp">
+    <ClCompile Include="Process\ProcessInterruptConsoleControlHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\ProcessInterruptTerminateHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Command\CreateServiceCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Command\DeleteServiceCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Command\ServiceCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Command\ServiceControlManagerCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Command\ServiceGrantDACLCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventHandlerCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventINRERROGATEHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventSTOPHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Task\ServiceExecuteProcessTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Task\ServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Task\SettingsServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Task\SimpleThreadedServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Task\ThreadedServiceTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\ServiceMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\ServiceStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\StatusValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\FileServiceSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\FileTaskSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SimpleServiceSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\XmlFileSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\LogonUserCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\LSAGrantPrivilegeCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\LSAPolicyCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\LSAUserCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

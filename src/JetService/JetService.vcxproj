@@ -51,6 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;Console;Console/Impl;Logger;Process;Service;.;Service/Command;Service/Task;Service/Event;Settings;User</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,6 +67,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>.;Console;Console/Impl;Logger;Process;Service;.;Service/Command;Service/Task;Service/Event;Settings;User</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,126 +79,126 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="ConsoleAction.h" />
-    <ClInclude Include="ConsoleCommandsRunner.h" />
-    <ClInclude Include="ConsoleWriter.h" />
-    <ClInclude Include="CreateServiceAction.h" />
-    <ClInclude Include="CreateServiceCheckAccountAction.h" />
-    <ClInclude Include="CreateServiceCommand.h" />
-    <ClInclude Include="CreateServiceSettingsAction.h" />
-    <ClInclude Include="DeleteServiceAction.h" />
-    <ClInclude Include="DeleteServiceCommand.h" />
-    <ClInclude Include="FileServiceSettings.h" />
-    <ClInclude Include="FileTaskSettings.h" />
+    <ClInclude Include="Console\ConsoleAction.h" />
+    <ClInclude Include="Console\ConsoleWriter.h" />
+    <ClInclude Include="Console\CreateServiceAction.h" />
+    <ClInclude Include="Console\CreateServiceCheckAccountAction.h" />
+    <ClInclude Include="Console\CreateServiceSettingsAction.h" />
+    <ClInclude Include="Console\DeleteServiceAction.h" />
+    <ClInclude Include="Console\Impl\ConsoleCommandsRunner.h" />
+    <ClInclude Include="Console\Impl\SimpleConsoleWriter.h" />
+    <ClInclude Include="Console\ServiceAction.h" />
+    <ClInclude Include="Console\ServiceSettingsAction.h" />
+    <ClInclude Include="Console\SimpleConsoleAction.h" />
+    <ClInclude Include="Console\ValidateCreateServiceAction.h" />
+    <ClInclude Include="Console\ValidateLogonSIDAction.h" />
+    <ClInclude Include="Console\ValidateServiceTaskAction.h" />
     <ClInclude Include="InstanceCount.h" />
     <ClInclude Include="InterruptHolder.h" />
-    <ClInclude Include="JetServiceMain.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="LogonUserCommand.h" />
-    <ClInclude Include="LogPipeReader.h" />
-    <ClInclude Include="LSAGrantPrivilegeCommand.h" />
-    <ClInclude Include="LSAPolicyCommand.h" />
-    <ClInclude Include="LSAUserCommand.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="PipeReader.h" />
-    <ClInclude Include="ProcessAction.h" />
-    <ClInclude Include="ProcessCommand.h" />
-    <ClInclude Include="ProcessInterruptConsoleControlHandler.h" />
-    <ClInclude Include="ProcessInterruptTerminateHandler.h" />
+    <ClInclude Include="Logger\Logger.h" />
+    <ClInclude Include="Logger\RollFileWriter.h" />
+    <ClInclude Include="Process\LogPipeReader.h" />
+    <ClInclude Include="Process\Pipe.h" />
+    <ClInclude Include="Process\PipeReader.h" />
+    <ClInclude Include="Process\ProcessAction.h" />
+    <ClInclude Include="Process\ProcessCommand.h" />
+    <ClInclude Include="Process\ProcessInterruptConsoleControlHandler.h" />
+    <ClInclude Include="Process\ProcessInterruptTerminateHandler.h" />
     <ClInclude Include="rapidxml\rapidxml.hpp" />
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="RollFileWriter.h" />
-    <ClInclude Include="ServiceAction.h" />
-    <ClInclude Include="ServiceCommand.h" />
-    <ClInclude Include="ServiceControlManagerCommand.h" />
-    <ClInclude Include="ServiceEventContext.h" />
-    <ClInclude Include="ServiceEventHandler.h" />
-    <ClInclude Include="ServiceEventHandlerCollection.h" />
-    <ClInclude Include="ServiceEventINRERROGATEHandler.h" />
-    <ClInclude Include="ServiceEventSTOPHandler.h" />
-    <ClInclude Include="ServiceExecuteProcessTask.h" />
-    <ClInclude Include="ServiceGrantDACLCommand.h" />
-    <ClInclude Include="ServiceMain.h" />
-    <ClInclude Include="ServiceSettings.h" />
-    <ClInclude Include="ServiceSettingsAction.h" />
-    <ClInclude Include="ServiceStatus.h" />
-    <ClInclude Include="ServiceTask.h" />
-    <ClInclude Include="SettingsServiceTask.h" />
-    <ClInclude Include="SimpleConsoleAction.h" />
-    <ClInclude Include="SimpleConsoleWriter.h" />
-    <ClInclude Include="SimpleServiceSettings.h" />
-    <ClInclude Include="SimpleThreadedServiceTask.h" />
-    <ClInclude Include="StatusValue.h" />
+    <ClInclude Include="Service\Command\CreateServiceCommand.h" />
+    <ClInclude Include="Service\Command\DeleteServiceCommand.h" />
+    <ClInclude Include="Service\Command\ServiceCommand.h" />
+    <ClInclude Include="Service\Command\ServiceControlManagerCommand.h" />
+    <ClInclude Include="Service\Command\ServiceGrantDACLCommand.h" />
+    <ClInclude Include="Service\Event\ServiceEventContext.h" />
+    <ClInclude Include="Service\Event\ServiceEventHandler.h" />
+    <ClInclude Include="Service\Event\ServiceEventHandlerCollection.h" />
+    <ClInclude Include="Service\Event\ServiceEventINRERROGATEHandler.h" />
+    <ClInclude Include="Service\Event\ServiceEventSTOPHandler.h" />
+    <ClInclude Include="Service\JetServiceMain.h" />
+    <ClInclude Include="Service\ServiceMain.h" />
+    <ClInclude Include="Service\ServiceStatus.h" />
+    <ClInclude Include="Service\StatusValue.h" />
+    <ClInclude Include="Service\Task\ServiceExecuteProcessTask.h" />
+    <ClInclude Include="Service\Task\ServiceTask.h" />
+    <ClInclude Include="Service\Task\SettingsServiceTask.h" />
+    <ClInclude Include="Service\Task\SimpleThreadedServiceTask.h" />
+    <ClInclude Include="Service\Task\ThreadedServiceTask.h" />
+    <ClInclude Include="Settings\FileServiceSettings.h" />
+    <ClInclude Include="Settings\FileTaskSettings.h" />
+    <ClInclude Include="Settings\ServiceSettings.h" />
+    <ClInclude Include="Settings\SimpleServiceSettings.h" />
+    <ClInclude Include="Settings\XmlFileSettings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="ThreadedServiceTask.h" />
-    <ClInclude Include="ValidateCreateServiceAction.h" />
-    <ClInclude Include="ValidateLogonSIDAction.h" />
-    <ClInclude Include="ValidateServiceTaskAction.h" />
-    <ClInclude Include="XmlFileSettings.h" />
+    <ClInclude Include="User\LogonUserCommand.h" />
+    <ClInclude Include="User\LSAGrantPrivilegeCommand.h" />
+    <ClInclude Include="User\LSAPolicyCommand.h" />
+    <ClInclude Include="User\LSAUserCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="ConsoleAction.cpp" />
-    <ClCompile Include="ConsoleCommandsRunner.cpp" />
-    <ClCompile Include="ConsoleWriter.cpp" />
-    <ClCompile Include="CreateServiceAction.cpp" />
-    <ClCompile Include="CreateServiceCheckAccountAction.cpp" />
-    <ClCompile Include="CreateServiceCommand.cpp" />
-    <ClCompile Include="CreateServiceSettingsAction.cpp" />
-    <ClCompile Include="DeleteServiceAction.cpp" />
-    <ClCompile Include="DeleteServiceCommand.cpp" />
-    <ClCompile Include="FileServiceSettings.cpp" />
-    <ClCompile Include="FileTaskSettings.cpp" />
+    <ClCompile Include="Console\ConsoleAction.cpp" />
+    <ClCompile Include="Console\ConsoleWriter.cpp" />
+    <ClCompile Include="Console\CreateServiceAction.cpp" />
+    <ClCompile Include="Console\CreateServiceCheckAccountAction.cpp" />
+    <ClCompile Include="Console\CreateServiceSettingsAction.cpp" />
+    <ClCompile Include="Console\DeleteServiceAction.cpp" />
+    <ClCompile Include="Console\Impl\ConsoleCommandsRunner.cpp" />
+    <ClCompile Include="Console\Impl\SimpleConsoleWriter.cpp" />
+    <ClCompile Include="Console\ServiceAction.cpp" />
+    <ClCompile Include="Console\ServiceSettingsAction.cpp" />
+    <ClCompile Include="Console\SimpleConsoleAction.cpp" />
+    <ClCompile Include="Console\ValidateCreateServiceAction.cpp" />
+    <ClCompile Include="Console\ValidateLogonSIDAction.cpp" />
+    <ClCompile Include="Console\ValidateServiceTaskAction.cpp" />
     <ClCompile Include="InstanceCount.cpp" />
     <ClCompile Include="InterruptHolder.cpp" />
     <ClCompile Include="JetService.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="LogonUserCommand.cpp" />
-    <ClCompile Include="LogPipeReader.cpp" />
-    <ClCompile Include="LSAGrantPrivilegeCommand.cpp" />
-    <ClCompile Include="LSAPolicyCommand.cpp" />
-    <ClCompile Include="LSAUserCommand.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="PipeReader.cpp" />
-    <ClCompile Include="ProcessAction.cpp" />
-    <ClCompile Include="ProcessCommand.cpp" />
-    <ClCompile Include="ProcessInterruptConsoleControlHandler.cpp" />
-    <ClCompile Include="ProcessInterruptTerminateHandler.cpp" />
-    <ClCompile Include="RollFileWriter.cpp" />
-    <ClCompile Include="ServiceAction.cpp" />
-    <ClCompile Include="ServiceCommand.cpp" />
-    <ClCompile Include="ServiceControlManagerCommand.cpp" />
-    <ClCompile Include="ServiceEventContext.cpp" />
-    <ClCompile Include="ServiceEventHandler.cpp" />
-    <ClCompile Include="ServiceEventHandlerCollection.cpp" />
-    <ClCompile Include="ServiceEventINRERROGATEHandler.cpp" />
-    <ClCompile Include="ServiceEventSTOPHandler.cpp" />
-    <ClCompile Include="ServiceExecuteProcessTask.cpp" />
-    <ClCompile Include="ServiceGrantDACLCommand.cpp" />
-    <ClCompile Include="ServiceMain.cpp" />
-    <ClCompile Include="ServiceSettingsAction.cpp" />
-    <ClCompile Include="ServiceStatus.cpp" />
-    <ClCompile Include="ServiceTask.cpp" />
-    <ClCompile Include="SettingsServiceTask.cpp" />
-    <ClCompile Include="SimpleConsoleAction.cpp" />
-    <ClCompile Include="SimpleConsoleWriter.cpp" />
-    <ClCompile Include="SimpleServiceSettings.cpp" />
-    <ClCompile Include="SimpleThreadedServiceTask.cpp" />
-    <ClCompile Include="StatusValue.cpp" />
+    <ClCompile Include="Logger\Logger.cpp" />
+    <ClCompile Include="Logger\RollFileWriter.cpp" />
+    <ClCompile Include="Process\LogPipeReader.cpp" />
+    <ClCompile Include="Process\Pipe.cpp" />
+    <ClCompile Include="Process\PipeReader.cpp" />
+    <ClCompile Include="Process\ProcessAction.cpp" />
+    <ClCompile Include="Process\ProcessCommand.cpp" />
+    <ClCompile Include="Process\ProcessInterruptConsoleControlHandler.cpp" />
+    <ClCompile Include="Process\ProcessInterruptTerminateHandler.cpp" />
+    <ClCompile Include="Service\Command\CreateServiceCommand.cpp" />
+    <ClCompile Include="Service\Command\DeleteServiceCommand.cpp" />
+    <ClCompile Include="Service\Command\ServiceCommand.cpp" />
+    <ClCompile Include="Service\Command\ServiceControlManagerCommand.cpp" />
+    <ClCompile Include="Service\Command\ServiceGrantDACLCommand.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventContext.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventHandler.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventHandlerCollection.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventINRERROGATEHandler.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventSTOPHandler.cpp" />
+    <ClCompile Include="Service\ServiceMain.cpp" />
+    <ClCompile Include="Service\ServiceStatus.cpp" />
+    <ClCompile Include="Service\StatusValue.cpp" />
+    <ClCompile Include="Service\Task\ServiceExecuteProcessTask.cpp" />
+    <ClCompile Include="Service\Task\ServiceTask.cpp" />
+    <ClCompile Include="Service\Task\SettingsServiceTask.cpp" />
+    <ClCompile Include="Service\Task\SimpleThreadedServiceTask.cpp" />
+    <ClCompile Include="Service\Task\ThreadedServiceTask.cpp" />
+    <ClCompile Include="Settings\FileServiceSettings.cpp" />
+    <ClCompile Include="Settings\FileTaskSettings.cpp" />
+    <ClCompile Include="Settings\SimpleServiceSettings.cpp" />
+    <ClCompile Include="Settings\XmlFileSettings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ThreadedServiceTask.cpp" />
-    <ClCompile Include="ValidateCreateServiceAction.cpp" />
-    <ClCompile Include="ValidateLogonSIDAction.cpp" />
-    <ClCompile Include="ValidateServiceTaskAction.cpp" />
-    <ClCompile Include="XmlFileSettings.cpp" />
+    <ClCompile Include="User\LogonUserCommand.cpp" />
+    <ClCompile Include="User\LSAGrantPrivilegeCommand.cpp" />
+    <ClCompile Include="User\LSAPolicyCommand.cpp" />
+    <ClCompile Include="User\LSAUserCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="JetServiceSettings.xml" />

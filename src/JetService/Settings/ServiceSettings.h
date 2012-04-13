@@ -30,10 +30,11 @@ public:
   virtual ~ServiceTaskSettings() {}
 
 public:
-
   virtual CString getWorkDir() const = 0;
   virtual CString getProgramPath() const = 0;
   virtual CString getProgramArguments() const = 0;
+
+  virtual long getTerminateWaitTimeoutMilliseconds() const = 0;
 
 };
 

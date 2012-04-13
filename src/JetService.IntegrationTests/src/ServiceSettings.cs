@@ -61,5 +61,23 @@ namespace JetService.IntegrationTests
 
     [XmlElement("arguments")]
     public string Arguments { get; set; }
+
+    [XmlElement("termination")]
+    public TerminationElement Termination { get; set; }
   }
+
+  [XmlRoot("termination")]
+  public class TerminationElement
+  {
+    [XmlAttribute("timeout")]
+    public string Timeout
+    {
+      get { return TerminateTimoeut == null ? null : TerminateTimoeut.Value.ToString(); }
+      set { TerminateTimoeut = value == null ? null : (long?) long.Parse(value); }
+    }
+
+    [XmlIgnore]
+    public long? TerminateTimoeut { get; set; }
+  }
+
 }

@@ -60,10 +60,7 @@ private:
 
 class SimpleServiceTaskSettings : public ServiceTaskSettings {
 public:
-  SimpleServiceTaskSettings(const ServiceSettings* baseSettings, 
-                            const CString& workDir, 
-                            const CString& programPath, 
-                            const CString& arguments);
+  SimpleServiceTaskSettings(const ServiceSettings* baseSettings);
   virtual ~SimpleServiceTaskSettings();
 
 public:
@@ -77,10 +74,20 @@ public:
   virtual CString getProgramPath() const;
   virtual CString getProgramArguments() const;
 
+  virtual long getTerminateWaitTimeoutMilliseconds() const;
+
+public:
+  void setWorkDir(const CString& workdir);
+  void setProgramPath(const CString& path);
+  void setProgramArguments(const CString& argz);
+  void setTerminateWaitTimeoutMillis(long timeout); 
+
+
 private:
   const ServiceSettings* const myBase;
-  const CString myWorkDir;
-  const CString myProgramPath;
-  const CString myArguments;
+  CString myWorkDir;
+  CString myProgramPath;
+  CString myArguments;
+  long myStopTimeout;
 };
 

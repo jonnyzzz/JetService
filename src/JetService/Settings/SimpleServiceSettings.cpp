@@ -111,14 +111,12 @@ void SimpleCreateServiceSettings::setRunAsSystem(bool runAsSystem) {
 
 ///////////////////
 
-SimpleServiceTaskSettings::SimpleServiceTaskSettings(const ServiceSettings* baseSettings, 
-                            const CString& workDir, 
-                            const CString& programPath, 
-                            const CString& arguments)
+SimpleServiceTaskSettings::SimpleServiceTaskSettings(const ServiceSettings* baseSettings)
   : myBase(baseSettings)
-  , myWorkDir(workDir)
-  , myProgramPath(programPath)
-  , myArguments(arguments) {
+  , myWorkDir(L"")
+  , myProgramPath(L"")
+  , myArguments(L"")
+  , myStopTimeout(0) {
 }
 
 SimpleServiceTaskSettings::~SimpleServiceTaskSettings() {
@@ -153,3 +151,22 @@ CString SimpleServiceTaskSettings::getProgramArguments() const {
   return myArguments;
 }
 
+long SimpleServiceTaskSettings::getTerminateWaitTimeoutMilliseconds() const {
+  return myStopTimeout;
+}
+
+void SimpleServiceTaskSettings::setWorkDir(const CString& workdir) {
+  myWorkDir = workdir;
+}
+
+void SimpleServiceTaskSettings::setProgramPath(const CString& path) {
+  myProgramPath = path;
+}
+
+void SimpleServiceTaskSettings::setProgramArguments(const CString& argz) {
+  myArguments = argz;
+}
+
+void SimpleServiceTaskSettings::setTerminateWaitTimeoutMillis(long timeout) {
+  myStopTimeout = max(0, timeout);
+}

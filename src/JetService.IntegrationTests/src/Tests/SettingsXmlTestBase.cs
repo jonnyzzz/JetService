@@ -47,6 +47,7 @@ namespace JetService.IntegrationTests.Tests
                         Arguments = e.Arguments,
                         Program = Path.Combine(dir, e.Program),
                         WorkDir = e.WorkDir == null ? dir : Path.Combine(dir, e.WorkDir),
+                        Termination = e.Termination
                       };
 
 

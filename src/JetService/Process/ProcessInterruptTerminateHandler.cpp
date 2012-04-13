@@ -19,6 +19,7 @@ void ProcessInterruptTerminateHandler::InterruptProcess(PROCESS_INFORMATION& inf
   if (IsInterrupted()) return;
   
 
+  LOG.LogInfo(L"Service process will be terminated");
   //TODO:implement kill process
   if (0 == TerminateProcess(info.hProcess, 42)) {
     LOG.LogWarnFormat(L"Failed to terminate service process. %s", LOG.GetLastError());

@@ -6,13 +6,14 @@
 class ProcessInterruptConsoleControlHandler : public ProcessInterruptTerminateHandler
 {
 public:
-  ProcessInterruptConsoleControlHandler(void);
-  virtual ~ProcessInterruptConsoleControlHandler(void);
+  ProcessInterruptConsoleControlHandler(const ServiceTaskSettings* settings);
+  virtual ~ProcessInterruptConsoleControlHandler();
 
 public:
   virtual void InterruptProcess(PROCESS_INFORMATION& info);
 
 private:
+  const ServiceTaskSettings* const mySettings;
   bool myCtrlEventFailed;
   ULONGLONG myTerminateSent;
 };

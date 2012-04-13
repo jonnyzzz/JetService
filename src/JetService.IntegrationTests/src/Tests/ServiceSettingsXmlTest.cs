@@ -88,8 +88,36 @@ namespace JetService.IntegrationTests.Tests
                        });
     }
 
+    [Test]
+    public void Test_Execute_Test_Exe_Timeout()
+    {
+      DoSettingsTest(new ServiceSettings
+                       {
+                         Name = "jetService-test",
+                         DisplayName = "Jet Service Test",
+                         Description = "This is a jet service",
+                         Execution = new ExecutionElement
+                                       {
+                                         Arguments = null,
+                                         Program = Files.TestProgram,
+                                         WorkDir = null,
+                                         Termination = new TerminationElement
+                                                         {
+                                                           TerminateTimoeut = 42
+                                                         }
+                                       }
+                       });
+    }
+
     protected override void AssertServiceParameters(ServiceSettings s, JResult r, ExecutionElement ee)
     {
+      var stopTimeout = 60*1000*(
+                                  ee.Termination == null
+                                    ? 0
+                                    : ee.Termination.TerminateTimoeut == null
+                                        ? 0
+                                        : ee.Termination.TerminateTimoeut.Value
+                                );
       var lines = new[]
                     {
                       "[j]: ServiceName:" + s.Name + "!~",
@@ -98,6 +126,7 @@ namespace JetService.IntegrationTests.Tests
                       @"[e]: Program:" + ee.Program + "!~",
                       "[e]: Arguments:" + (ee.Arguments ?? "") + "!~",
                       @"[e]: WorkDir:" + ee.WorkDir + "!~",
+                      @"[e]: StopTimeout:" + stopTimeout + "!~",
                     };
 
       foreach (var line in lines)

@@ -28,5 +28,6 @@ int ValidateServiceTaskAction::ExecuteAction(const Argz* argz, const ServiceTask
   LOG.LogInfoFormat(L"[e]: Program:%s!~", settings->getProgramPath());
   LOG.LogInfoFormat(L"[e]: Arguments:%s!~", settings->getProgramArguments());
   LOG.LogInfoFormat(L"[e]: WorkDir:%s!~", settings->getWorkDir());
+  LOG.LogInfoFormat(L"[e]: StopTimeout:%ld!~", settings->getTerminateWaitTimeoutMilliseconds());
   return 0;
 }

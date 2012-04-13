@@ -16,12 +16,12 @@ ProcessCommand::~ProcessCommand(void)
 {
 }
 
-HANDLE ProcessCommand::CreateProcessToken() {
+HANDLE ProcessCommand::CreateProcessStartUserToken() {
   HANDLE threadHandle = GetCurrentProcess();
 
   HANDLE ourToken;  
   if (0 == OpenProcessToken(threadHandle, TOKEN_DUPLICATE , &ourToken)) {
-    LOG.LogErrorFormat(L"Failed to OpenProcessToken. %s", LOG.GetLastError());    
+    LOG.LogDebugFormat(L"Failed to OpenProcessToken. %s", LOG.GetLastError());    
     return NULL;
   }
 
@@ -33,7 +33,7 @@ HANDLE ProcessCommand::CreateProcessToken() {
 		SecurityIdentification, 
     TokenPrimary,
     &startProcessToken)) {
-      LOG.LogErrorFormat(L"Failed to DuplicateTokenEx. %s", LOG.GetLastError());      
+      LOG.LogDebugFormat(L"Failed to DuplicateTokenEx. %s", LOG.GetLastError());      
       return NULL;
   }
 
@@ -58,11 +58,18 @@ STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessInHandle* pstdi
 int ProcessCommand::executeCommand() {
   LOG.LogDebug(L"Starting process");
 
-  HANDLE processToken = CreateProcessToken();
+  HANDLE processToken = CreateProcessStartUserToken();
   if (processToken == NULL) {    
+    LOG.LogErrorFormat(L"Failed to create process start user token"); 
     return 1;
   }
 
+  int ret = executeCommand(processToken);
+  CloseHandle(processToken);
+  return ret;
+}
+
+int ProcessCommand::executeCommand(HANDLE processUserToken) {
   CString commandLine;
   CString workdir = mySettings->getWorkDir();
   commandLine.AppendFormat(L"\"%s\" %s", mySettings->getProgramPath(), mySettings->GetProgramArguments());
@@ -87,7 +94,7 @@ int ProcessCommand::executeCommand() {
 
   LOG.LogDebug(L"Starting process");
   if (0 == CreateProcessAsUser(
-    processToken, 
+    processUserToken, 
     NULL,
     commandLineBuff, //buffer may be changed!
     NULL, //process attributes

@@ -109,6 +109,7 @@
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ServiceProcessCommand.h" />
     <ClInclude Include="Service\Command\CreateServiceCommand.h" />
     <ClInclude Include="Service\Command\DeleteServiceCommand.h" />
     <ClInclude Include="Service\Command\ServiceCommand.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Process\ProcessCommand.cpp" />
     <ClCompile Include="Process\ProcessInterruptConsoleControlHandler.cpp" />
     <ClCompile Include="Process\ProcessInterruptTerminateHandler.cpp" />
+    <ClCompile Include="ServiceProcessCommand.cpp" />
     <ClCompile Include="Service\Command\CreateServiceCommand.cpp" />
     <ClCompile Include="Service\Command\DeleteServiceCommand.cpp" />
     <ClCompile Include="Service\Command\ServiceCommand.cpp" />

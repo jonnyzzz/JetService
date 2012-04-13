@@ -201,6 +201,9 @@
     <ClInclude Include="User\LSAUserCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceProcessCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -366,6 +369,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="User\LSAUserCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceProcessCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,8 +2,7 @@
 #include "ServiceExecuteProcessTask.h"
 #include "ServiceEventContext.h"
 #include "ServiceStatus.h"
-#include "ProcessCommand.h"
-#include "ProcessInterruptTerminateHandler.h"
+#include "ServiceProcessCommand.h"
 #include "Logger.h"
 
 const Logger LOG(L"ServiceExecuteProcessTask");
@@ -22,9 +21,8 @@ void ServiceExecuteProcessTask::ExecuteProcess(const ServiceTaskSettings* settin
   //Hack: we should return running as preparations completed, not at this moment.
   //Hack: ProcessCommand api is neede for it.
   myContext->GetServiceStatus()->SetStatus(StatusValue::RUNNING);
-
-  ProcessInterruptTerminateHandler inthndl;
-  ProcessCommand cmd(settings, &inthndl, this);
+  
+  ServiceProcessCommand cmd(settings, this);
   int ret = cmd.executeCommand();
   if (ret != 0) {
     LOG.LogError(L"Failed to start process");

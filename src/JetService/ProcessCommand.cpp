@@ -115,10 +115,26 @@ int ProcessCommand::DoStartProcessAsUser(HANDLE processUserToken) {
 
   //closee handles as we do not like to process process output
   stdInHandle.CloseHostProcessHandle();
- 
-  LogPipeReader outputReader(L"stdout");
-  PipeReader outputRedirect(&outputReader, stdOutHandle.GetHostProcessHandle(), this);
 
+  int ret = WaitForProcessAndCaptureOutput(&stdOutHandle, processInfo);
+
+  CloseHandle(processInfo.hProcess);
+  CloseHandle(processInfo.hThread);  
+  return ret;
+}
+
+int ProcessCommand::WaitForProcessAndCaptureOutput(ChildProcessOutHandle* stdOutHandle, PROCESS_INFORMATION& processInfo) {
+  LogPipeReader outputReader(L"stdout");
+  PipeReader outputRedirect(&outputReader, stdOutHandle->GetHostProcessHandle(), this);
+
+  int ret = WaitForProcessToExit(processInfo);
+
+  outputRedirect.WaitForExit();
+  stdOutHandle->CloseHostProcessHandle();
+  return ret;
+}
+
+int ProcessCommand::WaitForProcessToExit(PROCESS_INFORMATION& processInfo) {
   while(true) {    
     if (IsInterrupted()) {
       LOG.LogInfo(L"Terminating process. Interrupted flag is set");
@@ -140,11 +156,8 @@ int ProcessCommand::DoStartProcessAsUser(HANDLE processUserToken) {
   } else {
     LOG.LogInfoFormat(L"Failed to get process exited code");
   }
-
-  CloseHandle(processInfo.hProcess);
-  CloseHandle(processInfo.hThread);
   
-  outputRedirect.WaitForExit();
+  ///we ignore original exit code for now
   return 0;
 }
 

@@ -17,7 +17,8 @@ public:
 
 private:  
   int DoStartProcessAsUser(HANDLE processUserHandle);
-
+  int WaitForProcessAndCaptureOutput(ChildProcessOutHandle* handle, PROCESS_INFORMATION& processInfo);
+  int WaitForProcessToExit(PROCESS_INFORMATION& processInfo);
 
 
   HANDLE CreateProcessStartUserToken();

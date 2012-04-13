@@ -45,10 +45,13 @@ void PipeReader::WaitForExit() {
     return;
   }
   //Thread may have beed locked on IO
+
   CancelIo(myPipe);
   CancelSynchronousIo(myThread);
-  if (WAIT_OBJECT_0 != WaitForSingleObject(myThread, 1500)) {
+  while (WAIT_OBJECT_0 != WaitForSingleObject(myThread, 1500)) {
     LOG.LogWarn(L"Failed to wait for pipe reader thread to exit");
+    CancelIo(myPipe);
+    CancelSynchronousIo(myThread);
   }
 }
 

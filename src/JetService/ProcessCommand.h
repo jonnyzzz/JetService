@@ -7,6 +7,10 @@
 
 class ProcessInterruptHandler {
 public:
+  ProcessInterruptHandler() {}
+  virtual ~ProcessInterruptHandler() {}
+
+public:
   ///ProcessCommand will call the method
   ///on and on while process is still running 
   ///after interrupt flag was set. 

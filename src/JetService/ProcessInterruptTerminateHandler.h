@@ -7,7 +7,7 @@ class ProcessInterruptTerminateHandler : public ProcessInterruptHandler, private
 {
 public:
   ProcessInterruptTerminateHandler(void);
-  ~ProcessInterruptTerminateHandler(void);
+  virtual ~ProcessInterruptTerminateHandler(void);
 
 public:
   virtual void InterruptProcess(PROCESS_INFORMATION& info);

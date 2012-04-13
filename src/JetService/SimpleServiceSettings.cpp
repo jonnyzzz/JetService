@@ -149,7 +149,7 @@ CString SimpleServiceTaskSettings::getProgramPath() const {
   return myProgramPath;
 }
 
-CString SimpleServiceTaskSettings::GetProgramArguments() const {
+CString SimpleServiceTaskSettings::getProgramArguments() const {
   return myArguments;
 }
 

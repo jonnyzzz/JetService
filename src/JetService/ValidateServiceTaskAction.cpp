@@ -26,7 +26,7 @@ int ValidateServiceTaskAction::ExecuteAction(const Argz* argz, const ServiceTask
   LOG.LogInfoFormat(L"[j]: ServiceDisplayName:%s!~", settings->getServiceDisplayName());
   LOG.LogInfoFormat(L"[j]: ServiceDescription:%s!~", settings->getServiceDescription());
   LOG.LogInfoFormat(L"[e]: Program:%s!~", settings->getProgramPath());
-  LOG.LogInfoFormat(L"[e]: Arguments:%s!~", settings->GetProgramArguments());
+  LOG.LogInfoFormat(L"[e]: Arguments:%s!~", settings->getProgramArguments());
   LOG.LogInfoFormat(L"[e]: WorkDir:%s!~", settings->getWorkDir());
   return 0;
 }

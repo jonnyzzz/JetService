@@ -31,7 +31,7 @@ int ValidateCreateServiceAction::ExecuteAction(const Argz* argz, const CreateSer
     LOG.LogInfoFormat(L"[j]: Password:%s!~", settings->getPassword());
   }
   LOG.LogInfoFormat(L"[e]: Program:%s!~", taskSettings->getProgramPath());
-  LOG.LogInfoFormat(L"[e]: Arguments:%s!~", taskSettings->GetProgramArguments());
+  LOG.LogInfoFormat(L"[e]: Arguments:%s!~", taskSettings->getProgramArguments());
   LOG.LogInfoFormat(L"[e]: WorkDir:%s!~", taskSettings->getWorkDir());
   return 0;
 }

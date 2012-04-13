@@ -33,6 +33,7 @@ public:
 
   virtual CString getWorkDir() const = 0;
   virtual CString getProgramPath() const = 0;
-  virtual CString GetProgramArguments() const = 0;
+  virtual CString getProgramArguments() const = 0;
+
 };
 

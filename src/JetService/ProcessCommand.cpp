@@ -73,7 +73,7 @@ int ProcessCommand::executeCommand() {
 int ProcessCommand::DoStartProcessAsUser(HANDLE processUserToken) {
   CString commandLine;
   CString workdir = mySettings->getWorkDir();
-  commandLine.AppendFormat(L"\"%s\" %s", mySettings->getProgramPath(), mySettings->GetProgramArguments());
+  commandLine.AppendFormat(L"\"%s\" %s", mySettings->getProgramPath(), mySettings->getProgramArguments());
   LOG.LogDebugFormat(L"Starting process: %s (in %s)", commandLine, workdir);
 
   const int sz = 65535;

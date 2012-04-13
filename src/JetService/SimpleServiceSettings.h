@@ -75,7 +75,7 @@ public:
 
   virtual CString getWorkDir() const;
   virtual CString getProgramPath() const;
-  virtual CString GetProgramArguments() const;
+  virtual CString getProgramArguments() const;
 
 private:
   const ServiceSettings* const myBase;

@@ -91,7 +91,7 @@ DWORD ServiceStatus::ThreadMain() {
     const StatusValue* nextValue = myCurrentStatus;    
 
     UpdateStatus(&status, nextValue);
-    LOG.LogInfoFormat(L"Call SetSerciceStatus for: %s", nextValue->GetName());    
+    LOG.LogDebugFormat(L"Call SetServiceStatus called for: %s", nextValue->GetName());    
     if (0 == SetServiceStatus(myStatusHandle, &status)) {
       LOG.LogWarnFormat(L"Failed to set service status: %s", LOG.GetLastError());
     }

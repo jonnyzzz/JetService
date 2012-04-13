@@ -42,8 +42,9 @@ int CreateServiceAction::ExecuteAction(const Argz* az, const CreateServiceSettin
     if (ret != 0) return ret;
   }
 
-  //give rights for the user to start/stop service
-  {
+
+  if (!settings->runAsSystem()) {
+    //give rights for the user to start/stop service
     if (az->GetBooleanArgument(L"changeDACL", true)) {
       ServiceGrantDACLCommand cmd(settings);
       int ret = static_cast<Command*>(&cmd)->executeCommand();

@@ -3,31 +3,37 @@ using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
 {
-  [TestFixture]
-  public class RunUnderAdminUserTest : RunUnderServiceTestBase
+  public abstract class RunUnderUserTestBase : RunUnderServiceTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
+    protected abstract UserGroup UserGroup { get; }
+
+    protected sealed override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
     {
-      UserManagement.WithNewUser(UserGroup.Admin,
+      UserManagement.WithNewUser(UserGroup,
                                  u => InstallRemoveService(
                                    Stubs.A("/user=" + u.UserName, "/password=" + u.Password),
                                    testAction,
                                    argz,
                                    onInstalled));
     }
+
   }
 
   [TestFixture]
-  public class RunUnderUserUserTest : RunUnderServiceTestBase
+  public class RunUnderAdminUserTest : RunUnderUserTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
+    protected override UserGroup UserGroup
     {
-      UserManagement.WithNewUser(UserGroup.User,
-                                 u => InstallRemoveService(
-                                   Stubs.A("/user=" + u.UserName, "/password=" + u.Password),
-                                   testAction,
-                                   argz,
-                                   onInstalled));
+      get { return UserGroup.Admin; }
+    }
+  }
+
+  [TestFixture]
+  public class RunUnderUserUserTest : RunUnderUserTestBase
+  {
+    protected override UserGroup UserGroup
+    {
+      get { return UserGroup.User; }
     }
   }
 }

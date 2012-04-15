@@ -23,9 +23,9 @@ void ServiceExecuteProcessTask::ExecuteProcess(const ServiceTaskSettings* settin
   myContext->GetServiceStatus()->SetStatus(StatusValue::RUNNING);
   
   ServiceProcessCommand cmd(settings, this);
-  int ret = cmd.executeCommand();
+  int ret = static_cast<Command*>(&cmd)->executeCommand();
   if (ret != 0) {
-    LOG.LogError(L"Failed to start process");
+    LOG.LogErrorFormat(L"Failed to start process: %d", ret);
     //stopped will be called
   }
 }

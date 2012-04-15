@@ -18,6 +18,8 @@ ProcessInterruptConsoleControlHandler::~ProcessInterruptConsoleControlHandler(vo
 }
 
 void ProcessInterruptConsoleControlHandler::InterruptProcess(PROCESS_INFORMATION& info) {
+  LOG.LogDebugFormat(L"Start interrupting service process");
+
   if (myCtrlEventFailed) {
     ProcessInterruptTerminateHandler::InterruptProcess(info);
     return;

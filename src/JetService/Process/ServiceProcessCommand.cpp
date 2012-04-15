@@ -19,8 +19,12 @@ ServiceProcessCommand::~ServiceProcessCommand(void)
 }
 
 
-int ServiceProcessCommand::executeCommand() {
-  InterruptHolder interrupt;
+int ServiceProcessCommand::executeCommand() {  
+  LOG.LogDebug(L"starting process");
+
+  long l =  mySettings->getTerminateWaitTimeoutMilliseconds();
+  LOG.LogDebugFormat(L"stop wait timeout: %ld", l);
+
   ProcessInterruptTerminateHandler inthndl;
   ProcessInterruptConsoleControlHandler intSignal(mySettings);
 
@@ -29,11 +33,12 @@ int ServiceProcessCommand::executeCommand() {
     LOG.LogDebug(L"Termination wait timeout is <= 0. Process will be terminated on service exit");
     handler = &inthndl;
   } else {
-    LOG.LogDebugFormat(L"Termination wait timeout is %s milliseconds. Process will be terminated via Console Control Event first.");
+    LOG.LogDebugFormat(L"Termination wait timeout is %ld milliseconds.", mySettings->getTerminateWaitTimeoutMilliseconds());
+    LOG.LogDebug(      L"Process will be terminated via Console Control Event first.");
     handler = &intSignal;
   }
 
-  ProcessCommand cmd(mySettings, handler, &interrupt);
+  ProcessCommand cmd(mySettings, handler, this);
   return static_cast<Command*>(&cmd)->executeCommand();
 }
 

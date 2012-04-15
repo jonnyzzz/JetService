@@ -40,14 +40,16 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
 
   int ret = GetBaseDirectory(baseDir);
   if (ret != 0) return ret;
-  ret = parseProgramDir(baseDir, execnode, &settings);
+  ret = parseProgramDir(baseDir, execnode, &settings, baseDir);
   if (ret != 0) return ret;
   ret = parseProgramPath(baseDir, execnode, &settings);
   if (ret != 0) return ret;
   ret = parseProgramArgs(baseDir, execnode, &settings);
   if (ret != 0) return ret;
-  ret = parseProgramStopTimeout(execnode, &settings);
+  ret = parseProgramStopMethod(baseDir, execnode, &settings);
   if (ret != 0) return ret;
+
+  
 
   const ServiceTaskSettings* pSettings = &settings;
 
@@ -59,16 +61,40 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
   return executeCommand(pSettings);
 }
 
-int FileTaskSettings::parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings) {
-  //set default timeout
+int FileTaskSettings::parseProgramStopMethod(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings) {
+  //defaults
   settings->setTerminateWaitTimeoutMillis(2 * 60 * 1000);
+  settings->setStopCommand(NULL);
 
-  xml_node<TCHAR>* node = execution->first_node(L"termination");
-  if (node == NULL) {
-    LOG.LogDebug(L"No termination action is specified in <jetservice>/<execution>/<termination>. Will use default termination of 2 minutes");    
+  xml_node<TCHAR>* termination = execution->first_node(L"termination");
+  if (termination == NULL) {
+    LOG.LogDebug(L"No termination action is specified in <jetservice>/<execution>/<termination>. Will use default termination");    
     return 0;
   }
 
+  int ret = parseProgramStopTimeout(termination, settings);
+  if (ret != 0) return ret;
+
+  xml_node<TCHAR>* stopExe = termination->first_node(L"execution");
+  if (stopExe == NULL) {
+    LOG.LogDebug(L"No stop command is specified in <jetservice>/<execution>/<termination>/<execution>");
+    return 0;
+  }
+
+  SimpleExecutionSettings stopSettings;
+  ret = parseProgramPath(baseDir, stopExe, &stopSettings);
+  if (ret != 0) return ret;
+  ret = parseProgramDir(baseDir, stopExe, &stopSettings, settings->getWorkDir());
+  if (ret != 0) return ret;
+  ret = parseProgramArgs(baseDir, stopExe, &stopSettings);
+  if (ret != 0) return ret;
+
+  settings->setStopCommand(&stopSettings);
+
+  return 0;
+}
+
+int FileTaskSettings::parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* node, SimpleServiceTaskSettings* settings) {
   xml_attribute<TCHAR>* attr = node->first_attribute(L"timeout");
   if (attr == NULL) {
     LOG.LogDebug(L"No termination timeout is specified in <jetservice>/<execution>/<termination> 'timeout' attribute. Will use default termination of 2 minutes");
@@ -104,7 +130,7 @@ int FileTaskSettings::parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* executi
 }
 
 
-int FileTaskSettings::parseProgramPath(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleServiceTaskSettings* settings) {  
+int FileTaskSettings::parseProgramPath(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleExecutionSettings* settings) {  
   CString program = L"";
 
   xml_node<TCHAR>* nameNode = execnode->first_node(L"program");
@@ -166,7 +192,7 @@ int FileTaskSettings::parseProgramPath(CString baseDir, rapidxml::xml_node<TCHAR
   return 0;
 }
 
-int FileTaskSettings::parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleServiceTaskSettings* settings) {
+int FileTaskSettings::parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleExecutionSettings* settings) {
   CString argz = L"";
   
   xml_node<TCHAR>* nameNode = execnode->first_node(L"arguments");
@@ -181,52 +207,50 @@ int FileTaskSettings::parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR
   return 0;
 }
 
-int FileTaskSettings::parseProgramDir(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleServiceTaskSettings* settings) {    
-  CString workDir = L"";
+int FileTaskSettings::parseProgramDir(CString baseDir, rapidxml::xml_node<TCHAR>* execnode, SimpleExecutionSettings* settings, CString def) {    
+  CString workDir;
 
   xml_node<TCHAR>* nameNode = execnode->first_node(L"workdir");
   if (nameNode == NULL) {
     LOG.LogDebug(L"Failed to find <jetservice>/<execution>/<workdir> element in settings");      
+    workDir = def;
   } else {
     workDir = nodeText(nameNode);
     LOG.LogDebugFormat(L"Program work dir from settings:   %s", workDir);
-  }
+  
+    if (workDir.Find(L"\\\\") == 0) {
+      LOG.LogErrorFormat(L"Program path may not refer to a network share");
+      return 1;
+    }
+    //remove slashes to make Combine work right.
+    workDir = workDir.TrimLeft(L'\\').TrimLeft(L'/');
 
+    const int sz = max(MAX_PATH + 1, 65535);
+    TCHAR buff[sz+1];
+    if(NULL == PathCombine(buff, baseDir, workDir)) {
+      LOG.LogErrorFormat(L"Failed to resolve workdir path: %s", workDir);
+      return 1;
+    }
+    workDir = buff;
+    *buff = L'\0';
+    int n = GetFullPathName(workDir, sz, buff, NULL);
+    if (n <= 0 || n >= sz) {
+      LOG.LogErrorFormat(L"Failed to resolve workdir full path: %s", workDir);
+      return 1;
+    }
+    workDir = buff;
+    LOG.LogDebugFormat(L"Resolved workdir path: %s", workDir);
 
-  if (workDir.Find(L"\\\\") == 0) {
-    LOG.LogErrorFormat(L"Program path may not refer to a network share");
-    return 1;
-  }
-  //remove slashes to make Combine work right.
-  workDir = workDir.TrimLeft(L'\\').TrimLeft(L'/');
-
-  const int sz = max(MAX_PATH + 1, 65535);
-  TCHAR buff[sz+1];
-  if(NULL == PathCombine(buff, baseDir, workDir)) {
-    LOG.LogErrorFormat(L"Failed to resolve workdir path: %s", workDir);
-    return 1;
-  }
-  workDir = buff;
-  *buff = L'\0';
-  int n = GetFullPathName(workDir, sz, buff, NULL);
-  if (n <= 0 || n >= sz) {
-    LOG.LogErrorFormat(L"Failed to resolve workdir full path: %s", workDir);
-    return 1;
-  }
-  workDir = buff;
-  LOG.LogDebugFormat(L"Resolved workdir path: %s", workDir);
-
-  DWORD attrs = GetFileAttributes(workDir);
-  if (attrs == INVALID_FILE_ATTRIBUTES || (attrs & FILE_ATTRIBUTE_DIRECTORY) == 0) {
-    LOG.LogErrorFormat(L"Workdir must exist and be directory: %s", workDir);
-    return 1;
+    DWORD attrs = GetFileAttributes(workDir);
+    if (attrs == INVALID_FILE_ATTRIBUTES || (attrs & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+      LOG.LogErrorFormat(L"Workdir must exist and be directory: %s", workDir);
+      return 1;
+    }
   }
 
   settings->setWorkDir(workDir);
   return 0;
 }
-
-
 
 int FileTaskSettings::GetBaseDirectory(CString& baseFile) {
   CString settings = myRunSettings->getServiceTaskSettingsPath();

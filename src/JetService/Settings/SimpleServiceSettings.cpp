@@ -110,13 +110,45 @@ void SimpleCreateServiceSettings::setRunAsSystem(bool runAsSystem) {
 }
 
 ///////////////////
+SimpleExecutionSettings::SimpleExecutionSettings()
+  : myWorkDir(L"")
+  , myProgramPath(L"")
+  , myArguments(L"") {
+}
+
+
+SimpleExecutionSettings::~SimpleExecutionSettings() {
+}
+
+CString SimpleExecutionSettings::getWorkDir() const {
+  return myWorkDir;
+}
+
+CString SimpleExecutionSettings::getProgramPath() const {
+  return myProgramPath;
+}
+
+CString SimpleExecutionSettings::getProgramArguments() const {
+  return myArguments;
+}
+void SimpleExecutionSettings::setWorkDir(const CString& workdir) {
+  myWorkDir = workdir;
+}
+
+void SimpleExecutionSettings::setProgramPath(const CString& path) {
+  myProgramPath = path;
+}
+
+void SimpleExecutionSettings::setProgramArguments(const CString& argz) {
+  myArguments = argz;
+}
+
+///////////////////
 
 SimpleServiceTaskSettings::SimpleServiceTaskSettings(const ServiceSettings* baseSettings)
   : myBase(baseSettings)
-  , myWorkDir(L"")
-  , myProgramPath(L"")
-  , myArguments(L"")
-  , myStopTimeout(0) {
+  , myStopTimeout(0)  
+  , myUseStopCommand(false){
 }
 
 SimpleServiceTaskSettings::~SimpleServiceTaskSettings() {
@@ -140,31 +172,34 @@ CString SimpleServiceTaskSettings::getServiceTaskSettingsPath() const {
 }
 
 CString SimpleServiceTaskSettings::getWorkDir() const {
-  return myWorkDir;
+  return SimpleExecutionSettings::getWorkDir();
 }
 
 CString SimpleServiceTaskSettings::getProgramPath() const {
-  return myProgramPath;
+  return SimpleExecutionSettings::getProgramPath();
 }
 
 CString SimpleServiceTaskSettings::getProgramArguments() const {
-  return myArguments;
+  return SimpleExecutionSettings::getProgramArguments();
 }
 
 long SimpleServiceTaskSettings::getTerminateWaitTimeoutMilliseconds() const {
   return myStopTimeout;
 }
 
-void SimpleServiceTaskSettings::setWorkDir(const CString& workdir) {
-  myWorkDir = workdir;
+const ExecutionSettings* SimpleServiceTaskSettings::getStopCommand() const {
+  return myUseStopCommand ? &myStopCommand : NULL;
 }
 
-void SimpleServiceTaskSettings::setProgramPath(const CString& path) {
-  myProgramPath = path;
-}
-
-void SimpleServiceTaskSettings::setProgramArguments(const CString& argz) {
-  myArguments = argz;
+void SimpleServiceTaskSettings::setStopCommand(const ExecutionSettings* command) {
+  if (command == NULL) {
+    myUseStopCommand = false;
+  } else {
+    myUseStopCommand = true;
+    myStopCommand.setProgramArguments(command->getProgramArguments());
+    myStopCommand.setProgramPath(command->getProgramPath());
+    myStopCommand.setWorkDir(command->getWorkDir());
+  }
 }
 
 void SimpleServiceTaskSettings::setTerminateWaitTimeoutMillis(long timeout) {

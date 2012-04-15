@@ -6,7 +6,7 @@
 
 const Logger LOG(L"ProcessCommand");
 
-ProcessCommand::ProcessCommand(const ServiceTaskSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt)
+ProcessCommand::ProcessCommand(const ExecutionSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt)
   : mySettings(settings)
   , InterruptHolder(interrupt)
   , myInterruptHandler(handler)

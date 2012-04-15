@@ -2,6 +2,7 @@
 #include "ServiceProcessCommand.h"
 #include "ProcessInterruptTerminateHandler.h"
 #include "ProcessInterruptConsoleControlHandler.h"
+#include "ProcessInterruptCallProcessHandler.h"
 #include "Logger.h"
 
 const Logger LOG(L"ServiceProcessCommand");
@@ -27,9 +28,13 @@ int ServiceProcessCommand::executeCommand() {
 
   ProcessInterruptTerminateHandler inthndl;
   ProcessInterruptConsoleControlHandler intSignal(mySettings);
+  ProcessInterruptCallProcessHandler stopAction(mySettings);
 
   ProcessInterruptHandler* handler;
-  if (mySettings->getTerminateWaitTimeoutMilliseconds() <= 0) {
+  if (mySettings->getStopCommand() != NULL) {    
+    LOG.LogDebugFormat(L"Will call stop command. Termination wait timeout is %ld milliseconds.", mySettings->getTerminateWaitTimeoutMilliseconds());
+    handler = &stopAction;
+  } else if (mySettings->getTerminateWaitTimeoutMilliseconds() <= 0) {
     LOG.LogDebug(L"Termination wait timeout is <= 0. Process will be terminated on service exit");
     handler = &inthndl;
   } else {

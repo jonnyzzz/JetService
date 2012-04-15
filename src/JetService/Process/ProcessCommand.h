@@ -21,7 +21,7 @@ public:
 class ProcessCommand : public Command, public InterruptHolder
 {
 public:
-  ProcessCommand(const ServiceTaskSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt = NULL);
+  ProcessCommand(const ExecutionSettings* settings, ProcessInterruptHandler* handler, InterruptHolder* interrupt = NULL);
   virtual ~ProcessCommand(void);
 
 public:
@@ -37,7 +37,7 @@ private:
   STARTUPINFO CreateProcessStartupInfo(ChildProcessInHandle* pstdin, ChildProcessOutHandle* pout);
 
 private:
-  const ServiceTaskSettings* const mySettings;  
+  const ExecutionSettings* const mySettings;  
   ProcessInterruptHandler* const myInterruptHandler;
 };
 

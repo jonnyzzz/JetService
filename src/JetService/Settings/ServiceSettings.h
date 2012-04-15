@@ -24,17 +24,24 @@ public:
   virtual CString getServiceExecutable() const = 0;
 };
 
-
-class ServiceTaskSettings : public ServiceSettings {
+class ExecutionSettings {
 public:
-  virtual ~ServiceTaskSettings() {}
+  virtual ~ExecutionSettings() {}
 
 public:
   virtual CString getWorkDir() const = 0;
   virtual CString getProgramPath() const = 0;
   virtual CString getProgramArguments() const = 0;
-
-  virtual long getTerminateWaitTimeoutMilliseconds() const = 0;
-
 };
+
+
+class ServiceTaskSettings : public ServiceSettings, public ExecutionSettings {
+public:
+  virtual ~ServiceTaskSettings() {}
+
+public:
+  virtual long getTerminateWaitTimeoutMilliseconds() const = 0;
+  virtual const ExecutionSettings* getStopCommand() const = 0;
+};
+
 

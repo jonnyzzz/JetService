@@ -57,14 +57,33 @@ private:
   bool myRunAsSystem;
 };
 
+class SimpleExecutionSettings : public ExecutionSettings {
+public:
+  SimpleExecutionSettings();  
+  virtual ~SimpleExecutionSettings();
 
-class SimpleServiceTaskSettings : public ServiceTaskSettings {
+public:
+  virtual CString getWorkDir() const;
+  virtual CString getProgramPath() const;
+  virtual CString getProgramArguments() const;
+
+public:
+  void setWorkDir(const CString& workdir);
+  void setProgramPath(const CString& path);
+  void setProgramArguments(const CString& argz);
+
+private:
+  CString myWorkDir;
+  CString myProgramPath;
+  CString myArguments;
+};
+
+class SimpleServiceTaskSettings : public ServiceTaskSettings, public SimpleExecutionSettings {
 public:
   SimpleServiceTaskSettings(const ServiceSettings* baseSettings);
   virtual ~SimpleServiceTaskSettings();
 
-public:
- 
+public: 
   virtual CString getServiceName() const;
   virtual CString getServiceDisplayName() const;
   virtual CString getServiceDescription() const;
@@ -75,19 +94,16 @@ public:
   virtual CString getProgramArguments() const;
 
   virtual long getTerminateWaitTimeoutMilliseconds() const;
+  virtual const ExecutionSettings* getStopCommand() const;
 
 public:
-  void setWorkDir(const CString& workdir);
-  void setProgramPath(const CString& path);
-  void setProgramArguments(const CString& argz);
   void setTerminateWaitTimeoutMillis(long timeout); 
-
+  void setStopCommand(const ExecutionSettings* command);
 
 private:
   const ServiceSettings* const myBase;
-  CString myWorkDir;
-  CString myProgramPath;
-  CString myArguments;
+  SimpleExecutionSettings myStopCommand;
+  bool myUseStopCommand;
   long myStopTimeout;
 };
 

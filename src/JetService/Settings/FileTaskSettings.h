@@ -4,6 +4,7 @@
 #include "ServiceSettings.h"
 
 class SimpleServiceTaskSettings;
+class SimpleExecutionSettings;
 
 class FileTaskSettings : public XmlFileSettings
 {
@@ -20,10 +21,12 @@ public:
 private:
   int GetBaseDirectory(CString& baseFile);
 
-  int parseProgramPath(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
-  int parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
-  int parseProgramDir(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
-  int parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
+  int parseProgramPath(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleExecutionSettings* settings);
+  int parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleExecutionSettings* settings);
+  int parseProgramDir(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleExecutionSettings* settings, CString def);
+  
+  int parseProgramStopMethod(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
+  int parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* termination, SimpleServiceTaskSettings* settings);
 
 private:
   const ServiceSettings* const myRunSettings;

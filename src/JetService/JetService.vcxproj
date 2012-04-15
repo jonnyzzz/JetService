@@ -97,6 +97,7 @@
     <ClInclude Include="InterruptHolder.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\RollFileWriter.h" />
+    <ClInclude Include="Process\ProcessInterruptCallProcessHandler.h" />
     <ClInclude Include="Process\JetConsoleControlHandler.h" />
     <ClInclude Include="Process\LogPipeReader.h" />
     <ClInclude Include="Process\Pipe.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="JetService.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Logger\RollFileWriter.cpp" />
+    <ClCompile Include="Process\ProcessInterruptCallProcessHandler.cpp" />
     <ClCompile Include="Process\LogPipeReader.cpp" />
     <ClCompile Include="Process\Pipe.cpp" />
     <ClCompile Include="Process\PipeReader.cpp" />

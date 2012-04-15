@@ -6,9 +6,7 @@ const Logger LOG(L"ProcessInterruptConsoleControlHandler");
 
 
 ProcessInterruptConsoleControlHandler::ProcessInterruptConsoleControlHandler(const ServiceTaskSettings* settings)
-  : myCtrlEventFailed(false)
-  , myTerminateSent(0)
-  , mySettings(settings)
+  : ProcessInterruptTimeoutHandler(settings)
 {
 }
 
@@ -17,40 +15,13 @@ ProcessInterruptConsoleControlHandler::~ProcessInterruptConsoleControlHandler(vo
 {
 }
 
-void ProcessInterruptConsoleControlHandler::InterruptProcess(PROCESS_INFORMATION& info) {
-  if (myCtrlEventFailed) {
-    ProcessInterruptTerminateHandler::InterruptProcess(info);
-    return;
+
+bool ProcessInterruptConsoleControlHandler::ExecuteInterruptAction(PROCESS_INFORMATION& info) {
+  LOG.LogInfo(L"Sending CRTL+C to the service process");    
+  if (0 == GenerateConsoleCtrlEvent(CTRL_C_EVENT, info.dwProcessId)) {
+    LOG.LogWarnFormat(L"Failed to stop process with CTRL+C. %s", LOG.GetLastError());
+    return false;
   }
-
-  if (myTerminateSent == 0) {
-    LOG.LogInfo(L"Sending CRTL+C to the service process");    
-    if (0 == GenerateConsoleCtrlEvent(CTRL_C_EVENT, info.dwProcessId)) {
-      myCtrlEventFailed = true;
-      LOG.LogWarnFormat(L"Failed to stop process with CTRL+C. %s", LOG.GetLastError());
-      return;
-    }
-
-    myTerminateSent = GetTickCount();
-    return;
-  } 
-
-  ULONGLONG nowTicks = GetTickCount();
-  if (nowTicks < myTerminateSent) {
-    //workaround for 49.7 days running windows
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/ms724408(v=vs.85).aspx
-    myTerminateSent = nowTicks;
-    return;
-  } 
-  
-  if (myTerminateSent + mySettings->getTerminateWaitTimeoutMilliseconds() < nowTicks) {
-    //timeout
-    LOG.LogWarn(L"Failed to wait for process to exit by CTRL+C");
-    myCtrlEventFailed = true;    
-    return;
-  } 
-
-
-  LOG.LogDebugFormat(L"Waiting for process to exit by CTRL+C");
+  return true;
 }
 

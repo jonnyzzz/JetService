@@ -8,10 +8,7 @@ const Logger LOG(L"ProcessInterruptCallProcessHandler");
 
 
 ProcessInterruptCallProcessHandler::ProcessInterruptCallProcessHandler(const ServiceTaskSettings* settings)
-  : mySettings(settings)
-  , InterruptHolder()
-  , myUseKill(false)
-  , myStopCommandCalled(false)
+  : ProcessInterruptTimeoutHandler(settings)
 {
 }
 
@@ -21,23 +18,18 @@ ProcessInterruptCallProcessHandler::~ProcessInterruptCallProcessHandler()
 }
 
 
-
-
-void ProcessInterruptCallProcessHandler::InterruptProcess(PROCESS_INFORMATION& info) {
+bool ProcessInterruptCallProcessHandler::ExecuteInterruptAction(PROCESS_INFORMATION& info) {
   const ExecutionSettings* stop = mySettings->getStopCommand();
-  if (stop == NULL || myUseKill) {
-    myServiceInterrupt.InterruptProcess(info);
-    return;
-  }
+  if (stop == NULL) return false;
 
-  if (myStopCommandCalled) {
-    LOG.LogDebug(L"Stop command completed. Process should exit soon");
-    return;
-  }
-
-  myStopCommandCalled = true;
-  LOG.LogDebug(L"Executing stop command");
-  ProcessCommand cmd(stop, &myStopInterrupt, this);
+  LOG.LogDebug(L"Executing stop command...");
+  ProcessCommand cmd(stop, &myStopInterruptAction, &myStopInterruptFlag);
   static_cast<Command*>(&cmd)->executeCommand();
+}
+
+
+void ProcessInterruptCallProcessHandler::OnTimeoutFailed(PROCESS_INFORMATION& info) {
+  myStopInterruptFlag.Interrupt();
+  this->ProcessInterruptTimeoutHandler::OnTimeoutFailed(info);
 }
 

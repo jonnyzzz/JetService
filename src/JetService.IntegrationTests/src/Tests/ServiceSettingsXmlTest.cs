@@ -216,8 +216,6 @@ namespace JetService.IntegrationTests.Tests
                          });
     }
 
-
-
     protected override void AssertServiceParameters(ServiceSettings s, JResult r, ExecutionElement ee)
     {
       var stopTimeout = 60*1000*ee.Termination.TerminateTimoeut;                                

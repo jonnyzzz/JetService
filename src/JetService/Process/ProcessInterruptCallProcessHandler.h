@@ -3,28 +3,20 @@
 #include "ProcessCommand.h"
 #include "ServiceSettings.h"
 #include "ProcessInterruptTerminateHandler.h"
+#include "ProcessInterruptTimeoutHandler.h"
 
-class ProcessInterruptCallProcessHandler : public ProcessInterruptHandler, private InterruptHolder
+class ProcessInterruptCallProcessHandler : public ProcessInterruptTimeoutHandler
 {
 public:
   ProcessInterruptCallProcessHandler(const ServiceTaskSettings* settings);
   virtual ~ProcessInterruptCallProcessHandler();
 
 public: 
-  virtual void InterruptProcess(PROCESS_INFORMATION& info);
-
-public:
-  DWORD ThreadProcess();
+  virtual bool ExecuteInterruptAction(PROCESS_INFORMATION& info);
+  virtual void OnTimeoutFailed(PROCESS_INFORMATION& info);
 
 private:
-  bool myUseKill;
-  bool myStopCommandCalled;
-
-  ProcessInterruptTerminateHandler myServiceInterrupt;
-  ProcessInterruptTerminateHandler myStopInterrupt;
-  const ServiceTaskSettings* const mySettings;
-
-  HANDLE myStopProcessThread;
-  DWORD myStopProcessThreadId;
+  ProcessInterruptTerminateHandler myStopInterruptAction;
+  InterruptHolder myStopInterruptFlag;
 };
 

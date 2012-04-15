@@ -161,9 +161,9 @@ namespace JetService.IntegrationTests.Tests
 
     private static ServiceSettings CreateSettingsXml(string dir, 
       TestAction action, GenerateServiceExecutableArguments testProgramArguments, 
-      TestAction? stopAction, GenerateServiceExecutableArguments stopProgramArguments)
+      TestAction? stopAction, GenerateServiceExecutableArguments stopProgramArguments,
+      double? timeout = 0.1707)
     {
-
       var hash = (int) (DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds%9999;
       string serviceName = "jetService-test-" + hash;
       ExecutionBase stopActionEl = null;
@@ -180,7 +180,7 @@ namespace JetService.IntegrationTests.Tests
                                           {                                            
                                             Termination = new TerminationElement
                                                             {
-                                                              TerminateTimoeut = 1,
+                                                              Timeout = timeout == null ? null : timeout.ToString().Replace(",", "."),
                                                               Execution = stopActionEl
                                                             }
                                           }

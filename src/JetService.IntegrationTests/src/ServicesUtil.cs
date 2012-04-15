@@ -83,6 +83,11 @@ namespace JetService.IntegrationTests
       return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => x.Status == "Running");
     }
 
+    public static bool IsServiceStopped(ServiceSettings s)
+    {
+      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => x.Status == "Stopped");
+    }
+
     public static bool IsServiceInstalled(ServiceSettings settingsXml)
     {
       return ListServices().Any(x => x.IsNamed(settingsXml.Name));

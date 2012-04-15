@@ -26,7 +26,7 @@ namespace JetService.IntegrationTests.Executable
   {
     private static void WaitServiceToStart()
     {
-      Thread.Sleep(TimeSpan.FromSeconds(10.5));
+      Thread.Sleep(TimeSpan.FromSeconds(5.5));
     }
 
     static int Main(string[] args)
@@ -99,14 +99,12 @@ namespace JetService.IntegrationTests.Executable
           return 0;
 
         case TestAction.TEST_STOP_SERVICE:
-          Console.Error.WriteLine("I'm alive");          
+          Console.Error.WriteLine("I'm alive");
+          File.WriteAllText(args[1] ?? "file.yxy", "I'm alive");
           WaitServiceToStart();
 
           var ps = ProcessExecutor.ExecuteProcess("net.exe", "stop " + (args[2] ?? "no-service"));
           ps.Dump();
-
-          if (ps.ExitCode == 0)
-            File.WriteAllText(args[1] ?? "file.yxy", "I'm alive");
 
           Console.Out.WriteLine("net.exe exit code is: {0}", ps.ExitCode);
           Console.Out.WriteLine("Service should be stopped now");

@@ -64,8 +64,8 @@ namespace JetService.IntegrationTests.Tests
           DoExecuteTest(TestAction.TEST_STOP_SERVICE, (action, name) => Stubs.A(file, name), 
             (s,dir) =>
               {
-                WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
-                  () => !ServicesUtil.IsServiceNotStopped(s),
+                WaitFor.WaitForAssert(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(.5),
+                  () => ServicesUtil.IsServiceStopped(s),
                   "Service must be able to stop itself");
                 ;
               });

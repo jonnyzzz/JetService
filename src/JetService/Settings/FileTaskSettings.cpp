@@ -92,14 +92,14 @@ int FileTaskSettings::parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* executi
   }
 
   LOG.LogDebugFormat(L"Parsing timeout: %s", value);
-  long timeout = _wtol(value);
+  double timeout = _wtof(value);
   if (timeout <= 0) {
     LOG.LogErrorFormat(L"Failed to parse timeout value: %s", value);
     return 1;
   }
 
   LOG.LogDebugFormat(L"Parser value: %ld", timeout);
-  settings->setTerminateWaitTimeoutMillis(timeout * 1000 * 60);
+  settings->setTerminateWaitTimeoutMillis((long)(timeout * 1000 * 60));
   return 0;
 }
 

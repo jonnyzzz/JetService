@@ -73,9 +73,14 @@ namespace JetService.IntegrationTests
       return ProcessExecutor.ExecuteProcess("net.exe", "stop " + s.Name).Dump();
     }
 
-    public static bool IsServiceRunning(ServiceSettings s)
+    public static bool IsServiceNotStopped(ServiceSettings s)
     {
       return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => !x.IsStopped);
+    }
+
+    public static bool IsServiceRunning(ServiceSettings s)
+    {
+      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => x.Status == "Running");
     }
 
     public static bool IsServiceInstalled(ServiceSettings settingsXml)

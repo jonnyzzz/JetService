@@ -16,7 +16,7 @@ namespace JetService.IntegrationTests.Tests
 
     private void DoExecuteTest(TestAction testAction, GenerateServiceExecutableArguments argz, Action<ServiceSettings, string> onInstalled)
     {
-      ExecuteTestImpl(testAction, argz, (s, dir, log) => StartStopService(s, log, () =>  onInstalled(s, dir)));
+      ExecuteTestImpl(testAction, argz, (s, dir, log) => StartStopService(s, log, () =>  onInstalled(s, dir), true));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace JetService.IntegrationTests.Tests
             (s,dir) =>
               {
                 WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
-                  () => !ServicesUtil.IsServiceRunning(s),
+                  () => !ServicesUtil.IsServiceNotStopped(s),
                   "Service must be able to stop itself");
                 ;
               });
@@ -65,10 +65,27 @@ namespace JetService.IntegrationTests.Tests
                     (s, dir) =>
                       {
                         WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
-                                              () => !ServicesUtil.IsServiceRunning(s),
+                                              () => !ServicesUtil.IsServiceNotStopped(s),
                                               "Service must exit itself");
                         ;
                       });
+    }
+
+    [Test, Ignore("Failed to sent signal")]
+    public void Test_CTRL_C_on_service_stop()
+    {
+      TempFilesHolder.WithTempFile(
+        file =>
+        {
+          File.Delete(file);
+          DoExecuteTest(TestAction.TEST_STOP_EVENT_HANDLED, Stubs.A(file, "false"), 
+            (s, dir) =>
+              {
+              }
+            );
+
+          Assert.IsTrue(File.Exists(file));
+        });
     }
   }
 }

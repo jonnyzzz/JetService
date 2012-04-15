@@ -15,6 +15,7 @@ namespace JetService.IntegrationTests.Executable
     TEST_RUN_10500,
     TEST_STOP_SERVICE,
     TEST_SERVICE_STDIN_READ,
+    TEST_STOP_EVENT_HANDLED,
 
     UNKNOWN
   }
@@ -55,8 +56,22 @@ namespace JetService.IntegrationTests.Executable
         case TestAction.TEST_IM_ALIVE:
           Console.Error.WriteLine("I'm alive");
           File.WriteAllText(args[1]??"file.yxy", "I'm alive");
-          Thread.Sleep(TimeSpan.FromSeconds(10.5));
+          WaitServiceToStart();
           Console.Error.WriteLine("I'm alive");
+          return 0;
+
+        case TestAction.TEST_STOP_EVENT_HANDLED:
+          Console.CancelKeyPress += (sender, eventArgs) =>
+                                      {
+                                        Console.Out.WriteLine("CTRL+C event recieved");
+                                        File.WriteAllText(args[1] ?? "file.yxy", "I'm alive");
+                                        if (args[2] == "true")
+                                        {
+                                          eventArgs.Cancel = true;
+                                          Console.Out.WriteLine("Event canceled");
+                                        }
+                                      };
+          WaitServiceToStart();
           return 0;
         
         case TestAction.TEST_RUN_10500:          

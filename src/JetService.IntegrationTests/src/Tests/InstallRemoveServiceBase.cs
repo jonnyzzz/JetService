@@ -8,7 +8,7 @@ namespace JetService.IntegrationTests.Tests
 {
   public class InstallRemoveServiceBase
   {
-    protected void StartStopService(ServiceSettings service, string log, Action afterStarted)
+    protected void StartStopService(ServiceSettings service, string log, Action afterStarted, bool waitStarted = false)
     {
       var stopRead = false;
       var logsReader = new Thread(
@@ -58,7 +58,7 @@ namespace JetService.IntegrationTests.Tests
           () => ServicesUtil.StartService(service).AssertExitedSuccessfully(),
           () =>
             {
-              if (ServicesUtil.IsServiceRunning(service))
+              if (ServicesUtil.IsServiceNotStopped(service))
               {
                 Console.Out.WriteLine("Stopping service...");
                 ServicesUtil.StopService(service).AssertExitedSuccessfully();
@@ -69,7 +69,17 @@ namespace JetService.IntegrationTests.Tests
               }
             }
           );
-
+        if (waitStarted)
+        {
+          c.Execute(
+            () =>
+              {
+                WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
+                                      () => ServicesUtil.IsServiceRunning(service),
+                                      "Service must report as running");
+                ;
+              });
+        }
         c.Execute(afterStarted);
       }
     }
@@ -124,7 +134,7 @@ namespace JetService.IntegrationTests.Tests
                   //wait for service to exit before stopping it
                   for (int i = 0; i < 100; i++)
                   {
-                    if(ServicesUtil.IsServiceRunning(settingsXml)) break;
+                    if(ServicesUtil.IsServiceNotStopped(settingsXml)) break;
                     Thread.Sleep(100);
                   }
 
@@ -154,7 +164,11 @@ namespace JetService.IntegrationTests.Tests
                                             Arguments =
                                               action + " " + string.Join(" ", testProgramArguments(action, serviceName)),
                                             Program = Files.TestProgram,
-                                            WorkDir = dir
+                                            WorkDir = dir,
+                                            Termination = new TerminationElement
+                                                            {
+                                                              TerminateTimoeut = 1
+                                                            }
                                           }
                           };
       return settingsXml;

@@ -16,6 +16,8 @@ namespace JetService.IntegrationTests.Executable
     TEST_STOP_SERVICE,
     TEST_SERVICE_STDIN_READ,
     TEST_STOP_EVENT_HANDLED,
+    TEST_WAIT_FILE,
+    TEST_WRITE_FILE,
 
     UNKNOWN
   }
@@ -32,6 +34,8 @@ namespace JetService.IntegrationTests.Executable
       TestAction result;
       if (!Enum.TryParse(args.FirstOrDefault(), true, out result))
         result = TestAction.UNKNOWN;
+
+      Console.Out.WriteLine("Executing action: {0}", result);
 
       switch (result)
       {
@@ -60,6 +64,21 @@ namespace JetService.IntegrationTests.Executable
           Console.Error.WriteLine("I'm alive");
           return 0;
 
+        case TestAction.TEST_WRITE_FILE:
+          Console.Error.WriteLine("I'm alive");
+          File.WriteAllText(args[1]??"file.yxy", "I'm alive");          
+          Console.Error.WriteLine("I'm alive. Done");
+          return 0;
+
+        case TestAction.TEST_WAIT_FILE:
+          while(File.Exists(args[1]??"file.xxx"))
+          {
+            Thread.Sleep(TimeSpan.FromSeconds(.5));
+            Console.Out.WriteLine(".");
+          }
+          Console.Out.WriteLine("File found. Exit");
+          return 0;
+
         case TestAction.TEST_STOP_EVENT_HANDLED:
           Console.CancelKeyPress += (sender, eventArgs) =>
                                       {
@@ -80,12 +99,14 @@ namespace JetService.IntegrationTests.Executable
           return 0;
 
         case TestAction.TEST_STOP_SERVICE:
-          Console.Error.WriteLine("I'm alive");
-          File.WriteAllText(args[1]??"file.yxy", "I'm alive");          
+          Console.Error.WriteLine("I'm alive");          
           WaitServiceToStart();
 
           var ps = ProcessExecutor.ExecuteProcess("net.exe", "stop " + (args[2] ?? "no-service"));
           ps.Dump();
+
+          if (ps.ExitCode == 0)
+            File.WriteAllText(args[1] ?? "file.yxy", "I'm alive");
 
           Console.Out.WriteLine("net.exe exit code is: {0}", ps.ExitCode);
           Console.Out.WriteLine("Service should be stopped now");

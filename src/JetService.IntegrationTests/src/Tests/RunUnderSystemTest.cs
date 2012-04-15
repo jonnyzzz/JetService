@@ -1,4 +1,4 @@
-using JetService.IntegrationTests.Executable;
+using System;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
@@ -6,13 +6,9 @@ namespace JetService.IntegrationTests.Tests
   [TestFixture]
   public class RunUnderSystemTest : RunUnderServiceTestBase
   {
-    protected override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
+    protected override void ExecuteTestImpl(Action<string[]> runAction)
     {
-      InstallRemoveService(Stubs.A("/runAsSystem"),
-                     testAction,
-                     argz,
-                     onInstalled);
-
+      runAction(Stubs.A("/runAsSystem"));
     }
   }
 }

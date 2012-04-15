@@ -1,4 +1,4 @@
-using JetService.IntegrationTests.Executable;
+using System;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
@@ -7,16 +7,11 @@ namespace JetService.IntegrationTests.Tests
   {
     protected abstract UserGroup UserGroup { get; }
 
-    protected sealed override void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz, OnServiceInstalled onInstalled)
+    protected override void ExecuteTestImpl(Action<string[]> runAction)
     {
-      UserManagement.WithNewUser(UserGroup,
-                                 u => InstallRemoveService(
-                                   Stubs.A("/user=" + u.UserName, "/password=" + u.Password),
-                                   testAction,
-                                   argz,
-                                   onInstalled));
-    }
+      UserManagement.WithNewUser(UserGroup, u => runAction(Stubs.A("/user=" + u.UserName, "/password=" + u.Password)));
 
+    }
   }
 
   [TestFixture]

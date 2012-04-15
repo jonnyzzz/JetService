@@ -90,15 +90,17 @@ namespace JetService.IntegrationTests.Tests
 
     protected void InstallRemoveService(string[] installServiceArguments,
                                         TestAction action,
-                                        string[] testProgramArguments,
+                                        GenerateServiceExecutableArguments testProgramArguments,
                                         OnServiceInstalled afterInstalled)
     {
-      InstallRemoveService(installServiceArguments, action, (a,b)=>testProgramArguments, afterInstalled);
+      InstallRemoveService(installServiceArguments, action, testProgramArguments, null, null, afterInstalled);
     }
-
+    
     protected void InstallRemoveService(string[] installServiceArguments,
                                         TestAction action,
                                         GenerateServiceExecutableArguments testProgramArguments,
+                                        TestAction? stopAction,
+                                        GenerateServiceExecutableArguments stopProgramArguments,
                                         OnServiceInstalled afterInstalled)
     {
       ServicesUtil.AssertHasInstallServiceRights();
@@ -107,7 +109,7 @@ namespace JetService.IntegrationTests.Tests
         dir =>
         {
           UserManagement.GiveAllPermissions(dir);
-          var settingsXml = CreateSettingsXml(action, testProgramArguments, dir);
+          var settingsXml = CreateSettingsXml(dir, action, testProgramArguments, stopAction, stopProgramArguments);
           var settings = Path.Combine(dir, "settings.xml");
           settingsXml.Serialize(settings);
           Console.Out.WriteLine("Settings: {0}", settingsXml);
@@ -150,27 +152,40 @@ namespace JetService.IntegrationTests.Tests
         });
     }
 
-    private static ServiceSettings CreateSettingsXml(TestAction action,
-                                                     GenerateServiceExecutableArguments testProgramArguments, string dir)
+    private static void InitializeProgramArtguments(ExecutionBase el, string dir, string serviceName, TestAction action, GenerateServiceExecutableArguments az)
     {
+      el.Arguments = action + " " + string.Join(" ", az(action, serviceName));
+      el.Program = Files.TestProgram;
+      el.WorkDir = dir;
+    }
+
+    private static ServiceSettings CreateSettingsXml(string dir, 
+      TestAction action, GenerateServiceExecutableArguments testProgramArguments, 
+      TestAction? stopAction, GenerateServiceExecutableArguments stopProgramArguments)
+    {
+
       var hash = (int) (DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds%9999;
       string serviceName = "jetService-test-" + hash;
+      ExecutionBase stopActionEl = null;
+      if (stopAction != null)
+      {
+        stopActionEl = new ExecutionBase();
+        InitializeProgramArtguments(stopActionEl, dir, serviceName, stopAction.Value, stopProgramArguments);        
+      }
       var settingsXml = new ServiceSettings
                           {
                             Name = serviceName,
                             Description = "This is a jet service " + hash,
                             Execution = new ExecutionElement
-                                          {
-                                            Arguments =
-                                              action + " " + string.Join(" ", testProgramArguments(action, serviceName)),
-                                            Program = Files.TestProgram,
-                                            WorkDir = dir,
+                                          {                                            
                                             Termination = new TerminationElement
                                                             {
-                                                              TerminateTimoeut = 1
+                                                              TerminateTimoeut = 1,
+                                                              Execution = stopActionEl
                                                             }
                                           }
                           };
+      InitializeProgramArtguments(settingsXml.Execution, dir, serviceName, action, testProgramArguments);
       return settingsXml;
     }
 

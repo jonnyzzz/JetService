@@ -45,7 +45,7 @@ void ProcessInterruptConsoleControlHandler::InterruptProcess(PROCESS_INFORMATION
     myTerminateSent = nowTicks;
   } else if (myTerminateSent < nowTicks + mySettings->getTerminateWaitTimeoutMilliseconds()) {
     //timeout has passed
-    LOG.LogWarnFormat(L"Failed to wait for process to exit by CTRL+C. Process will be terminated");
+    LOG.LogWarnFormat(L"Failed to wait for process to exit by CTRL+C. Process will be killed");
     myCtrlEventFailed = true;
     return;
   }

@@ -73,6 +73,7 @@
     <Compile Include="src\ThreadUtil.cs" />
     <Compile Include="src\UserManagement.cs" />
     <Compile Include="src\WaitFor.cs" />
+    <Compile Include="src\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JetService.IntegrationTests.Executable\JetService.IntegrationTests.Executable.csproj">

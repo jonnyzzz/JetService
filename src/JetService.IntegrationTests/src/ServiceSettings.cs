@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -24,7 +23,6 @@ namespace JetService.IntegrationTests
       Execution = new ExecutionElement();
     }
 
-
     public override string ToString()
     {
       var sw = new StringWriter();
@@ -34,24 +32,16 @@ namespace JetService.IntegrationTests
 
     public void Serialize(string file)
     {
-      using(var wr = File.CreateText(file))
-      {
-        Serialize(wr);
-      }
+      XmlUtil.Serialize(this, file);
     }
 
     private void Serialize(TextWriter wr)
     {
-      var f = new XmlSerializerFactory();
-      var ser = f.CreateSerializer(typeof (ServiceSettings));
-      if (ser == null)
-        throw new Exception("Failed to get serializer");
-      ser.Serialize(wr, this);
+      XmlUtil.Serialize(this, wr);
     }
   }
 
-  [XmlRoot("execution")]
-  public class ExecutionElement
+  public class ExecutionBase
   {
     [XmlElement("workdir")]
     public string WorkDir { get; set; }
@@ -61,7 +51,12 @@ namespace JetService.IntegrationTests
 
     [XmlElement("arguments")]
     public string Arguments { get; set; }
+  }
 
+
+  [XmlRoot("execution")]
+  public class ExecutionElement : ExecutionBase
+  {
     [XmlElement("termination")]
     public TerminationElement Termination { get; set; }
   }
@@ -70,14 +65,26 @@ namespace JetService.IntegrationTests
   public class TerminationElement
   {
     [XmlAttribute("timeout")]
-    public string Timeout
-    {
-      get { return TerminateTimoeut == null ? null : TerminateTimoeut.Value.ToString(); }
-      set { TerminateTimoeut = value == null ? null : (long?) long.Parse(value); }
+    public string Timeout { get; set; }
+    
+    [XmlIgnore]
+    public long? TerminateTimoeut {
+      get
+      {
+        long x;
+        return Timeout == null 
+          ? null 
+          : long.TryParse(Timeout, out x) 
+          ? x 
+          : (long?) null;
+      }
+      set
+      {
+        Timeout = value == null ? null : value.Value.ToString();
+      }
     }
 
-    [XmlIgnore]
-    public long? TerminateTimoeut { get; set; }
+    [XmlElement("execution")]
+    public ExecutionBase Execution { get; set; }
   }
-
 }

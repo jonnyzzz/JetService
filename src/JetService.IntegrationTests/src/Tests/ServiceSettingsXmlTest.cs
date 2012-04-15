@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 
@@ -9,7 +10,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_Valid()
     {
-      DoSettingsTest(new ServiceSettings
+      DoValidateSettingsTest(new ServiceSettings
                        {
                          Name = "jetService-test",
                          DisplayName = "Jet Service Test",
@@ -26,7 +27,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_Implicit_DisplayName()
     {
-      DoSettingsTest(new ServiceSettings
+      DoValidateSettingsTest(new ServiceSettings
                        {
                          Name = "jetService-test",
                          Description = "This is a jet service",
@@ -74,7 +75,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_Execute_Test_Exe()
     {
-      DoSettingsTest(new ServiceSettings
+      DoValidateSettingsTest(new ServiceSettings
                        {
                          Name = "jetService-test",
                          DisplayName = "Jet Service Test",
@@ -91,7 +92,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void Test_Execute_Test_Exe_Timeout()
     {
-      DoSettingsTest(new ServiceSettings
+      DoValidateSettingsTest(new ServiceSettings
                        {
                          Name = "jetService-test",
                          DisplayName = "Jet Service Test",
@@ -103,31 +104,147 @@ namespace JetService.IntegrationTests.Tests
                                          WorkDir = null,
                                          Termination = new TerminationElement
                                                          {
-                                                           TerminateTimoeut = 42
+                                                           Timeout = "42"
                                                          }
                                        }
                        });
     }
 
+    [Test]
+    public void Test_Execute_Test_Exe_Timeout_Invalid()
+    {
+      DoRawFailedSettingsTest(
+        new ServiceSettings
+          {
+            Name = "jetService-test",
+            DisplayName = "Jet Service Test",
+            Description = "This is a jet service",
+            Execution = new ExecutionElement
+                          {
+                            Arguments = null,
+                            Program = Files.TestProgram,
+                            WorkDir = null,
+                            Termination = new TerminationElement
+                                            {
+                                              Timeout = "zzz"
+                                            }
+                          }
+          });
+    }
+
+    [Test]
+    public void Test_Execute_Test_StopExe()
+    {
+      DoValidateSettingsTest(new ServiceSettings
+                       {
+                         Name = "jetService-test",
+                         DisplayName = "Jet Service Test",
+                         Description = "This is a jet service",
+                         Execution = new ExecutionElement
+                                       {
+                                         Arguments = null,
+                                         Program = Files.TestProgram,
+                                         WorkDir = null,
+                                         Termination = new TerminationElement
+                                                         {
+                                                           Execution = new ExecutionBase
+                                                                         {
+                                                                           Arguments = null,
+                                                                           Program = Files.TestProgram,
+                                                                           WorkDir = null,
+                                                                         }
+                                                         }
+                                       }
+                       });
+    }
+
+    [Test]
+    public void Test_Execute_Test_StopExe_Dir()
+    {
+      DoValidateSettingsTest(new ServiceSettings
+                       {
+                         Name = "jetService-test",
+                         DisplayName = "Jet Service Test",
+                         Description = "This is a jet service",
+                         Execution = new ExecutionElement
+                                       {
+                                         Arguments = null,
+                                         Program = Files.TestProgram,
+                                         WorkDir = "aaa",
+                                         Termination = new TerminationElement
+                                                         {
+                                                           Execution = new ExecutionBase
+                                                                         {
+                                                                           Arguments = null,
+                                                                           Program = Files.TestProgram,
+                                                                           WorkDir = null,
+                                                                         }
+                                                         }
+                                       }
+                       },
+                       (dir, e) => Directory.CreateDirectory(Path.Combine(dir, "aaa")));
+    }
+
+    [Test]
+    public void Test_Execute_Test_StopExe_Dir2()
+    {
+      DoValidateSettingsTest(new ServiceSettings
+                       {
+                         Name = "jetService-test",
+                         DisplayName = "Jet Service Test",
+                         Description = "This is a jet service",
+                         Execution = new ExecutionElement
+                                       {
+                                         Arguments = null,
+                                         Program = "rewer",
+                                         WorkDir = "aaa",
+                                         Termination = new TerminationElement
+                                                         {
+                                                           Execution = new ExecutionBase
+                                                                         {
+                                                                           Arguments = "aasds",
+                                                                           Program = "asds",
+                                                                           WorkDir = "fff",
+                                                                         }
+                                                         }
+                                       }
+                       },
+                       (dir, e) =>
+                         {
+                           Directory.CreateDirectory(Path.Combine(dir, "aaa"));
+                           Directory.CreateDirectory(Path.Combine(dir, "fff"));
+                         });
+    }
+
+
+
     protected override void AssertServiceParameters(ServiceSettings s, JResult r, ExecutionElement ee)
     {
-      var stopTimeout = 60*1000*(
-                                  ee.Termination == null
-                                    ? 0
-                                    : ee.Termination.TerminateTimoeut == null
-                                        ? 0
-                                        : ee.Termination.TerminateTimoeut.Value
-                                );
-      var lines = new[]
+      var stopTimeout = 60*1000*ee.Termination.TerminateTimoeut;                                
+      var lines = new List<string>
                     {
                       "[j]: ServiceName:" + s.Name + "!~",
                       "[j]: ServiceDisplayName:" + (s.DisplayName ?? s.Name) + "!~",
                       "[j]: ServiceDescription:" + s.Description + "!~",
                       @"[e]: Program:" + ee.Program + "!~",
-                      "[e]: Arguments:" + (ee.Arguments ?? "") + "!~",
+                      @"[e]: Arguments:" + (ee.Arguments ?? "") + "!~",
                       @"[e]: WorkDir:" + ee.WorkDir + "!~",
                       @"[e]: StopTimeout:" + stopTimeout + "!~",
                     };
+      if (ee.Termination != null)
+      {
+        var se = ee.Termination.Execution;
+        if (se == null)
+        {
+          lines.Add("[s]: DISABLED:true!~");
+        } else
+        {
+          lines.Add(@"[s]: DISABLED:false!~");
+          lines.Add(@"[s]: Program:" + se.Program + "!~");
+          lines.Add(@"[s]: Arguments:" + (se.Arguments ?? "") + "!~");
+          lines.Add(@"[s]: WorkDir:" + se.WorkDir + "!~");
+        }
+      }
 
       foreach (var line in lines)
       {

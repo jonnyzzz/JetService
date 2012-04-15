@@ -29,5 +29,15 @@ int ValidateServiceTaskAction::ExecuteAction(const Argz* argz, const ServiceTask
   LOG.LogInfoFormat(L"[e]: Arguments:%s!~", settings->getProgramArguments());
   LOG.LogInfoFormat(L"[e]: WorkDir:%s!~", settings->getWorkDir());
   LOG.LogInfoFormat(L"[e]: StopTimeout:%ld!~", settings->getTerminateWaitTimeoutMilliseconds());
+
+  const ExecutionSettings* exec = settings->getStopCommand();
+  if (exec != NULL) {
+    LOG.LogInfoFormat(L"[s]: Program:%s!~", exec->getProgramPath());
+    LOG.LogInfoFormat(L"[s]: Arguments:%s!~", exec->getProgramArguments());
+    LOG.LogInfoFormat(L"[s]: WorkDir:%s!~", exec->getWorkDir());
+    LOG.LogInfo(L"[s]: DISABLED:false!~");
+  } else {
+    LOG.LogInfo(L"[s]: DISABLED:true!~");
+  }
   return 0;
 }

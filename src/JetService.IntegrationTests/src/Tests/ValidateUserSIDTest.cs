@@ -9,7 +9,7 @@ namespace JetService.IntegrationTests.Tests
     public void TestUserSID()
     {      
       UserManagement.WithNewUser(UserGroup.Admin,
-        u => DoSettingsTest(DefaultSettins, "/user=" + u.UserName, "/password=" + u.Password, "/giveUserRights=false", "/checkUserAccount=false"));
+        u => DoValidateSettingsTest(DefaultSettins, "/user=" + u.UserName, "/password=" + u.Password, "/giveUserRights=false", "/checkUserAccount=false"));
     }
 
     protected override string ValidateCommandName

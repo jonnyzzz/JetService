@@ -25,10 +25,18 @@ namespace JetService.IntegrationTests.Tests
       ExecutionElement resolvedExec,
       string dir);
 
-    protected JResult DoSettingsTest(ServiceSettings s, params string[] cmd)
+    protected delegate void OnResolveSettings(string dir, ExecutionElement e);
+
+    protected JResult DoValidateSettingsTest(ServiceSettings s, params string[] cmd)
+    {
+      return DoValidateSettingsTest(s, Stubs.NOP, cmd);
+    }
+
+    protected JResult DoValidateSettingsTest(ServiceSettings s, OnResolveSettings resolve, params string[] cmd)
     {
       return DoSettingsTest(
         s,
+        resolve,
         (r, ss, ee, dir) =>
           {
             Assert.That(r.ExitCode, Is.EqualTo(0));
@@ -38,18 +46,36 @@ namespace JetService.IntegrationTests.Tests
         cmd);
     }
 
-    protected JResult DoSettingsTest(ServiceSettings s, OnAssertSettingsValidateRun postAction, string[] cmd)
+    protected JResult DoSettingsTest(ServiceSettings s, OnResolveSettings resolveSettings, OnAssertSettingsValidateRun postAction, string[] cmd)
     {
 
       Func<string, ExecutionElement, ExecutionElement> resolve =
-        (dir, e) => new ExecutionElement
-                      {
-                        Arguments = e.Arguments,
-                        Program = Path.Combine(dir, e.Program),
-                        WorkDir = e.WorkDir == null ? dir : Path.Combine(dir, e.WorkDir),
-                        Termination = e.Termination
-                      };
+        (dir, e) =>
+          {
+            var ret = e.SClone();
+            ret.Program = Path.Combine(dir, e.Program);
+            ret.WorkDir = e.WorkDir == null ? dir : Path.Combine(dir, e.WorkDir);
 
+            if (ret.Termination != null)
+            {
+              if (ret.Termination.Timeout == null) ret.Termination.Timeout = "2";
+              if (ret.Termination.Execution != null)
+              {
+                var se = ret.Termination.Execution;
+                se.Program = Path.Combine(dir, se.Program);
+                se.WorkDir = se.WorkDir == null ? ret.WorkDir : Path.Combine(dir, se.WorkDir);
+              }
+            } else
+            {
+              ret.Termination = new TerminationElement
+                                  {
+                                    Timeout = "2"
+                                  };
+            }
+
+            resolveSettings(dir, ret);
+            return ret;
+          };
 
       return TempFilesHolder.WithTempDirectory(
         dir =>
@@ -60,6 +86,10 @@ namespace JetService.IntegrationTests.Tests
               File.WriteAllText(ee.Program, "mock");
             }
 
+            if (ee.Termination != null && ee.Termination.Execution != null && !File.Exists(ee.Termination.Execution.Program))
+            {
+              File.WriteAllText(ee.Termination.Execution.Program, "smock");
+            }
 
             var r = ExecuteWithSettings(s, dir, cmd);
             postAction(r, s, ee, dir);

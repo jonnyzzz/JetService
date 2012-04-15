@@ -66,6 +66,7 @@ namespace JetService.IntegrationTests.Tests
     {
       DoSettingsTest(
         DefaultSettins,
+        Stubs.NOP, 
         (r, _, __, ___) =>
           {
             Assert.That(r.ExitCode, Is.Not.EqualTo(0));
@@ -179,7 +180,7 @@ namespace JetService.IntegrationTests.Tests
       var list = cmd.ToList();
       list.Add("/checkUserAccount=" + info.CheckUserAccount);
       list.Add("/giveUserRights=false");
-      DoSettingsTest(s, list.ToArray());
+      DoValidateSettingsTest(s, list.ToArray());
       myInfo = null;
     }
   }  

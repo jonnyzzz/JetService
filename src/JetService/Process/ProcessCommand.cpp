@@ -136,9 +136,14 @@ int ProcessCommand::WaitForProcessAndCaptureOutput(ChildProcessOutHandle* stdOut
 }
 
 int ProcessCommand::WaitForProcessToExit(PROCESS_INFORMATION& processInfo) {
+  bool isInterruptHandled = false;
   while(true) {    
     if (IsInterrupted()) {
-      LOG.LogInfo(L"Terminating process. Interrupted flag is set");
+      if (!isInterruptHandled) {
+        LOG.LogDebug(L"Interrupted flag is set. Process will be stoped");
+      } else {
+        isInterruptHandled = true;
+      }
       myInterruptHandler->InterruptProcess(processInfo);
     }
 

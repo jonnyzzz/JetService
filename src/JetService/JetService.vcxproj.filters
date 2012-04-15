@@ -204,6 +204,9 @@
     <ClInclude Include="Process\ServiceProcessCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Process\JetConsoleControlHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

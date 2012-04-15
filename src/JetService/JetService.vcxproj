@@ -97,6 +97,7 @@
     <ClInclude Include="InterruptHolder.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\RollFileWriter.h" />
+    <ClInclude Include="Process\JetConsoleControlHandler.h" />
     <ClInclude Include="Process\LogPipeReader.h" />
     <ClInclude Include="Process\Pipe.h" />
     <ClInclude Include="Process\PipeReader.h" />

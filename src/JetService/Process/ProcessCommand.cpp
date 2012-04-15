@@ -50,6 +50,7 @@ STARTUPINFO ProcessCommand::CreateProcessStartupInfo(ChildProcessInHandle* pstdi
   info.cb = sizeof(info);
   //TODO: Create pipes and transfer process output.
   info.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
+  info.wShowWindow = SW_HIDE;  
   info.hStdOutput = pout->GetChildStdOutHandle();
   info.hStdError = pout->GetChildStdErrHandle();
   info.hStdInput = pstdin->GetChildProcessHandle();
@@ -101,7 +102,7 @@ int ProcessCommand::DoStartProcessAsUser(HANDLE processUserToken) {
     NULL, //process attributes
     NULL, //thread attributes
     TRUE, //inherit handles
-    DETACHED_PROCESS | CREATE_UNICODE_ENVIRONMENT |  CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP, 
+    CREATE_UNICODE_ENVIRONMENT | CREATE_NEW_PROCESS_GROUP, 
     NULL,
     workdir,
     &startupInfo,
@@ -140,10 +141,10 @@ int ProcessCommand::WaitForProcessToExit(PROCESS_INFORMATION& processInfo) {
   while(true) {    
     if (IsInterrupted()) {
       if (!isInterruptHandled) {
-        LOG.LogDebug(L"Interrupted flag is set. Process will be stoped");
-      } else {
         isInterruptHandled = true;
+        LOG.LogDebug(L"Interrupted flag is set. Process will be stoped");
       }
+
       myInterruptHandler->InterruptProcess(processInfo);
     }
 

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace JetService.IntegrationTests.Executable
 {
-  public enum TestAction
+  public enum ConsoleTestAction
   {
     TEST_STDOUT, 
     TEST_STDERR,
@@ -23,7 +23,7 @@ namespace JetService.IntegrationTests.Executable
     UNKNOWN
   }
 
-  public class TestProgram : TestProgramUtil
+  public class TestConsoleProgram : TestProgramUtil
   {
     private static void WaitServiceToStart()
     {
@@ -32,50 +32,50 @@ namespace JetService.IntegrationTests.Executable
 
     static int Main(string[] args)
     {
-      TestAction result;
+      ConsoleTestAction result;
       if (!Enum.TryParse(args.FirstOrDefault(), true, out result))
-        result = TestAction.UNKNOWN;
+        result = ConsoleTestAction.UNKNOWN;
 
       Console.Out.WriteLine("Executing action: {0}", result);
 
       switch (result)
       {
-        case TestAction.TEST_STDOUT:
+        case ConsoleTestAction.TEST_STDOUT:
           Console.Out.WriteLine("This is service std-out 44");
           return 0;
 
-        case TestAction.TEST_STDERR:
+        case ConsoleTestAction.TEST_STDERR:
           Console.Out.WriteLine("This is service std-err 42");
           return 0;
 
-        case TestAction.TEST_SERVICE_STDIN_READ:
+        case ConsoleTestAction.TEST_SERVICE_STDIN_READ:
           WaitServiceToStart();
-          goto case TestAction.TEST_STDIN_READ;
+          goto case ConsoleTestAction.TEST_STDIN_READ;
 
-        case TestAction.TEST_STDIN_SLEEP_READ:
+        case ConsoleTestAction.TEST_STDIN_SLEEP_READ:
           WaitServiceToStart();
-          goto case TestAction.TEST_STDIN_READ;
+          goto case ConsoleTestAction.TEST_STDIN_READ;
 
-        case TestAction.TEST_STDIN_READ:
+        case ConsoleTestAction.TEST_STDIN_READ:
           Console.Error.WriteLine("Try to read from console");
           RunInThreadAndWait(() => Console.In.Read());
           Console.Error.WriteLine("Try to read from console:Completed");
           return 0;
 
-        case TestAction.TEST_IM_ALIVE:
+        case ConsoleTestAction.TEST_IM_ALIVE:
           Console.Error.WriteLine("I'm alive");
           File.WriteAllText(args[1]??"file.yxy", "I'm alive");
           WaitServiceToStart();
           Console.Error.WriteLine("I'm alive");
           return 0;
 
-        case TestAction.TEST_WRITE_FILE:
+        case ConsoleTestAction.TEST_WRITE_FILE:
           Console.Error.WriteLine("I'm alive");
           File.WriteAllText(args[1]??"file.yxy", "I'm alive");          
           Console.Error.WriteLine("I'm alive. Done");
           return 0;
 
-        case TestAction.TEST_WAIT_FILE:
+        case ConsoleTestAction.TEST_WAIT_FILE:
           while(File.Exists(args[1]??"file.xxx"))
           {
             Thread.Sleep(TimeSpan.FromSeconds(.5));
@@ -84,7 +84,7 @@ namespace JetService.IntegrationTests.Executable
           Console.Out.WriteLine("File found. Exit");
           return 0;
 
-        case TestAction.TEST_STOP_EVENT_HANDLED:
+        case ConsoleTestAction.TEST_STOP_EVENT_HANDLED:
           Console.CancelKeyPress += (sender, eventArgs) =>
                                       {
                                         Console.Out.WriteLine("CTRL+C event recieved");
@@ -98,12 +98,12 @@ namespace JetService.IntegrationTests.Executable
           WaitServiceToStart();
           return 0;
         
-        case TestAction.TEST_RUN_10500:          
+        case ConsoleTestAction.TEST_RUN_10500:          
           Console.Error.WriteLine("I'm alive");
           WaitServiceToStart();
           return 0;
 
-        case TestAction.TEST_STOP_SERVICE:
+        case ConsoleTestAction.TEST_STOP_SERVICE:
           Console.Error.WriteLine("I'm alive");
           File.WriteAllText(args[1] ?? "file.yxy", "I'm alive");
           WaitServiceToStart();
@@ -119,7 +119,7 @@ namespace JetService.IntegrationTests.Executable
           return 0;
 
         default:
-        case TestAction.UNKNOWN:        
+        case ConsoleTestAction.UNKNOWN:        
           Console.Out.WriteLine("Unknwon");
           Console.Error.WriteLine("Unknwon");
           return 42;

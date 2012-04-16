@@ -1,20 +1,30 @@
 using System;
 using System.IO;
 using JetService.IntegrationTests.Executable;
+using JetService.IntegrationTests.WinForms;
 
 namespace JetService.IntegrationTests
 {
   public static class Files
   {
-    private static readonly Lazy<string> myTestProgram = new Lazy<string>(
+    private static readonly Lazy<string> myConsoleTestProgram = new Lazy<string>(
       () =>
         {
-          string file = new Uri(typeof(TestProgram).Assembly.CodeBase).LocalPath;
-          if (!File.Exists(file)) throw new Exception("Faied to find TestProgram");
+          string file = new Uri(typeof(TestConsoleProgram).Assembly.CodeBase).LocalPath;
+          if (!File.Exists(file)) throw new Exception("Faied to find TestConsoleProgram");
           return file;
         });
 
-    public static string TestProgram { get { return myTestProgram.Value; } }
+    private static readonly Lazy<string> myWinFormsTestProgram = new Lazy<string>(
+      () =>
+        {
+          string file = new Uri(typeof(TestWinFormsProgram).Assembly.CodeBase).LocalPath;
+          if (!File.Exists(file)) throw new Exception("Faied to find TestConsoleProgram");
+          return file;
+        });
+
+    public static string ConsoleTestProgram { get { return myConsoleTestProgram.Value; } }
+    public static string WinFormsTestProgram { get { return myWinFormsTestProgram.Value; } }
 
     private static readonly Lazy<string> myHomePath = new Lazy<string>(
       () =>

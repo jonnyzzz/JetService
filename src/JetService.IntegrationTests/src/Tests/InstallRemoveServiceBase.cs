@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Threading;
-using JetService.IntegrationTests.Executable;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
@@ -84,24 +83,52 @@ namespace JetService.IntegrationTests.Tests
       }
     }
 
-    protected delegate void OnServiceInstalled(ServiceSettings setting, string dir, string logFile);
+    public delegate void OnServiceInstalled(ServiceSettings setting, string dir, string logFile);
 
-    protected delegate string[] GenerateServiceExecutableArguments(TestAction action, string serviceName);
-
-    protected void InstallRemoveService(string[] installServiceArguments,
-                                        TestAction action,
-                                        GenerateServiceExecutableArguments testProgramArguments,
-                                        OnServiceInstalled afterInstalled)
+    private static ServiceSettings CreateSettingsXml(string dir,
+                                                 TestAction start,
+                                                 TestAction stop,
+                                                 double? timeout = 0.1707)
     {
-      InstallRemoveService(installServiceArguments, action, testProgramArguments, null, null, afterInstalled);
+      var hash = (int)(DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds % 9999;
+      string serviceName = "jetService-test-" + hash;
+      ExecutionBase stopActionEl = null;
+      if (stop != null)
+      {
+        stopActionEl = new ExecutionBase();
+        stop.InitializeProgramArguments(stopActionEl, dir, serviceName);
+      }
+      var timeoutValue = timeout == null ? null : timeout.ToString().Replace(",", ".");
+      var settingsXml = new ServiceSettings
+      {
+        Name = serviceName,
+        Description = "This is a jet service " + hash,
+        Execution = new ExecutionElement
+        {
+          Termination = new TerminationElement
+          {
+            Timeout = timeoutValue,
+            Execution = stopActionEl
+          }
+        }
+      };
+      start.InitializeProgramArguments(settingsXml.Execution, dir, serviceName);
+      return settingsXml;
     }
-    
+
     protected void InstallRemoveService(string[] installServiceArguments,
-                                        TestAction action,
-                                        GenerateServiceExecutableArguments testProgramArguments,
-                                        TestAction? stopAction,
-                                        GenerateServiceExecutableArguments stopProgramArguments,
-                                        OnServiceInstalled afterInstalled)
+                                        TestAction startAction,
+                                        OnServiceInstalled afterInstalled = null,
+                                        TestAction stopAction = null)
+    {
+      InstallRemoveService(installServiceArguments, dir => CreateSettingsXml(dir, startAction, stopAction), afterInstalled);
+    }
+
+    protected delegate ServiceSettings CreateServiceSettings(string dir);
+
+    protected void InstallRemoveService(string[] installServiceArguments,
+                                        CreateServiceSettings serviceSettings, 
+                                        OnServiceInstalled afterInstalled = null)
     {
       ServicesUtil.AssertHasInstallServiceRights();
 
@@ -109,7 +136,7 @@ namespace JetService.IntegrationTests.Tests
         dir =>
         {
           UserManagement.GiveAllPermissions(dir);
-          var settingsXml = CreateSettingsXml(dir, action, testProgramArguments, stopAction, stopProgramArguments);
+          var settingsXml = serviceSettings(dir);
           var settings = Path.Combine(dir, "settings.xml");
           settingsXml.Serialize(settings);
           Console.Out.WriteLine("Settings: {0}", settingsXml);
@@ -147,47 +174,14 @@ namespace JetService.IntegrationTests.Tests
               );
 
             c.Execute(() => EnsureServiceInstalled(settingsXml));
-            c.Execute(() => afterInstalled(settingsXml, dir, logFile));
+            if (afterInstalled != null)
+            {
+              c.Execute(() => afterInstalled(settingsXml, dir, logFile));
+            }
           }
         });
     }
 
-    private static void InitializeProgramArtguments(ExecutionBase el, string dir, string serviceName, TestAction action, GenerateServiceExecutableArguments az)
-    {
-      el.Arguments = action + " " + string.Join(" ", az(action, serviceName));
-      el.Program = Files.TestProgram;
-      el.WorkDir = dir;
-    }
-
-    private static ServiceSettings CreateSettingsXml(string dir, 
-      TestAction action, GenerateServiceExecutableArguments testProgramArguments, 
-      TestAction? stopAction, GenerateServiceExecutableArguments stopProgramArguments,
-      double? timeout = 0.1707)
-    {
-      var hash = (int) (DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds%9999;
-      string serviceName = "jetService-test-" + hash;
-      ExecutionBase stopActionEl = null;
-      if (stopAction != null)
-      {
-        stopActionEl = new ExecutionBase();
-        InitializeProgramArtguments(stopActionEl, dir, serviceName, stopAction.Value, stopProgramArguments);        
-      }
-      var settingsXml = new ServiceSettings
-                          {
-                            Name = serviceName,
-                            Description = "This is a jet service " + hash,
-                            Execution = new ExecutionElement
-                                          {                                            
-                                            Termination = new TerminationElement
-                                                            {
-                                                              Timeout = timeout == null ? null : timeout.ToString().Replace(",", "."),
-                                                              Execution = stopActionEl
-                                                            }
-                                          }
-                          };
-      InitializeProgramArtguments(settingsXml.Execution, dir, serviceName, action, testProgramArguments);
-      return settingsXml;
-    }
 
     private static void EnsureServiceInstalled(ServiceSettings settingsXml)
     {
@@ -215,4 +209,6 @@ namespace JetService.IntegrationTests.Tests
       }
     }
   }
+
+  public delegate string[] GenerateServiceExecutableArguments(string serviceName);
 }

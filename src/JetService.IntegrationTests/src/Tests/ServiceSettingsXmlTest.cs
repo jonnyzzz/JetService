@@ -83,7 +83,7 @@ namespace JetService.IntegrationTests.Tests
                          Execution = new ExecutionElement
                                        {
                                          Arguments = null,
-                                         Program = Files.TestProgram,
+                                         Program = "ppp.exe",
                                          WorkDir = null
                                        }
                        });
@@ -100,7 +100,7 @@ namespace JetService.IntegrationTests.Tests
                          Execution = new ExecutionElement
                                        {
                                          Arguments = null,
-                                         Program = Files.TestProgram,
+                                         Program = "ppp.exe",
                                          WorkDir = null,
                                          Termination = new TerminationElement
                                                          {
@@ -122,7 +122,7 @@ namespace JetService.IntegrationTests.Tests
             Execution = new ExecutionElement
                           {
                             Arguments = null,
-                            Program = Files.TestProgram,
+                            Program = "qqq.exe",
                             WorkDir = null,
                             Termination = new TerminationElement
                                             {
@@ -143,14 +143,14 @@ namespace JetService.IntegrationTests.Tests
                          Execution = new ExecutionElement
                                        {
                                          Arguments = null,
-                                         Program = Files.TestProgram,
+                                         Program = "qqq.exe",
                                          WorkDir = null,
                                          Termination = new TerminationElement
                                                          {
                                                            Execution = new ExecutionBase
                                                                          {
                                                                            Arguments = null,
-                                                                           Program = Files.TestProgram,
+                                                                           Program = "ppp.exe",
                                                                            WorkDir = null,
                                                                          }
                                                          }
@@ -169,14 +169,14 @@ namespace JetService.IntegrationTests.Tests
                          Execution = new ExecutionElement
                                        {
                                          Arguments = null,
-                                         Program = Files.TestProgram,
+                                         Program = "www.exe",
                                          WorkDir = "aaa",
                                          Termination = new TerminationElement
                                                          {
                                                            Execution = new ExecutionBase
                                                                          {
                                                                            Arguments = null,
-                                                                           Program = Files.TestProgram,
+                                                                           Program = "ppp.exe",
                                                                            WorkDir = null,
                                                                          }
                                                          }

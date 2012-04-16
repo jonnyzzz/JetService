@@ -12,7 +12,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void std_out_captured()
     {
-      var r = ExecuteWithSettings(TestAction.TEST_STDOUT);
+      var r = ExecuteWithSettings(ConsoleTestAction.TEST_STDOUT);
 
       Console.Out.WriteLine(r.LogText);
       Assert.That(r.LogText.Contains("This is service std-out 44"));
@@ -22,7 +22,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void std_err_captured()
     {
-      var r = ExecuteWithSettings(TestAction.TEST_STDERR);
+      var r = ExecuteWithSettings(ConsoleTestAction.TEST_STDERR);
 
       Console.Out.WriteLine(r.LogText);
       Assert.That(r.LogText.Contains("This is service std-err 42"));
@@ -32,14 +32,14 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void std_in_closed()
     {
-      var r = ExecuteWithSettings(TestAction.TEST_STDIN_READ);
+      var r = ExecuteWithSettings(ConsoleTestAction.TEST_STDIN_READ);
       Console.Out.WriteLine(r.LogText);
       Assert.IsFalse(r.LogText.Contains(TestProgramUtil.THREAD_NOT_FINISHED));
       Assert.IsTrue(r.LogText.Contains("Try to read from console:Completed"));
       r.AssertSuccess();
     }
 
-    private static JResult ExecuteWithSettings(TestAction action, params string[] arguemnts)
+    private static JResult ExecuteWithSettings(ConsoleTestAction action, params string[] arguemnts)
     {
       return TempFilesHolder.WithTempDirectory(
         dir =>
@@ -52,7 +52,7 @@ namespace JetService.IntegrationTests.Tests
                         Description = "some-descr",
                         Execution = new ExecutionElement
                                       {
-                                        Program = Files.TestProgram,
+                                        Program = Files.ConsoleTestProgram,
                                         Arguments = action.ToString() + string.Join(" ", arguemnts),
                                         WorkDir = dir
                                       }

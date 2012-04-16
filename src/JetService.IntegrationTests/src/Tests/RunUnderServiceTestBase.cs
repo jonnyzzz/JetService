@@ -9,36 +9,23 @@ namespace JetService.IntegrationTests.Tests
   {
     protected abstract void ExecuteTestImpl(Action<string[]> runAction);
 
-    protected void ExecuteTestImpl(TestAction testAction, GenerateServiceExecutableArguments argz,
-      TestAction? stopAction, GenerateServiceExecutableArguments stopArgz,       
-      OnServiceInstalled onInstalled)
+    private void DoExecuteTest(TestAction startAction, Action<ServiceSettings, string> onInstalled = null, TestAction stopAction = null)
     {
-      ExecuteTestImpl(az => InstallRemoveService(az,
-                                                 testAction,
-                                                 argz,
-                                                 stopAction,
-                                                 stopArgz,
-                                                 onInstalled));
-    }
+      Action nop = () => { };
+      OnServiceInstalled onServiceInstalled =
+        (s, dir, log) =>
+          {
+            Action afterStarted = onInstalled == null ? nop : () => onInstalled(s, dir);
+            StartStopService(s, log, afterStarted, true);
+          };
 
-    private void DoExecuteTest(TestAction testAction, GenerateServiceExecutableArguments argz, 
-                               TestAction? stopAction, GenerateServiceExecutableArguments stopArgz, 
-                               Action<ServiceSettings, string> onInstalled)
-    {
-      OnServiceInstalled onServiceInstalled = (s, dir, log) => StartStopService(s, log, () => onInstalled(s, dir), true);
-
-      ExecuteTestImpl(testAction, argz, stopAction, stopArgz, onServiceInstalled);
-    }
-
-    private void DoExecuteTest(TestAction testAction, GenerateServiceExecutableArguments argz, Action<ServiceSettings, string> onInstalled)
-    {
-      DoExecuteTest(testAction, argz, null, null, onInstalled);
+      ExecuteTestImpl(az => InstallRemoveService(az, startAction, onServiceInstalled, stopAction));
     }
 
     [Test]
     public void TestProcessStartStop()
     {
-       DoExecuteTest(TestAction.TEST_RUN_10500, (a,b) => Stubs.A(), Stubs.NOP);
+       DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_RUN_10500));
     }
 
     [Test]
@@ -48,7 +35,7 @@ namespace JetService.IntegrationTests.Tests
         file =>
           {
             File.Delete(file);
-            DoExecuteTest(TestAction.TEST_IM_ALIVE, (a,b) => Stubs.A(file), Stubs.NOP);
+            DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_IM_ALIVE, file));
             Assert.IsTrue(File.Exists(file));
           });
     }
@@ -61,7 +48,7 @@ namespace JetService.IntegrationTests.Tests
         file =>
         {
           File.Delete(file);
-          DoExecuteTest(TestAction.TEST_STOP_SERVICE, (action, name) => Stubs.A(file, name),
+          DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_STOP_SERVICE, name => Stubs.A(file, name)),
                         (s, dir) => WaitFor.WaitForAssert(
                           TimeSpan.FromSeconds(60),
                           () => TimeSpan.FromSeconds(.5),
@@ -79,7 +66,7 @@ namespace JetService.IntegrationTests.Tests
         file =>
         {
           File.Delete(file);
-          DoExecuteTest(TestAction.TEST_STDIN_SLEEP_READ, (action, name) => Stubs.A(file, name),
+          DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_STDIN_SLEEP_READ, name => Stubs.A(file, name)),
                         (s, dir) => WaitFor.WaitForAssert(
                           TimeSpan.FromSeconds(60),
                           () => TimeSpan.FromSeconds(.5),
@@ -98,9 +85,9 @@ namespace JetService.IntegrationTests.Tests
             {
               File.Delete(file_start);
               DoExecuteTest(
-                TestAction.TEST_IM_ALIVE, (action, name) => Stubs.A(file_start, name),
-                TestAction.TEST_WRITE_FILE, (action, name) => Stubs.A(file_stop, name),
-                Stubs.NOP
+                TestAction.Action(ConsoleTestAction.TEST_IM_ALIVE, name => Stubs.A(file_start, name)),
+                Stubs.NOP,
+                TestAction.Action(ConsoleTestAction.TEST_WRITE_FILE, name => Stubs.A(file_stop, name))
                 );
 
               Assert.IsTrue(File.Exists(file_start));
@@ -111,7 +98,7 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void TestSTDInProcessShouldNotHungInService()
     {
-      DoExecuteTest(TestAction.TEST_SERVICE_STDIN_READ, (A,b) => Stubs.A(),
+      DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_SERVICE_STDIN_READ),
                     (s, dir) => WaitFor.WaitForAssert(
                       TimeSpan.FromSeconds(30),
                       () => TimeSpan.FromSeconds(.5),
@@ -127,12 +114,7 @@ namespace JetService.IntegrationTests.Tests
         file =>
         {
           File.Delete(file);
-          DoExecuteTest(TestAction.TEST_STOP_EVENT_HANDLED, (a,b) => Stubs.A(file, "false"), 
-            (s, dir) =>
-              {
-              }
-            );
-
+          DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_STOP_EVENT_HANDLED, file, "false"));
           Assert.IsTrue(File.Exists(file));
         });
     }

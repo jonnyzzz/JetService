@@ -68,6 +68,7 @@
     <Compile Include="src\Tests\RunUnderUserTest.cs" />
     <Compile Include="src\Tests\ServiceSettingsXmlTest.cs" />
     <Compile Include="src\Tests\SettingsXmlTestBase.cs" />
+    <Compile Include="src\Tests\TestAction.cs" />
     <Compile Include="src\Tests\UserManagerTest.cs" />
     <Compile Include="src\Tests\ValidateUserSIDTest.cs" />
     <Compile Include="src\ThreadUtil.cs" />
@@ -79,6 +80,10 @@
     <ProjectReference Include="..\JetService.IntegrationTests.Executable\JetService.IntegrationTests.Executable.csproj">
       <Project>{6D988945-0081-4A26-BB68-0487AE3BE61E}</Project>
       <Name>JetService.IntegrationTests.Executable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JetService.IntegrationTests.WinForms\JetService.IntegrationTests.WinForms.csproj">
+      <Project>{3954E5D2-A24A-4492-823E-115843423FA0}</Project>
+      <Name>JetService.IntegrationTests.WinForms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

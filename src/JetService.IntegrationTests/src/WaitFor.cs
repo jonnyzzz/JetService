@@ -6,24 +6,23 @@ namespace JetService.IntegrationTests
 {
   public static class WaitFor
   {
-    public static void WaitForAssert(Func<bool> predicate, string message, params object[] argz)
+    public static void WaitForAssert(Func<bool> predicate, Func<string> message)
     {
-      for(int i = 0; i < 6; i++)
-      {
-        if (predicate()) return;
-        Thread.Sleep(TimeSpan.FromSeconds(.42 + i));
-      }
-      Assert.Fail(string.Format(message, argz));
+      var i = 0;
+      Func<TimeSpan> interval = () => TimeSpan.FromSeconds(.42 + i++);
+      WaitForAssert(TimeSpan.FromMinutes(3), interval, predicate, message);
     }
-
-    public static void WaitForAssert(TimeSpan maxTime, TimeSpan interval, Func<bool> predicate, string message, params object[] argz)
+    
+    public static void WaitForAssert(TimeSpan maxTime, Func<TimeSpan> interval, Func<bool> predicate, Func<string> message)
     {
-      for(TimeSpan sp = TimeSpan.Zero; sp < maxTime; sp += interval)
+      for(TimeSpan sp = TimeSpan.Zero; sp < maxTime; )
       {
         if (predicate()) return;
-        Thread.Sleep(interval);                
+        TimeSpan sleep = interval();
+        Thread.Sleep(sleep);
+        sp += sleep;
       }
-      Assert.Fail(string.Format(message, argz));
+      Assert.Fail(message());
     }
   }
 }

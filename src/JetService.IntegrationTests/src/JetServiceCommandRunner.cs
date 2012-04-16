@@ -10,6 +10,7 @@ namespace JetService.IntegrationTests
     {
       UserManagement.GiveAllPermissions(dir);
       string tempFile = Path.Combine(dir, "serviceLogs.txt");
+      File.WriteAllText(tempFile, "");
       var r = ProcessExecutor.ExecuteProcess(Files.JetServiceExe,
                                              command + " /logfile=" + tempFile + " /debug " +
                                              String.Join(" ", arguments));

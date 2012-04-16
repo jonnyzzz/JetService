@@ -7,15 +7,6 @@ namespace JetService.IntegrationTests
     public string Name { get; set; }
     public string Status { get; set; }
 
-    public bool IsRunning
-    {
-      get { return Status == "Running" || Status == "Starting" || Status == "Start Pending"; }
-    }
-
-    public bool IsStopped
-    {
-      get { return Status == "Stopped" || Status == "Disabled"; }
-    }
 
     public override string ToString()
     {

@@ -74,9 +74,9 @@ namespace JetService.IntegrationTests.Tests
           c.Execute(
             () =>
               {
-                WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
+                WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), () => TimeSpan.FromSeconds(.5),
                                       () => ServicesUtil.IsServiceRunning(service),
-                                      "Service must report as running");
+                                      () => "Service must report as running. Status: " + ServicesUtil.DumpServices(service));
                 ;
               });
         }
@@ -197,7 +197,10 @@ namespace JetService.IntegrationTests.Tests
 
     private static void EnsureServiceRemoved(ServiceSettings settingsXml)
     {
-      WaitFor.WaitForAssert(() => !ServicesUtil.IsServiceInstalled(settingsXml), "Service must be uninstalled: {0}", settingsXml.Name);
+      WaitFor.WaitForAssert(
+        () => !ServicesUtil.IsServiceInstalled(settingsXml),
+        () => string.Format("Service must be uninstalled: {0}", settingsXml.Name)
+        );
     }
 
     [TestFixtureTearDown]

@@ -61,16 +61,30 @@ namespace JetService.IntegrationTests.Tests
         file =>
         {
           File.Delete(file);
-          DoExecuteTest(TestAction.TEST_STOP_SERVICE, (action, name) => Stubs.A(file, name), 
-            (s,dir) =>
-              {
-                WaitFor.WaitForAssert(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(.5),
-                  () => ServicesUtil.IsServiceStopped(s),
-                  "Service must be able to stop itself");
-                ;
-              });
+          DoExecuteTest(TestAction.TEST_STOP_SERVICE, (action, name) => Stubs.A(file, name),
+                        (s, dir) => WaitFor.WaitForAssert(
+                          TimeSpan.FromSeconds(60),
+                          () => TimeSpan.FromSeconds(.5),
+                          () => ServicesUtil.IsServiceStopped(s),
+                          () => "Service must be able to stop itself. Status: " + ServicesUtil.DumpServices(s)));
 
           Assert.IsTrue(File.Exists(file));
+        });
+    }
+
+    [Test]
+    public void TestStartStopServiceSTDIN()
+    {
+      TempFilesHolder.WithTempFile(
+        file =>
+        {
+          File.Delete(file);
+          DoExecuteTest(TestAction.TEST_STDIN_SLEEP_READ, (action, name) => Stubs.A(file, name),
+                        (s, dir) => WaitFor.WaitForAssert(
+                          TimeSpan.FromSeconds(60),
+                          () => TimeSpan.FromSeconds(.5),
+                          () => ServicesUtil.IsServiceStopped(s),
+                          () => "Service must not hung reading STDIN. " + ServicesUtil.DumpServices(s)));
         });
     }
 
@@ -86,10 +100,8 @@ namespace JetService.IntegrationTests.Tests
               DoExecuteTest(
                 TestAction.TEST_IM_ALIVE, (action, name) => Stubs.A(file_start, name),
                 TestAction.TEST_WRITE_FILE, (action, name) => Stubs.A(file_stop, name),
-                            (s, dir) =>
-                              {                             
-                                ;
-                              });
+                Stubs.NOP
+                );
 
               Assert.IsTrue(File.Exists(file_start));
               Assert.IsTrue(File.Exists(file_stop));
@@ -100,13 +112,11 @@ namespace JetService.IntegrationTests.Tests
     public void TestSTDInProcessShouldNotHungInService()
     {
       DoExecuteTest(TestAction.TEST_SERVICE_STDIN_READ, (A,b) => Stubs.A(),
-                    (s, dir) =>
-                      {
-                        WaitFor.WaitForAssert(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(.5),
-                                              () => !ServicesUtil.IsServiceNotStopped(s),
-                                              "Service must exit itself");
-                        ;
-                      });
+                    (s, dir) => WaitFor.WaitForAssert(
+                      TimeSpan.FromSeconds(30),
+                      () => TimeSpan.FromSeconds(.5),
+                      () => !ServicesUtil.IsServiceNotStopped(s),
+                      () => "Service must exit itself"));
     }
 
 

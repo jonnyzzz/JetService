@@ -10,6 +10,7 @@ namespace JetService.IntegrationTests.Executable
     TEST_STDOUT, 
     TEST_STDERR,
     TEST_STDIN_READ,
+    TEST_STDIN_SLEEP_READ,
 
     TEST_IM_ALIVE,
     TEST_RUN_10500,
@@ -48,6 +49,10 @@ namespace JetService.IntegrationTests.Executable
           return 0;
 
         case TestAction.TEST_SERVICE_STDIN_READ:
+          WaitServiceToStart();
+          goto case TestAction.TEST_STDIN_READ;
+
+        case TestAction.TEST_STDIN_SLEEP_READ:
           WaitServiceToStart();
           goto case TestAction.TEST_STDIN_READ;
 

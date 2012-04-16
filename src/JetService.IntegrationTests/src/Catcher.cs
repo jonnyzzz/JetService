@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests
@@ -58,11 +59,14 @@ namespace JetService.IntegrationTests
         ExecuteInternal(action);
       }
 
+      var sb = new StringBuilder();
+      sb.AppendLine();
       foreach (var exception in myErrors)
       {
         Console.Out.WriteLine("Exception: {0}", exception);
+        sb.AppendLine(exception.Message ?? "<null>");
       }
-      Assert.IsTrue(myErrors.Count == 0, "Some errors occured");
+      Assert.IsTrue(myErrors.Count == 0, "Some errors occured: " + sb);
     }
   }
 }

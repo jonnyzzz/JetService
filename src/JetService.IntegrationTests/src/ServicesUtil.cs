@@ -73,24 +73,34 @@ namespace JetService.IntegrationTests
       return ProcessExecutor.ExecuteProcess("net.exe", "stop " + s.Name).Dump();
     }
 
+    public static IEnumerable<ServiceInfo> GetService(ServiceSettings s)
+    {
+      return ListServices().Where(x => x.IsNamed(s.Name)).ToArray();
+    }
+
+    public static string DumpServices(ServiceSettings s)
+    {
+      return string.Join(", ", GetService(s));
+    }
+
     public static bool IsServiceNotStopped(ServiceSettings s)
     {
-      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => !x.IsStopped);
+      return GetService(s).Any(x => x.Status != "Stopped" && x.Status != "Disabled");      
     }
 
     public static bool IsServiceRunning(ServiceSettings s)
     {
-      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => x.Status == "Running");
+      return GetService(s).Any(x => x.Status == "Running");
     }
 
     public static bool IsServiceStopped(ServiceSettings s)
     {
-      return ListServices().Where(x => x.IsNamed(s.Name)).Any(x => x.Status == "Stopped");
+      return GetService(s).Any(x => x.Status == "Stopped");
     }
 
-    public static bool IsServiceInstalled(ServiceSettings settingsXml)
+    public static bool IsServiceInstalled(ServiceSettings s)
     {
-      return ListServices().Any(x => x.IsNamed(settingsXml.Name));
+      return GetService(s).Any();
     }
 
   }

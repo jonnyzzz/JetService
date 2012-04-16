@@ -32,7 +32,19 @@ namespace JetService.IntegrationTests.Tests
     [Test]
     public void TestProcessStartStop_GUI()
     {
-       DoExecuteTest(TestAction.Action(WinFormsTestAction.TEST_OPEN));
+      TempFilesHolder.WithTempFile(
+        file =>
+          {
+            File.Delete(file);
+            DoExecuteTest(TestAction.Action(WinFormsTestAction.TEST_EMBEDDED_IE_OPEN, file),
+                          (s, dir) => WaitFor.WaitForAssert(
+                            TimeSpan.FromSeconds(60),
+                            () => TimeSpan.FromSeconds(.5),
+                            () => ServicesUtil.IsServiceStopped(s),
+                            () => "Service must be able to stop itself. Status: " + ServicesUtil.DumpServices(s)));
+
+            Assert.IsTrue(File.Exists(file) && new FileInfo(file).Length > 124);
+          });
     }
 
     [Test]

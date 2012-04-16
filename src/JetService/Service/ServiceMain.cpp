@@ -7,6 +7,8 @@
 #include "ServiceExecuteProcessTask.h"
 #include "ServiceEventINRERROGATEHandler.h"
 #include "ServiceEventSTOPHandler.h"
+#include "ServiceEventPreShutdownHandler.h"
+#include "ServiceEventShutdownHandler.h"
 
 const Logger LOG(L"ServiceMain");
 
@@ -29,28 +31,42 @@ void ServiceMain::JetServiceMain(const Argz* serviceArgz) {
 
   ServiceEventINRERROGATEHandler serviceEventINRERROGATEHandler;
   ServiceEventSTOPHandler serviceEventSTOPHandler;
+  ServiceEventPreShutdownHandler preShutdownHandler;
+  ServiceEventShutdownHandler shutdownHandler;
+  ServiceEventPowerHandler powerHandler;
+  ServiceEventSessionHandler sessionHander;
+
   ServiceEventHandler* pHandlers[] = {  
     &serviceEventINRERROGATEHandler,
     &serviceEventSTOPHandler,
+    &preShutdownHandler,
+    &shutdownHandler,
+    &powerHandler,
+    &sessionHander,
     NULL
   };
 
   ServiceEventContextEx context;
   ServiceEventHandlerCollection handlers(&context, pHandlers);
   
-  SERVICE_STATUS_HANDLE myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, &handlers);
+  JetServiceMain(serviceArgz, &context, &handlers);
+}
+
+void ServiceMain::JetServiceMain(const Argz* serviceArgz, ServiceEventContextEx* context, ServiceEventHandlerCollection* handlers) {
+  SERVICE_STATUS_HANDLE myStatusHandle = RegisterServiceCtrlHandlerEx(mySettings->getServiceName(), GlobalHandlerEx, handlers);
   if (myStatusHandle == NULL) {
     LOG.LogErrorFormat(L"Failed to RegisterServiceCtrlHandlerEx. %s", LOG.GetLastError());    
     return;
   }
 
-  ServiceStatus status(myStatusHandle, handlers.GetSupportedControlEventsMask());
-  ServiceExecuteProcessTask task(&context);
+  ServiceStatus status(myStatusHandle, handlers->GetSupportedControlEventsMask());
+  ServiceExecuteProcessTask task(context);
 
-  context.SetServiceSettings(mySettings);
-  context.SetServiceTask(&task);
-  context.SetServiceStatus(&status);
-  if (!context.IsValid()) {
+  context->SetServiceSettings(mySettings);
+  context->SetServiceTask(&task);
+  context->SetServiceStatus(&status);
+
+  if (!context->IsValid()) {
     LOG.LogError(L"Failed to initialize ServiceContext. IsValid() returned false");
     //TODO: Introduce Stopped-error status here!
     status.SetStatus(StatusValue::STOPPED);

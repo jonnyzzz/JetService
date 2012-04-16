@@ -213,6 +213,12 @@
     <ClInclude Include="Process\ProcessInterruptTimeoutHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventShutdownHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\Event\ServiceEventPreShutdownHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -387,6 +393,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Process\ProcessInterruptTimeoutHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventPreShutdownHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\Event\ServiceEventShutdownHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

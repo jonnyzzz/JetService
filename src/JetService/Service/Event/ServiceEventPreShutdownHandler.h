@@ -2,14 +2,12 @@
 
 #include "ServiceEventHandler.h"
 
-class ServiceEventSTOPHandler : public ServiceEventHandler
+class ServiceEventPreShutdownHandler : public ServiceEventHandler
 {
 public:
-  ServiceEventSTOPHandler();
-  virtual ~ServiceEventSTOPHandler();
+  ServiceEventPreShutdownHandler();
+  virtual ~ServiceEventPreShutdownHandler();
 
-public: 
+public:
   virtual DWORD HandleServiceEvent(ServiceEventContext* context, DWORD dwControl, DWORD dwEventType, LPVOID lpEventData);  
-
 };
-

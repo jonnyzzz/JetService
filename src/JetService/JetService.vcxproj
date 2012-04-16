@@ -122,6 +122,8 @@
     <ClInclude Include="Service\Event\ServiceEventHandler.h" />
     <ClInclude Include="Service\Event\ServiceEventHandlerCollection.h" />
     <ClInclude Include="Service\Event\ServiceEventINRERROGATEHandler.h" />
+    <ClInclude Include="Service\Event\ServiceEventPreShutdownHandler.h" />
+    <ClInclude Include="Service\Event\ServiceEventShutdownHandler.h" />
     <ClInclude Include="Service\Event\ServiceEventSTOPHandler.h" />
     <ClInclude Include="Service\JetServiceMain.h" />
     <ClInclude Include="Service\ServiceMain.h" />
@@ -185,6 +187,8 @@
     <ClCompile Include="Service\Event\ServiceEventHandler.cpp" />
     <ClCompile Include="Service\Event\ServiceEventHandlerCollection.cpp" />
     <ClCompile Include="Service\Event\ServiceEventINRERROGATEHandler.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventPreShutdownHandler.cpp" />
+    <ClCompile Include="Service\Event\ServiceEventShutdownHandler.cpp" />
     <ClCompile Include="Service\Event\ServiceEventSTOPHandler.cpp" />
     <ClCompile Include="Service\ServiceMain.cpp" />
     <ClCompile Include="Service\ServiceStatus.cpp" />

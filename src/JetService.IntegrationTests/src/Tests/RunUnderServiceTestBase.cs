@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using JetService.IntegrationTests.Executable;
+using JetService.IntegrationTests.WinForms;
 using NUnit.Framework;
 
 namespace JetService.IntegrationTests.Tests
@@ -26,6 +27,12 @@ namespace JetService.IntegrationTests.Tests
     public void TestProcessStartStop()
     {
        DoExecuteTest(TestAction.Action(ConsoleTestAction.TEST_RUN_10500));
+    }
+
+    [Test]
+    public void TestProcessStartStop_GUI()
+    {
+       DoExecuteTest(TestAction.Action(WinFormsTestAction.TEST_OPEN));
     }
 
     [Test]

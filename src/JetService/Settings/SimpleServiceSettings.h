@@ -21,9 +21,29 @@ private:
   const CString mySettingsFilePath;
 };
 
+class SimpleUserSettings : public UserSettings {
+public:
+  SimpleUserSettings();
+  virtual ~SimpleUserSettings();
+
+public:
+  virtual CString getUserName() const;
+  virtual CString getDomain() const;
+  virtual CString getPassword() const;
+
+public:
+  void setUserName(const CString& name);
+  void setDomain(const CString& name);
+  void setPassword(const CString& pwd);
+
+private:
+  CString myUserName;
+  CString myDomain;
+  CString myPassword;
+};
 
 
-class SimpleCreateServiceSettings : public CreateServiceSettings {
+class SimpleCreateServiceSettings : public CreateServiceSettings, public SimpleUserSettings {
 public:
   SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand);
   virtual ~SimpleCreateServiceSettings();
@@ -41,18 +61,12 @@ public:
   virtual CString getServiceExecutable() const;
 
 public:
-  void setUserName(const CString& name);
-  void setDomain(const CString& name);
-  void setPassword(const CString& pwd);
   void setAutostart(bool autostart);
   void setRunAsSystem(bool runAsSystem);
 
 private:
   const ServiceSettings* const myBase;
   CString myServiceExecutableCommand;
-  CString myUserName;
-  CString myDomain;
-  CString myPassword;
   bool myAutostart;
   bool myRunAsSystem;
 };

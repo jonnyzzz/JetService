@@ -3,7 +3,6 @@
 #include "FileTaskSettings.h"
 #include "SimpleServiceSettings.h"
 #include "ServiceAction.h"
-#include "LogonUserCommand.h"
 #include "LSAGrantPrivilegeCommand.h"
 #include "Logger.h"
 

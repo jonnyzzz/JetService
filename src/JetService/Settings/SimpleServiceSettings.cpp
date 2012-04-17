@@ -35,12 +35,44 @@ CString SimpleServiceSettings::getServiceTaskSettingsPath() const {
 
 ////////////////////////////////////////
 
+SimpleUserSettings::SimpleUserSettings() 
+  : myUserName(L"")
+  , myDomain(L".")
+  , myPassword(L"") {
+}
+
+SimpleUserSettings::~SimpleUserSettings() {
+}
+
+CString SimpleUserSettings::getUserName() const {
+  return myUserName;
+}
+
+CString SimpleUserSettings::getDomain() const {
+  return myDomain;
+}
+
+CString SimpleUserSettings::getPassword() const {
+  return myPassword;
+}
+
+void SimpleUserSettings::setUserName(const CString& name) {
+  myUserName = name;
+}
+
+void SimpleUserSettings::setDomain(const CString& domain) {
+  myDomain = domain;
+}
+
+void SimpleUserSettings::setPassword(const CString& pwd) {
+  myPassword = pwd;
+}
+
+
+////////////////////////////////////////
 
 SimpleCreateServiceSettings::SimpleCreateServiceSettings(const ServiceSettings* baseSettings, const CString& serviceCommand)
   : myBase(baseSettings)
-  , myUserName(L"")
-  , myDomain(L".")
-  , myPassword(L"")
   , myAutostart(true)
   , myRunAsSystem(false)
   , myServiceExecutableCommand(serviceCommand) {
@@ -74,31 +106,19 @@ bool SimpleCreateServiceSettings::runAsSystem() const {
 }
 
 CString SimpleCreateServiceSettings::getUserName() const {
-  return myUserName;
+  return SimpleUserSettings::getUserName();
 }
 
 CString SimpleCreateServiceSettings::getDomain() const {
-  return myDomain;
+  return SimpleUserSettings::getDomain();
 }
 
 CString SimpleCreateServiceSettings::getPassword() const {
-  return myPassword;
+  return SimpleUserSettings::getPassword();
 }
 
 CString SimpleCreateServiceSettings::getServiceExecutable() const {
   return myServiceExecutableCommand;
-}
-
-void SimpleCreateServiceSettings::setUserName(const CString& name) {
-  myUserName = name;
-}
-
-void SimpleCreateServiceSettings::setDomain(const CString& domain) {
-  myDomain = domain;
-}
-
-void SimpleCreateServiceSettings::setPassword(const CString& pwd) {
-  myPassword = pwd;
 }
 
 void SimpleCreateServiceSettings::setAutostart(bool autostart) {

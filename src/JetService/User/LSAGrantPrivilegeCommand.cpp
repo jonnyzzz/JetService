@@ -4,7 +4,7 @@
 
 const Logger LOG(L"LSAGrantPrivilegeCommand");
 
-LSAGrantPrivilegeCommand::LSAGrantPrivilegeCommand(const CreateServiceSettings* settings)
+LSAGrantPrivilegeCommand::LSAGrantPrivilegeCommand(const UserSettings* settings)
   : LSAUserCommand(settings, LSAPolicyRight::CHANGE_PRIVILEGES)
 {
 }

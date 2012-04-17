@@ -7,7 +7,7 @@ const Logger LOG(L"LogonUserCommand");
 const LogonUserMode LogonUserMode::NETWORK = LogonUserMode(L"Network", LOGON32_LOGON_NETWORK);
 const LogonUserMode LogonUserMode::AS_SERVICE = LogonUserMode(L"Logon as service", LOGON32_LOGON_SERVICE);
 
-LogonUserCommand::LogonUserCommand(const CreateServiceSettings* settings, const LogonUserMode& mode)
+LogonUserCommand::LogonUserCommand(const UserSettings* settings, const LogonUserMode& mode)
   : mySettings(settings)
   , myMode(mode)
 {

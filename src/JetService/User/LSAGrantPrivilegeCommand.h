@@ -6,7 +6,7 @@
 class LSAGrantPrivilegeCommand : public LSAUserCommand
 {
 public:
-  LSAGrantPrivilegeCommand(const CreateServiceSettings* settings);
+  LSAGrantPrivilegeCommand(const UserSettings* settings);
   virtual ~LSAGrantPrivilegeCommand();
 
 public:

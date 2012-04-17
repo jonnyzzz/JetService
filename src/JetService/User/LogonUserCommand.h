@@ -20,7 +20,7 @@ public:
 class LogonUserCommand : public Command
 {
 public:
-  LogonUserCommand(const CreateServiceSettings* settings, const LogonUserMode& mode);
+  LogonUserCommand(const UserSettings* settings, const LogonUserMode& mode);
   virtual ~LogonUserCommand();
 
 public:
@@ -28,7 +28,7 @@ public:
   virtual int executeCommand(HANDLE userToken) = 0;
 
 private:
-  const CreateServiceSettings* const mySettings;
+  const UserSettings* const mySettings;
   const LogonUserMode& myMode;
 };
 

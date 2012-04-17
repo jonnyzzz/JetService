@@ -7,7 +7,7 @@
 class LSAUserCommand : public LSAPolicyCommand
 {
 public:
-  LSAUserCommand(const CreateServiceSettings* settings, const LSAPolicyRight& lsaRight);
+  LSAUserCommand(const UserSettings* settings, const LSAPolicyRight& lsaRight);
   virtual ~LSAUserCommand();
 
 public:  
@@ -15,7 +15,7 @@ public:
   virtual int executeCommand(LSA_HANDLE lsa, PSID sid) = 0;
 
 protected:
-  const CreateServiceSettings* mySettings;
+  const UserSettings* mySettings;
   const LSAPolicyRight& myLSARight;
 };
 

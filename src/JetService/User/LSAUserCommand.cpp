@@ -4,7 +4,7 @@
 
 const Logger LOG(L"LSAUserCommand");
 
- LSAUserCommand::LSAUserCommand(const CreateServiceSettings* settings, const LSAPolicyRight& lsaRight)
+ LSAUserCommand::LSAUserCommand(const UserSettings* settings, const LSAPolicyRight& lsaRight)
   : LSAPolicyCommand(lsaRight)
   , mySettings(settings)
   , myLSARight(lsaRight)

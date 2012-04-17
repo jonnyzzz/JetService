@@ -234,7 +234,7 @@
     <ClInclude Include="User\CheckAndGrantLogOnAsServiceCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Console\GrantServiceDACL.h">
+    <ClInclude Include="Console\GrantServiceDACLAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -434,7 +434,7 @@
     <ClCompile Include="User\CheckAndGrantLogOnAsServiceCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Console\GrantServiceDACL.cpp">
+    <ClCompile Include="Console\GrantServiceDACLAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

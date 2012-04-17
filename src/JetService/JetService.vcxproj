@@ -79,7 +79,7 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="Console\GrantServiceDACL.h" />
+    <ClInclude Include="Console\GrantServiceDACLAction.h" />
     <ClInclude Include="User\CheckAndGrantLogOnAsServiceCommand.h" />
     <ClInclude Include="User\CheckLogonAsServiceCommand.h" />
     <ClInclude Include="Console\CheckUserAction.h" />
@@ -155,7 +155,7 @@
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="Console\GrantServiceDACL.cpp" />
+    <ClCompile Include="Console\GrantServiceDACLAction.cpp" />
     <ClCompile Include="User\CheckAndGrantLogOnAsServiceCommand.cpp" />
     <ClCompile Include="User\CheckLogonAsServiceCommand.cpp" />
     <ClCompile Include="Console\CheckUserAction.cpp" />

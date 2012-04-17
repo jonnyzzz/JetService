@@ -1,28 +1,28 @@
 #include "StdAfx.h"
-#include "GrantServiceDACL.h"
+#include "GrantServiceDACLAction.h"
 #include "Logger.h"
 #include "ServiceGrantDACLCommand.h"
 
-const Logger LOG(L"GrantServiceDACL");
+const Logger LOG(L"GrantServiceDACLAction");
 
 
-GrantServiceDACL::GrantServiceDACL() : CreateServiceSettingsAction(L"grantService")
+GrantServiceDACLAction::GrantServiceDACLAction() : CreateServiceSettingsAction(L"grantService")
 {
 }
 
 
-GrantServiceDACL::~GrantServiceDACL()
+GrantServiceDACLAction::~GrantServiceDACLAction()
 {
 }
 
-void GrantServiceDACL::PrintUsage(ConsoleWriter* writer) {  
+void GrantServiceDACLAction::PrintUsage(ConsoleWriter* writer) {  
   writer->WriteFormat(L"    %s /%s=<path to settings file> %s", myName, SettingsKeyName, GetUserArgumentsList());
   writer->Write      (L"      gives user rights to start/stop the service");
   writer->Write();
 }
 
 
-int GrantServiceDACL::ExecuteAction(const Argz* az, const CreateServiceSettings* settings, const ServiceTaskSettings* task) {  
+int GrantServiceDACLAction::ExecuteAction(const Argz* az, const CreateServiceSettings* settings, const ServiceTaskSettings* task) {  
   if (settings->runAsSystem()) return 0;
 
   ServiceGrantDACLCommand cmd(settings);

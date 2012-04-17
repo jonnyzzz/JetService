@@ -2,11 +2,11 @@
 
 #include "CreateServiceSettingsAction.h"
 
-class GrantServiceDACL : public CreateServiceSettingsAction
+class GrantServiceDACLAction : public CreateServiceSettingsAction
 {
 public:
-  GrantServiceDACL();
-  virtual ~GrantServiceDACL(void);
+  GrantServiceDACLAction();
+  virtual ~GrantServiceDACLAction(void);
 
 public:
   virtual void PrintUsage(ConsoleWriter* writer);  

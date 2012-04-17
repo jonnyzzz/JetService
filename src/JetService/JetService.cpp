@@ -15,6 +15,7 @@
 #include "ValidateLogonSIDAction.h"
 #include "GrantLogonAsServiceAction.h"
 #include "CheckUserAction.h"
+#include "GrantServiceDACL.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
@@ -35,6 +36,7 @@ int _tmain(int argc, _TCHAR* argv[])
   ProcessAction       processAction;
   CheckUserAction     checkUserAction;
   GrantLogonAsServiceAction grantUserAction;
+  GrantServiceDACL grantService;
   ValidateCreateServiceAction validateAction;
   ValidateServiceTaskAction validateTaskAction;
   ValidateLogonSIDAction validateSIDAction;
@@ -47,6 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
     &processAction,
     &checkUserAction,
     &grantUserAction,
+    &grantService,
     &validateAction,
     &validateTaskAction,
     &validateSIDAction,

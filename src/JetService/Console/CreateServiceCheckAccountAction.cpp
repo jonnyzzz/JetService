@@ -2,7 +2,10 @@
 #include "CreateServiceCheckAccountAction.h"
 #include "LogonUserCommand.h"
 #include "LSAGrantPrivilegeCommand.h"
+#include "CheckLogonAsServiceCommand.h"
+#include "CheckAndGrantLogOnAsServiceCommand.h"
 #include "Logger.h"
+
 
 const Logger LOG(L"CreateServiceCheckAccountAction");
 
@@ -17,17 +20,6 @@ CreateServiceCheckAccountAction::~CreateServiceCheckAccountAction(void)
 }
 
 
-class CheckUserAccount : public LogonUserCommand {
-public:
-  CheckUserAccount(const CreateServiceSettings* settings) : LogonUserCommand(settings, LogonUserMode::AS_SERVICE) {}
-  virtual ~CheckUserAccount() {}
-public:
-  virtual int executeCommand(HANDLE userToken) {
-    LOG.LogInfo(L"User logged in as service");
-    return 0;
-  }
-};
-
 const CString CreateServiceCheckAccountAction::KEY_CHECK_USER_ACCOUNT = L"checkUserAccount";
 const CString CreateServiceCheckAccountAction::KEY_GIVE_USER_LOGON = L"giveUserRights";
 
@@ -39,8 +31,8 @@ int CreateServiceCheckAccountAction:: ExecuteAction(const Argz* az, const Create
   if (settings->runAsSystem()) return 0;
   if (!az->GetBooleanArgument(KEY_CHECK_USER_ACCOUNT, true)) return 0;
   
-  CheckUserAccount check(settings);
-  int ret = static_cast<Command*>(&check)->executeCommand();
+  CheckLogonAsServiceCommand check(settings);
+  int ret = static_cast<Command*>(&check)->executeCommand();  
   if (ret == 0) return 0;
 
   if (az->GetBooleanArgument(KEY_GIVE_USER_LOGON, true)) {
@@ -53,12 +45,8 @@ int CreateServiceCheckAccountAction:: ExecuteAction(const Argz* az, const Create
 
 
 int CreateServiceCheckAccountAction::TryAddExecuteAsService(const Argz* az, const CreateServiceSettings* settings) {
-  LSAGrantPrivilegeCommand cmd(settings);
+  CheckAndGrantLogOnAsServiceCommand cmd(settings, false);
   int ret = static_cast<Command*>(&cmd)->executeCommand();
-  if (ret == 0) {        
-    CheckUserAccount check(settings);
-    ret = static_cast<Command*>(&check)->executeCommand();
-  }
   if (ret == 0) return 0;
 
   LOG.LogInfo(L"Failed to give user enough rights to run as server");

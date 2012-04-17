@@ -79,6 +79,9 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="User\CheckAndGrantLogOnAsServiceCommand.h" />
+    <ClInclude Include="User\CheckLogonAsServiceCommand.h" />
+    <ClInclude Include="Console\CheckUserAction.h" />
     <ClInclude Include="Console\ConsoleAction.h" />
     <ClInclude Include="Console\ConsoleWriter.h" />
     <ClInclude Include="Console\CreateServiceAction.h" />
@@ -94,6 +97,7 @@
     <ClInclude Include="Console\ValidateCreateServiceAction.h" />
     <ClInclude Include="Console\ValidateLogonSIDAction.h" />
     <ClInclude Include="Console\ValidateServiceTaskAction.h" />
+    <ClInclude Include="Console\GrantLogonAsServiceAction.h" />
     <ClInclude Include="InstanceCount.h" />
     <ClInclude Include="InterruptHolder.h" />
     <ClInclude Include="Logger\Logger.h" />
@@ -150,6 +154,9 @@
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="User\CheckAndGrantLogOnAsServiceCommand.cpp" />
+    <ClCompile Include="User\CheckLogonAsServiceCommand.cpp" />
+    <ClCompile Include="Console\CheckUserAction.cpp" />
     <ClCompile Include="Console\ConsoleAction.cpp" />
     <ClCompile Include="Console\ConsoleWriter.cpp" />
     <ClCompile Include="Console\CreateServiceAction.cpp" />
@@ -165,6 +172,7 @@
     <ClCompile Include="Console\ValidateCreateServiceAction.cpp" />
     <ClCompile Include="Console\ValidateLogonSIDAction.cpp" />
     <ClCompile Include="Console\ValidateServiceTaskAction.cpp" />
+    <ClCompile Include="Console\GrantLogonAsServiceAction.cpp" />
     <ClCompile Include="InstanceCount.cpp" />
     <ClCompile Include="InterruptHolder.cpp" />
     <ClCompile Include="JetService.cpp" />

@@ -222,6 +222,18 @@
     <ClInclude Include="Console\UserConsoleAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Console\CheckUserAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\CheckLogonAsServiceCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Console\GrantLogonAsServiceAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="User\CheckAndGrantLogOnAsServiceCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -405,6 +417,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Console\UserConsoleAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Console\CheckUserAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\CheckLogonAsServiceCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Console\GrantLogonAsServiceAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User\CheckAndGrantLogOnAsServiceCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

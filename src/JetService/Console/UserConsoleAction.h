@@ -12,16 +12,15 @@ public:
   CString GetUserArgumentsList();
 };
 
-class UserConsoleAction : public ConsoleAction, private UserSettingsParser
+class UserConsoleAction : public ConsoleAction, protected UserSettingsParser
 {
 public:
   UserConsoleAction(const CString& commandName);
   virtual ~UserConsoleAction();
 
-public:  
+public:    
   virtual int ExecuteAction(const Argz* argz);
   virtual int ExecuteAction(const Argz* argz, UserSettings* settings) = 0;
-
-
 };
+
 

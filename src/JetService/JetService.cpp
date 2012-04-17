@@ -13,6 +13,8 @@
 #include "ValidateCreateServiceAction.h"
 #include "ValidateServiceTaskAction.h"
 #include "ValidateLogonSIDAction.h"
+#include "GrantLogonAsServiceAction.h"
+#include "CheckUserAction.h"
 
 #include "Logger.h"
 const Logger LOG(L"main");
@@ -31,15 +33,20 @@ int _tmain(int argc, _TCHAR* argv[])
   CreateServiceAction createAction;
   ServiceAction       serviceAction;
   ProcessAction       processAction;
+  CheckUserAction     checkUserAction;
+  GrantLogonAsServiceAction grantUserAction;
   ValidateCreateServiceAction validateAction;
   ValidateServiceTaskAction validateTaskAction;
   ValidateLogonSIDAction validateSIDAction;
+  
 
   ConsoleAction* actions[] = {
     &serviceAction,
     &createAction, 
     &deleteAction,
     &processAction,
+    &checkUserAction,
+    &grantUserAction,
     &validateAction,
     &validateTaskAction,
     &validateSIDAction,

@@ -12,7 +12,7 @@ public:
   virtual int ExecuteAction(const Argz* argz, const CreateServiceSettings* settings, const ServiceTaskSettings* task);
 
 private:
-  int TryAddExecuteAsService(const Argz* argz, const CreateServiceSettings* settings);
+  int TryAddExecuteAsService(const Argz* argz, const CreateServiceSettings* settings);  
 
 protected:
   virtual CString GetUsageString();

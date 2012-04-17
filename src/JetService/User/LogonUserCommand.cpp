@@ -45,4 +45,3 @@ int LogonUserCommand::executeCommand() {
   CloseHandle(userToken);
   return ret;
 }
-

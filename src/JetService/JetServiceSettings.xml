@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jetservice>
-  <name>jetservice23434</name>
+  <name>jetservice23434</name> <!-- to be used with net.exe start or net.exe stop commands -->
   <displayName>Jet Service</displayName>
   <description>JetService s<![CDATA[asdasd]]> service</description>
 
@@ -18,5 +18,26 @@
        arguments list
     -->
     <arguments>a b c "333" /foo:bar</arguments>
+  
+    <!--
+        optional part to describe the way service process is terminated
+
+        timeout attribute specifies wait interval in minutes before process is killed
+
+        <execution> specifies the process that will be started to stop service process.
+        It's expected stop process to finish within timeout interval too.        
+        
+        By default (if no <termination> is specified), service process will be killed
+    -->
+   
+    <!--
+    <termination timeout="2"> 
+      <execution> 
+        <workdir>../foo</workdir>
+        <program>foo.exe</program>
+        <arguments>a b d</arguments>
+      </execution>
+    </termination>
+    -->        
   </execution>
 </jetservice>

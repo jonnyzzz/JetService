@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ServiceSettingsAction.h"
+#include "UserConsoleAction.h"
 
-class CreateServiceSettingsAction : public ServiceSettingsAction
+class CreateServiceSettingsAction : public ServiceSettingsAction, protected UserSettingsParser
 {
 public:
   CreateServiceSettingsAction(const CString& commandName);

@@ -13,5 +13,12 @@ public:
 
 private:
   int TryAddExecuteAsService(const Argz* argz, const CreateServiceSettings* settings);
+
+protected:
+  virtual CString GetUsageString();
+  
+private:
+  static const CString KEY_CHECK_USER_ACCOUNT;
+  static const CString KEY_GIVE_USER_LOGON;
 };
 

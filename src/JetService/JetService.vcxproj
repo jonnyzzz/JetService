@@ -90,6 +90,7 @@
     <ClInclude Include="Console\ServiceAction.h" />
     <ClInclude Include="Console\ServiceSettingsAction.h" />
     <ClInclude Include="Console\SimpleConsoleAction.h" />
+    <ClInclude Include="Console\UserConsoleAction.h" />
     <ClInclude Include="Console\ValidateCreateServiceAction.h" />
     <ClInclude Include="Console\ValidateLogonSIDAction.h" />
     <ClInclude Include="Console\ValidateServiceTaskAction.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Console\ServiceAction.cpp" />
     <ClCompile Include="Console\ServiceSettingsAction.cpp" />
     <ClCompile Include="Console\SimpleConsoleAction.cpp" />
+    <ClCompile Include="Console\UserConsoleAction.cpp" />
     <ClCompile Include="Console\ValidateCreateServiceAction.cpp" />
     <ClCompile Include="Console\ValidateLogonSIDAction.cpp" />
     <ClCompile Include="Console\ValidateServiceTaskAction.cpp" />

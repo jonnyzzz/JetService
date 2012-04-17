@@ -32,32 +32,12 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
     settings.setRunAsSystem(true);
     LOG.LogInfo(L"Installing service unser LOCAL_SYSTEM account");
   } else {
-    CString p;
-    if (!az->GetNamedArgument(L"user", p)) {
-      LOG.LogError(L"/user=<user> parameter must be specified.");
-      return 1;
-    }
-    settings.setUserName(p);
-    
-    if (!az->GetNamedArgument(L"password", p)) {
-      LOG.LogError(L"/password=<password> parameter must be specified.");
-      return 1;
-    }
-    settings.setPassword(p);
-
-    if (!az->GetNamedArgument(L"domain", p)) {
-      LOG.LogWarnFormat(L"Domain not specified. Will use localhost");
-      settings.setDomain(L".");
-    } else {
-      settings.setDomain(p);
-    }
-
+    int ret = ParseUserSettings(az, &settings);
+    if (ret != 0) return ret;
     LOG.LogInfoFormat(L"Installing service under %s (domain=%s) account", settings.getUserName(), settings.getDomain());
   }
 
   settings.setAutostart(az->GetBooleanArgument(L"autostart", true) && az->GetBooleanArgument(L"autorun", true));
-  
- 
 
   return ExecuteAction(az, &settings, baseSettings);  
 }

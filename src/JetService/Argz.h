@@ -24,6 +24,7 @@ public:
 
   static CString MakeKey(const CString& name);
   static CString MakeArgument(const CString& name, const CString& value);
+  static CString MakeBoolArgument(const CString& name, bool val = false);
 private:
   const int myArgc;
   const CString myExecutableName;

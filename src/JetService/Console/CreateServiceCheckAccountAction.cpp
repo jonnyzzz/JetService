@@ -28,26 +28,31 @@ public:
   }
 };
 
+const CString CreateServiceCheckAccountAction::KEY_CHECK_USER_ACCOUNT = L"checkUserAccount";
+const CString CreateServiceCheckAccountAction::KEY_GIVE_USER_LOGON = L"giveUserRights";
+
+CString CreateServiceCheckAccountAction::GetUsageString() {
+  return CreateFormatted(L"[%s] [%s]", Argz::MakeBoolArgument(KEY_CHECK_USER_ACCOUNT, true), Argz::MakeBoolArgument(KEY_GIVE_USER_LOGON, true));
+}
 
 int CreateServiceCheckAccountAction:: ExecuteAction(const Argz* az, const CreateServiceSettings* settings, const ServiceTaskSettings* task) {
   if (settings->runAsSystem()) return 0;
-  if (!az->GetBooleanArgument(L"checkUserAccount", true)) return 0;
+  if (!az->GetBooleanArgument(KEY_CHECK_USER_ACCOUNT, true)) return 0;
   
   CheckUserAccount check(settings);
   int ret = static_cast<Command*>(&check)->executeCommand();
   if (ret == 0) return 0;
 
-  if (az->GetBooleanArgument(L"giveUserRights", true)) {
+  if (az->GetBooleanArgument(KEY_GIVE_USER_LOGON, true)) {
     return TryAddExecuteAsService(az, settings);    
   } else {
-    LOG.LogInfo(L"To disable user account check add '/checkUserAccount=false' commandline argument"); 
+    LOG.LogInfoFormat(L"To disable user account check add '%s' commandline argument", az->MakeBoolArgument(KEY_CHECK_USER_ACCOUNT)); 
     return ret;
   }  
 }
 
 
-
-int CreateServiceCheckAccountAction::TryAddExecuteAsService(const Argz* argz, const CreateServiceSettings* settings) {
+int CreateServiceCheckAccountAction::TryAddExecuteAsService(const Argz* az, const CreateServiceSettings* settings) {
   LSAGrantPrivilegeCommand cmd(settings);
   int ret = static_cast<Command*>(&cmd)->executeCommand();
   if (ret == 0) {        
@@ -57,7 +62,7 @@ int CreateServiceCheckAccountAction::TryAddExecuteAsService(const Argz* argz, co
   if (ret == 0) return 0;
 
   LOG.LogInfo(L"Failed to give user enough rights to run as server");
-  LOG.LogInfo(L"Give user enough rights or add '/giveUserRights=false' commandline argument");
+  LOG.LogInfoFormat(L"Give user enough rights or add '%s' commandline argument", az->MakeBoolArgument(KEY_GIVE_USER_LOGON));
   return 1;
 }
 

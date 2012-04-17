@@ -84,6 +84,11 @@ CString Argz::MakeArgument(const CString& name, const CString& value) {
   return MakeKey(name) + L"=" + value;
 }
 
+CString Argz::MakeBoolArgument(const CString& name, bool val) {
+  CString v = val ? L"true" : L"false";
+  return MakeArgument(name, v);
+}
+
 bool Argz::GetBooleanArgument(const CString& name, bool def) const {
   CString  p;
   if (!GetNamedArgument(name, p)) return def;

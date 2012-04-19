@@ -81,7 +81,7 @@ int CreateServiceCommand::executeCommand(SC_HANDLE scm) {
     }    
   }
 
-  LOG.LogInfoFormat(L"Service %s was created", mySettings->getServiceName());
+  LOG.LogInfoFormat(L"Service '%s' was created", mySettings->getServiceName());
   updateServiceDescription();
 
   CloseServiceHandle(service);

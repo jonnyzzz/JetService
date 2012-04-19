@@ -56,5 +56,14 @@ int CreateServiceAction::ExecuteAction(const Argz* az, const CreateServiceSettin
     }
   }
 
+  LOG.LogInfo      (L"");
+  LOG.LogInfo      (L"Use the folloging commands to start/stop the service:");
+  LOG.LogInfoFormat(L"  net.exe start %s", settings->getServiceName());
+  LOG.LogInfo      (L"    to start service");
+  LOG.LogInfo      (L"");
+  LOG.LogInfoFormat(L"  net.exe stop %s", settings->getServiceName());
+  LOG.LogInfo      (L"    to stop service");
+  LOG.LogInfo      (L"");
+
   return 0;
 }

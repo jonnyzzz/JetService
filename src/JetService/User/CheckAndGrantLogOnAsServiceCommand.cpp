@@ -41,7 +41,7 @@ int CheckAndGrantLogOnAsServiceCommand::executeCommand() {
   }
 
   if (ret == 0) {
-    LOG.LogInfo(L"Gave user Logon as service' privilege");
+    LOG.LogInfo(L"Gave user 'Logon as service' privilege");
     return 0;
   } else {
     LOG.LogInfo(L"Failed to give user enough rights to run as server");

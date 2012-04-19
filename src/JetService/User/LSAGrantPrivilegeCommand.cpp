@@ -66,7 +66,7 @@ int LSAGrantPrivilegeCommand::executeCommand(LSA_HANDLE lsa, PSID sid) {
   }
 
   LOG.LogDebug(L"Removed deny previleges");
-  LOG.LogInfoFormat(L"User %s\\%s was given logon as service privilege", mySettings->getDomain(), mySettings->getUserName());
+  LOG.LogInfoFormat(L"User %s\\%s was given 'Logon as Service' privilege", mySettings->getDomain(), mySettings->getUserName());
   return 0;
 }
 

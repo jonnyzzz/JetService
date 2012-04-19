@@ -61,10 +61,9 @@ int ServiceAction::ExecuteAction(const Argz* argz, const ServiceSettings* settin
   return 0;
 }
 
-
-
-int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result) {
+int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result, CString& logFile) {
   result = L"";
+  logFile = L"";
 
   const DWORD sz = 65535;
   TCHAR moduleNameBuff[sz+1];
@@ -93,13 +92,14 @@ int ServiceAction::GenerateServiceCommandLine(const Argz* argz, CString& result)
   path.Append(L"\"");
   path.Append(argz->MakeArgument(SettingsKeyName, settings));
   path.Append(L"\"");
-
-  CString logFile;
+  
   if (argz->GetLogFile(logFile)) {
     path.Append(L" ");
     path.Append(L"\"");
     path.Append(argz->MakeArgument(L"LogFile", logFile));
     path.Append(L"\"");
+  } else {
+    logFile = L"";
   }
 
   if (argz->IsDebug()) {

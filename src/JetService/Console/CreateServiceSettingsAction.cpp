@@ -19,11 +19,16 @@ CreateServiceSettingsAction::~CreateServiceSettingsAction()
 {
 }
 
-int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {
+int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {  
   CString serviceCommand;
-  {
-    int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand);
+  CString logFile;
+  {    
+    int ret = ServiceAction().GenerateServiceCommandLine(az, serviceCommand, logFile);
     if (ret != 0) return ret;
+  }
+
+  if (logFile.GetLength() > 0) {
+    LOG.LogInfoFormat(L"Service log file is set to: %s", logFile);
   }
   
   SimpleCreateServiceSettings settings(baseSettings, serviceCommand);

@@ -14,7 +14,7 @@ public:
   virtual int ExecuteAction(const Argz* argz, const ServiceSettings* settings);
 
 public:
-  int GenerateServiceCommandLine(const Argz* argz, CString& result);
+  int GenerateServiceCommandLine(const Argz* argz, CString& result, CString& logFile);
 
 public:
   static const CString JetServiceCommand;

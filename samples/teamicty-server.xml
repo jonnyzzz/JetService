@@ -6,8 +6,10 @@
     <program>cmd.exe</program>
     <arguments>/c teamcity-server.bat run</arguments>
     <termination timeout="15">
-      <program>cmd.exe</program>
-      <arguments>/c teamcity-server.bat stop</arguments>
+      <execution>
+        <program>cmd.exe</program>
+        <arguments>/c teamcity-server.bat stop</arguments>
+      </execution>
     </termination>
   </execution>
 </jetservice>

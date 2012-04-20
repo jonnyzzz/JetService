@@ -1,15 +1,18 @@
-<jetservice xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <name>TeamCityServer</name>
-  <displayName>TeamCiry Server</displayName>
+<jetservice>
+  <name>TeamCity</name>
+  <displayName>TeamCity Server</displayName>
   <description>JetBrains TeamCity server service</description>
   <execution>
     <program>cmd.exe</program>
     <arguments>/c teamcity-server.bat run</arguments>
+    <workdir>../bin</workdir>
     <termination timeout="15">
       <execution>
         <program>cmd.exe</program>
         <arguments>/c teamcity-server.bat stop</arguments>
+        <workdir>../bin</workdir>
       </execution>
     </termination>
   </execution>
 </jetservice>
+

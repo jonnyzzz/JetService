@@ -237,6 +237,9 @@
     <ClInclude Include="Console\ProcessAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Console\DeleteByNameAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -435,6 +438,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Console\ProcessAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Console\DeleteByNameAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

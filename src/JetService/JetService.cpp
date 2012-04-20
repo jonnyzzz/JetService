@@ -6,6 +6,7 @@
 #include "ConsoleAction.h"
 #include "SimpleConsoleWriter.h"
 #include "DeleteServiceAction.h"
+#include "DeleteByNameAction.h"
 #include "CreateServiceAction.h"
 #include "ProcessAction.h"
 #include "ServiceAction.h"
@@ -31,6 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
   Argz az(argc, argv);
 
   DeleteServiceAction deleteAction;
+  DeleteByNameAction  deleteByNameAction;
   CreateServiceAction createAction;
   ServiceAction       serviceAction;
   ProcessAction       processAction;
@@ -46,6 +48,7 @@ int _tmain(int argc, _TCHAR* argv[])
     &serviceAction,
     &createAction, 
     &deleteAction,
+    &deleteByNameAction,
     &processAction,
     &checkUserAction,
     &grantUserAction,

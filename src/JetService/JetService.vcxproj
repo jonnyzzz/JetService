@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="Argz.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Console\DeleteByNameAction.h" />
     <ClInclude Include="Console\GrantServiceDACLAction.h" />
     <ClInclude Include="User\CheckAndGrantLogOnAsServiceCommand.h" />
     <ClInclude Include="User\CheckLogonAsServiceCommand.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Argz.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Console\DeleteByNameAction.cpp" />
     <ClCompile Include="Console\GrantServiceDACLAction.cpp" />
     <ClCompile Include="User\CheckAndGrantLogOnAsServiceCommand.cpp" />
     <ClCompile Include="User\CheckLogonAsServiceCommand.cpp" />

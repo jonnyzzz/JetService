@@ -6,7 +6,7 @@
 
 const Logger LOG(L"DeleteByNameAction");
 
-DeleteByNameAction::DeleteByNameAction() : ConsoleAction(L"DeleteByName")
+DeleteByNameAction::DeleteByNameAction() : ConsoleAction(L"deleteByName")
 {
 }
 

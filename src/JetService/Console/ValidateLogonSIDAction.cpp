@@ -18,7 +18,11 @@ ValidateLogonSIDAction::~ValidateLogonSIDAction(void)
 
 
 void ValidateLogonSIDAction::PrintUsage(ConsoleWriter* writer) {
-  //NOP as the command in hidden
+  if (LOG.IsDebugEnabled()) {
+      writer->WriteFormat(L"    %s /%s=<path to settings file>", myName, SettingsKeyName);
+      writer->Write      (L"      dumps user SID to console");
+      writer->Write();
+  }  
 }
 
 class DumpSIDCommand : public LSAUserCommand {
@@ -39,6 +43,11 @@ public:
 };
 
 int ValidateLogonSIDAction::ExecuteAction(const Argz* argz, const CreateServiceSettings* settings, const ServiceTaskSettings* taskSettings) {
+  if (settings->runAsSystem()) {
+    LOG.LogError(L"Username and password must be specified");
+    return 1;
+  }
+
   DumpSIDCommand cmd(settings);
   return static_cast<Command*>(&cmd)->executeCommand();
 }

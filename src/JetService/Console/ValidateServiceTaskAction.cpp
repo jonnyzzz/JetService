@@ -17,7 +17,11 @@ ValidateServiceTaskAction::~ValidateServiceTaskAction()
 
 
 void ValidateServiceTaskAction::PrintUsage(ConsoleWriter* writer) {
-  //NOP as the command in hidden
+  if (LOG.IsDebugEnabled()) {
+      writer->WriteFormat(L"    %s /%s=<path to settings file>", myName, SettingsKeyName);
+      writer->Write      (L"      validates command parse");
+      writer->Write();
+  }  
 }
 
 

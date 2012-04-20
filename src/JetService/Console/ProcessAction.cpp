@@ -20,6 +20,7 @@ ProcessAction::~ProcessAction(void)
 void ProcessAction::PrintUsage(ConsoleWriter* writer) {
   writer->WriteFormat(L"    %s /%s=<path to settings file>", myName, SettingsKeyName);
   writer->Write(      L"      starts service process in console window");  
+  writer->Write();
 }
 
 class Settings : public FileTaskSettings {

@@ -21,11 +21,19 @@ CreateServiceAction::~CreateServiceAction(void)
 const CString CreateServiceAction::KEY_DACL = L"changeDACL";
 
 void CreateServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->WriteFormat(L"    %s /%s=<path to settings file> %s [/autostart=false] %s [%s]", myName, SettingsKeyName, GetUserArgumentsList(), GetUsageString(), Argz::MakeBoolArgument(KEY_DACL, true));
-  writer->Write      (L"      installs service to the system to run under given user/password ");
+  CString truefalse=L"(true|false)";
+  writer->WriteFormat(L"    %s /%s=<path to settings file> %s [<extra>]", myName, SettingsKeyName, GetUserArgumentsList());
+  writer->Write      (L"      installs service to the system to run under given user/password,");
+  writer->Write      (L"      where <extra> may contain the following:");
+  writer->WriteFormat(L"        %s", Argz::MakeBoolArgument(KEY_AUTORUN));
+  writer->WriteFormat(L"        %s", Argz::MakeBoolArgument(KEY_CHECK_USER_ACCOUNT));
+  writer->WriteFormat(L"        %s", Argz::MakeBoolArgument(KEY_GIVE_USER_LOGON));
+  writer->WriteFormat(L"        %s", Argz::MakeBoolArgument(KEY_DACL));
+  
   writer->Write();
-  writer->WriteFormat(L"    %s /%s=<path to settings file> /runAsSystem [/autostart=false]", myName, SettingsKeyName);
+  writer->WriteFormat(L"    %s /%s=<path to settings file> /runAsSystem [%s]", myName, SettingsKeyName, Argz::MakeBoolArgument(KEY_AUTORUN));
   writer->Write      (L"      installs service to the system to run under local system");
+  writer->Write();
 }
 
 

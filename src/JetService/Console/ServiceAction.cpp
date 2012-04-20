@@ -18,8 +18,11 @@ ServiceAction::~ServiceAction()
 }
 
 void ServiceAction::PrintUsage(ConsoleWriter* writer) {
-  writer->WriteFormat(L"    %s", myName);  
-  writer->Write      (L"      internal, called to run as windows service");  
+  if (LOG.IsDebugEnabled()) {
+    writer->WriteFormat(L"    %s", myName);  
+    writer->Write      (L"      internal, called to run as windows service");  
+    writer->Write();
+  }
 }
 
 void ServiceAction::JetServiceMain(const Argz* az, const ServiceSettings* settings, DWORD dwArgc, LPTSTR *lpszArgv) {  

@@ -17,7 +17,7 @@ private:
 protected:
   virtual CString GetUsageString();
   
-private:
+protected:
   static const CString KEY_CHECK_USER_ACCOUNT;
   static const CString KEY_GIVE_USER_LOGON;
 };

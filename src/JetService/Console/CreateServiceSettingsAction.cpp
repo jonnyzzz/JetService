@@ -19,6 +19,8 @@ CreateServiceSettingsAction::~CreateServiceSettingsAction()
 {
 }
 
+const CString CreateServiceSettingsAction::KEY_AUTORUN = L"autorun";
+
 int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTaskSettings* baseSettings) {  
   CString serviceCommand;
   CString logFile;
@@ -42,7 +44,7 @@ int CreateServiceSettingsAction::ExecuteAction(const Argz* az, const ServiceTask
     LOG.LogInfoFormat(L"Installing service under %s (domain=%s) account", settings.getUserName(), settings.getDomain());
   }
 
-  settings.setAutostart(az->GetBooleanArgument(L"autostart", true) && az->GetBooleanArgument(L"autorun", true));
+  settings.setAutostart(az->GetBooleanArgument(L"autostart", true) && az->GetBooleanArgument(KEY_AUTORUN, true));
 
   return ExecuteAction(az, &settings, baseSettings);  
 }

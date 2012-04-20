@@ -109,7 +109,7 @@
     <ClInclude Include="Process\LogPipeReader.h" />
     <ClInclude Include="Process\Pipe.h" />
     <ClInclude Include="Process\PipeReader.h" />
-    <ClInclude Include="Process\ProcessAction.h" />
+    <ClInclude Include="Console\ProcessAction.h" />
     <ClInclude Include="Process\ProcessCommand.h" />
     <ClInclude Include="Process\ProcessInterruptConsoleControlHandler.h" />
     <ClInclude Include="Process\ProcessInterruptTerminateHandler.h" />
@@ -185,7 +185,7 @@
     <ClCompile Include="Process\LogPipeReader.cpp" />
     <ClCompile Include="Process\Pipe.cpp" />
     <ClCompile Include="Process\PipeReader.cpp" />
-    <ClCompile Include="Process\ProcessAction.cpp" />
+    <ClCompile Include="Console\ProcessAction.cpp" />
     <ClCompile Include="Process\ProcessCommand.cpp" />
     <ClCompile Include="Process\ProcessInterruptConsoleControlHandler.cpp" />
     <ClCompile Include="Process\ProcessInterruptTerminateHandler.cpp" />

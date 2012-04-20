@@ -16,7 +16,11 @@ ValidateCreateServiceAction::~ValidateCreateServiceAction()
 
 
 void ValidateCreateServiceAction::PrintUsage(ConsoleWriter* writer) {
-  //NOP as the command in hidden
+  if (LOG.IsDebugEnabled()) {
+      writer->WriteFormat(L"    %s /%s=<path to settings file>", myName, SettingsKeyName);
+      writer->Write      (L"      verifies create service command");
+      writer->Write();
+  }  
 }
 
 int ValidateCreateServiceAction::ExecuteAction(const Argz* argz, const CreateServiceSettings* settings, const ServiceTaskSettings* taskSettings) {

@@ -72,7 +72,6 @@ int ConsoleCommandsRunner::usage() {
 
   for(ConsoleAction** p = myActions; *p != NULL; p++) {    
     (*p)->PrintUsage(myWriter);
-    myWriter->Write();
   }
 
   return 1;

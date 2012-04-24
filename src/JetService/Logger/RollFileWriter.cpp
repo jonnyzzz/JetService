@@ -76,12 +76,12 @@ void RollFileWriter::RotateLogsIfNeeded() {
   }
 }
 
-void RollFileWriter::WriteLine(const CString& line) {
+void RollFileWriter::WriteLine(const CString& prefix, const CString& line) {
   if (myFileStream == NULL) return;
 
   CString time;
   FormatTimestamp(time);      
-  fwprintf(myFileStream, L"%s%s", time, line);
+  fwprintf(myFileStream, L"%s%s%s\n", time, prefix, line);
   fflush(myFileStream);  
 
   RotateLogsIfNeeded();
@@ -114,5 +114,4 @@ void RollFileWriter::SetOutputFile(const CString& file) {
   myFileName = file;
     
   LOG.LogInfoFormat(L"Logging will be redirected to: %s", myFileName);  
-  WriteLine(L"\n\n\n");  
 }

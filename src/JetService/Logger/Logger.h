@@ -49,7 +49,7 @@ public:
 private:
 	static void Log(LoggerSuverity suv, const CString& prefix, const CString& message);
 	static bool ToLog(LoggerSuverity suv);  
-  static void LogMessageInternal(const CString& message);
+  static void LogMessageInternal(const CString& prefix, const CString& message);
 
 private:
 	static LoggerSuverity ourSuverity;

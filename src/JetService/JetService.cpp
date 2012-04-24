@@ -26,8 +26,6 @@ int _tmain(int argc, _TCHAR* argv[])
   SimpleConsoleWriter sConsole;
   ConsoleWriter* console = &sConsole;
   console->Write(L"Starting JetBrains JetService...");
-  console->Write(L"Copyright (C) JetBrains GmbH 2012");
-  console->Write();
 
   Argz az(argc, argv);
 

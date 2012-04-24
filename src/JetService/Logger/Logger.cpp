@@ -152,6 +152,7 @@ CString Logger::GetErrorText(DWORD win32Error) {
 
 void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& message) {    
   if (!Logger::ToLog(suv)) return;
+  
   CString log;
   const int NAME_SZ = 33;
 
@@ -175,17 +176,19 @@ void Logger::Log(LoggerSuverity suv, const CString& prefix, const CString& messa
 			log.Append(L"[Error] ");
 			break;
 	}		
-	log.Append(message);
-	log.Append(L"\n");
-
+	
   ourCriticalSection.EnterCriticalSection();
-  LogMessageInternal(log);
+  LogMessageInternal(log, message);
   ourCriticalSection.LeaveCriticalSection();	
 }
 
-void Logger::LogMessageInternal(const CString& log) {
-  wprintf_s(L"%s", log);
-  ourFileWriter.WriteLine(log);
+void Logger::LogMessageInternal(const CString& prefix, const CString& message) {
+  if (ourSuverity > LogSDebug) {
+    wprintf_s(L"%s\n", message);
+  } else {
+    wprintf_s(L"%s%s\n", prefix, message);
+  }
+  ourFileWriter.WriteLine(prefix, message);
 }
 
 void Logger::SetLogFile(const CString& file) {

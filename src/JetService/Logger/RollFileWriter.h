@@ -9,7 +9,7 @@ private:
   RollFileWriter(const RollFileWriter&);
 
 public:
-  void WriteLine(const CString& line);
+  void WriteLine(const CString& prefix, const CString& line);
 
 public:
   void SetOutputFile(const CString& file);

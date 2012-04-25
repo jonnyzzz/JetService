@@ -4,6 +4,7 @@
 *.opensdf
 *.DotSettings
 *.DotSettings.user
+*.bak
 Release/
 ipch/
 Debug/

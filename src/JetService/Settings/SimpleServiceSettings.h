@@ -110,14 +110,18 @@ public:
   virtual long getTerminateWaitTimeoutMilliseconds() const;
   virtual const ExecutionSettings* getStopCommand() const;
 
+  virtual const std::vector<CString>& getEnvironmentVariablesToOverride() const;
+
 public:
   void setTerminateWaitTimeoutMillis(long timeout); 
   void setStopCommand(const ExecutionSettings* command);
+  void addEnvironmentVariableToOverride(const CString& name);
 
 private:
   const ServiceSettings* const myBase;
   SimpleExecutionSettings myStopCommand;
   bool myUseStopCommand;
   long myStopTimeout;
+  std::vector<CString> myEnvironmentToOverride;
 };
 

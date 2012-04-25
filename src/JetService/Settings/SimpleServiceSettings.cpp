@@ -225,3 +225,12 @@ void SimpleServiceTaskSettings::setStopCommand(const ExecutionSettings* command)
 void SimpleServiceTaskSettings::setTerminateWaitTimeoutMillis(long timeout) {
   myStopTimeout = max(0, timeout);
 }
+
+
+const std::vector<CString>& SimpleServiceTaskSettings::getEnvironmentVariablesToOverride() const {
+  return myEnvironmentToOverride;
+}
+
+void SimpleServiceTaskSettings::addEnvironmentVariableToOverride(const CString& name) {
+  myEnvironmentToOverride.push_back(name);
+}

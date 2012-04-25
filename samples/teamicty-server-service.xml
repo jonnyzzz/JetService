@@ -13,6 +13,12 @@
         <workdir>../bin</workdir>
       </execution>
     </termination>
+    <copySystemEnvironmentVariables>
+      <variable>TEAMCITY_DATA_PATH</variable>
+      <variable>TEAMCITY_SERVER_MEM_OPTS</variable>
+      <variable>TEAMCITY_SERVER_OPTS</variable>
+      <variable>TEAMCITY_PREPARE_SCRIPT</variable>
+    </copySystemEnvironmentVariables>
   </execution>
 </jetservice>
 

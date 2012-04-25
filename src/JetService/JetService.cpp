@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "Command.h"
 #include "ConsoleAction.h"
 #include "SimpleConsoleWriter.h"
@@ -25,7 +26,10 @@ int _tmain(int argc, _TCHAR* argv[])
 {
   SimpleConsoleWriter sConsole;
   ConsoleWriter* console = &sConsole;
-  console->Write(L"Starting JetBrains JetService...");
+  CString version;
+  version.Append(L"JetBrains JetService v");
+  version.AppendFormat(IDS_JET_SERVICE_VERSION);
+  console->Write(version);
 
   Argz az(argc, argv);
 

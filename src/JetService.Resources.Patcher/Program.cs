@@ -37,8 +37,8 @@ namespace JetService.Resources.Patcher
       text = Regex.Replace(text, @"^(.*FILEVERSION ).*$", "$1 " + cVersion, RegexOptions.Multiline);
       text = Regex.Replace(text, @"^(.*PRODUCTVERSION ).*$", "$1 " + cVersion, RegexOptions.Multiline);
 
-      text = Regex.Replace(text, @"^(\s+VALUE\s+\""ProductVersion\"").*$", "$1 " + qVersion, RegexOptions.Multiline);
-      text = Regex.Replace(text, @"^(\s+VALUE\s+\""FileVersion\"").*$", "$1 " + qVersion, RegexOptions.Multiline);
+      text = Regex.Replace(text, @"^(\s+VALUE\s+\""ProductVersion\"").*$", "$1, " + qVersion, RegexOptions.Multiline);
+      text = Regex.Replace(text, @"^(\s+VALUE\s+\""FileVersion\"").*$", "$1, " + qVersion, RegexOptions.Multiline);
       text = Regex.Replace(text, @"^(.*IDS_JET_SERVICE_VERSION ).*$", "$1 " + qVersion, RegexOptions.Multiline);
 
 

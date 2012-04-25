@@ -8,4 +8,6 @@
 Release/
 ipch/
 Debug/
+bin/
+obj/
 _Resharper*/

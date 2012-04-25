@@ -227,10 +227,10 @@ void SimpleServiceTaskSettings::setTerminateWaitTimeoutMillis(long timeout) {
 }
 
 
-const std::vector<CString>& SimpleServiceTaskSettings::getEnvironmentVariablesToOverride() const {
-  return myEnvironmentToOverride;
+const std::vector<CString>* SimpleServiceTaskSettings::getEnvironmentVariablesToOverride() const {
+  return &myEnvironmentToOverride;
 }
 
-void SimpleServiceTaskSettings::addEnvironmentVariableToOverride(const CString& name) {
+void SimpleServiceTaskSettings::addEnvironmentVariableToOverride(CString name) {
   myEnvironmentToOverride.push_back(name);
 }

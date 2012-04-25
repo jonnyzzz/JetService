@@ -48,7 +48,8 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
   if (ret != 0) return ret;
   ret = parseProgramStopMethod(baseDir, execnode, &settings);
   if (ret != 0) return ret;
-
+  ret = parseEnvironmentVariables(execnode, &settings);
+  if (ret != 0) return ret;
   
 
   const ServiceTaskSettings* pSettings = &settings;
@@ -59,6 +60,21 @@ int FileTaskSettings::executeCommand(xml_document<TCHAR>* doc) {
   LOG.LogInfoFormat(L"Program stop timeout: %ld", pSettings->getTerminateWaitTimeoutMilliseconds());
 
   return executeCommand(pSettings);
+}
+
+
+int FileTaskSettings::parseEnvironmentVariables(rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings) {
+  xml_node<TCHAR>* env = execution->first_node(L"copySystemEnvironmentVariables");
+  if (env == NULL) return 0;
+  for(xml_node<TCHAR>* var = env->first_node(L"variable"); var != NULL; var = var->next_sibling(L"variable")) {
+    CString text = nodeText(var);
+    text = text.Trim();
+    if (text.GetLength() > 0) {
+      LOG.LogDebugFormat(L"Copy environemnt variable: %s", text);
+      settings->addEnvironmentVariableToOverride(text);
+    }
+  }
+  return 0;
 }
 
 int FileTaskSettings::parseProgramStopMethod(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings) {

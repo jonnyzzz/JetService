@@ -52,7 +52,7 @@ public:
 
   ///retuns names of Environment variables that must be reset to system-wide value
   ///due to TW-21240 and kb821761 we likely to override those variables explicitly
-  virtual const std::vector<CString>& getEnvironmentVariablesToOverride() const = 0;
+  virtual const std::vector<CString>* getEnvironmentVariablesToOverride() const = 0;
 };
 
 

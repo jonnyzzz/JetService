@@ -25,6 +25,8 @@ private:
   int parseProgramArgs(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleExecutionSettings* settings);
   int parseProgramDir(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleExecutionSettings* settings, CString def);
   
+  int parseEnvironmentVariables(rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
+  
   int parseProgramStopMethod(CString baseDir, rapidxml::xml_node<TCHAR>* execution, SimpleServiceTaskSettings* settings);
   int parseProgramStopTimeout(rapidxml::xml_node<TCHAR>* termination, SimpleServiceTaskSettings* settings);
 

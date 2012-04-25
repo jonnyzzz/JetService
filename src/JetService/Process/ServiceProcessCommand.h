@@ -14,6 +14,9 @@ public:
   virtual int executeCommand();
 
 private:
+  void resetEnvironmentVariables2();
+
+private:
   const ServiceTaskSettings* const mySettings;
 };
 

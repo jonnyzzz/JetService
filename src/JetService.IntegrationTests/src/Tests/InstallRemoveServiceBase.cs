@@ -7,6 +7,7 @@ namespace JetService.IntegrationTests.Tests
 {
   public class InstallRemoveServiceBase
   {
+
     protected void StartStopService(ServiceSettings service, string log, Action afterStarted, bool waitStarted = false)
     {
       var stopRead = false;

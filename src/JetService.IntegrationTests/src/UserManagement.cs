@@ -3,6 +3,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.IO;
+using System.Management;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using NUnit.Framework;
@@ -11,12 +12,13 @@ namespace JetService.IntegrationTests
 {
   public static class UserManagement
   {
+    private static readonly string USER_NAME_PREFIX = "jetsvc";
 
     public static void GiveAllPermissions(string fs)
     {
       if (Directory.Exists(fs))
       {
-        DirectorySecurity ds = Directory.GetAccessControl(fs);
+        DirectorySecurity ds = Directory.GetAccessControl(fs);        
         IdentityReference rr = new NTAccount("everyone");
         ds.AddAccessRule(new FileSystemAccessRule(rr, FileSystemRights.FullControl, AccessControlType.Allow));
       } 
@@ -47,7 +49,7 @@ namespace JetService.IntegrationTests
       var rand = (int) (DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds%9999;
       var u = new User
                  {
-                   UserName = "jetsvc" + rand,
+                   UserName = USER_NAME_PREFIX + rand,
                    Password = "jeti" + rand + "z"
                  };
       ThreadUtil.ExecuteSTA(() => CreateAdminUser(u, group));
@@ -68,6 +70,9 @@ namespace JetService.IntegrationTests
 
     private static void CreateAdminUser(User u, UserGroup g)
     {
+      //cleaup leak
+      RemoveUser(u);
+
       var dirEntry = new DirectoryEntry("WinNT://" + Environment.MachineName);
 
       DirectoryEntries entries = dirEntry.Children;
@@ -93,9 +98,12 @@ namespace JetService.IntegrationTests
       try
       {
         var localDirectory = new DirectoryEntry("WinNT://" + Environment.MachineName);
+
         DirectoryEntries users = localDirectory.Children;
-        DirectoryEntry user = users.Find(u.UserName);
+        DirectoryEntry user = users.Find(u.UserName, "User");
         users.Remove(user);
+
+        localDirectory.CommitChanges();
 
         Console.Out.WriteLine("User {0} removed", u);
         Console.Out.Flush();

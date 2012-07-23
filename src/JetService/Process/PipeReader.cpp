@@ -19,7 +19,7 @@ DWORD WINAPI PipeReaderThreadProc(LPVOID lpParameter) {
 }
 
 PipeReader::PipeReader(ReaderCallback* readerCallback, HANDLE pipe, InterruptHolder* interrupt)
-  : InterruptHolder(interrupt)
+  : InterruptHolder(NULL)
   , myReaderCallback(readerCallback)
   , myPipe(pipe)  
   , myThread(NULL)

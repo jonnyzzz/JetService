@@ -3,10 +3,8 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.IO;
-using System.Management;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using NUnit.Framework;
 
 namespace JetService.IntegrationTests
 {
@@ -110,8 +108,7 @@ namespace JetService.IntegrationTests
         
       } catch(Exception e)
       {
-        Console.Out.WriteLine("Failed to remove user. {0} {1} {2}", u.UserName, e.Message, e);
-        Assert.Ignore("Failed to remove user: {0}", u.UserName);
+        Console.Out.WriteLine("Failed to remove user. {0} {1} {2}", u.UserName, e.Message, e);        
       }
     }
   }

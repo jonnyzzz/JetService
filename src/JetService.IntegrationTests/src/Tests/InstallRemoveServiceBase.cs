@@ -88,7 +88,7 @@ namespace JetService.IntegrationTests.Tests
     private static ServiceSettings CreateSettingsXml(string dir,
                                                  TestAction start,
                                                  TestAction stop,
-                                                 double? timeout = 0.1707)
+                                                 double? timeout = 1990.1707)
     {
       var hash = (int)(DateTime.Now - new DateTime(2012, 04, 01)).TotalMilliseconds % 9999;
       string serviceName = "jetService-test-" + hash;

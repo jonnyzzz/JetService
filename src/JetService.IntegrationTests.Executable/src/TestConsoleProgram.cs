@@ -11,6 +11,7 @@ namespace JetService.IntegrationTests.Executable
     TEST_STDERR,
     TEST_STDIN_READ,
     TEST_STDIN_SLEEP_READ,
+    TEST_STDOUT_STDERR_ON_STOP,
 
     TEST_IM_ALIVE,
     TEST_RUN_10500,
@@ -40,6 +41,28 @@ namespace JetService.IntegrationTests.Executable
 
       switch (result)
       {
+        case ConsoleTestAction.TEST_STDOUT_STDERR_ON_STOP:
+          {
+            WaitServiceToStart();
+            var wait = args[1];
+            Console.Out.WriteLine("Started. Waiting for {0}", wait);
+            while(true)
+            {
+              Thread.Sleep(TimeSpan.FromSeconds(1));
+              if (File.Exists(wait)) break;
+            }
+            
+            //dump too much text into log
+            for(int i = 0; i < 100 ; i++)
+            {
+              Console.Out.WriteLine("Some stdin data: {0}." + new string('z', 2000), i);
+              Console.Error.WriteLine("Some stderr data: {0}" + new string('z', 2000), i);
+            }
+            Console.Out.Flush();
+            Console.Error.Flush();
+          }
+          return 0;
+
         case ConsoleTestAction.TEST_STDOUT:
           Console.Out.WriteLine("This is service std-out 44");
           return 0;

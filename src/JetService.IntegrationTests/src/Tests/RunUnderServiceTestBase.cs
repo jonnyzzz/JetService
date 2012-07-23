@@ -95,6 +95,24 @@ namespace JetService.IntegrationTests.Tests
     }
 
     [Test]
+    public void TestStartStopServiceSTDOUT_OnStop()
+    {
+      TempFilesHolder.WithTempFile(
+        waitFile =>
+        {
+          File.Delete(waitFile);
+          DoExecuteTest(
+            TestAction.Action(ConsoleTestAction.TEST_STDOUT_STDERR_ON_STOP, name => Stubs.A(waitFile, name)),
+            (s, dir) => WaitFor.WaitForAssert(
+                          TimeSpan.FromSeconds(60),
+                          () => TimeSpan.FromSeconds(.5),
+                          () => ServicesUtil.IsServiceRunning(s),
+                          () => "Service must be running. Status: " + ServicesUtil.DumpServices(s)),
+            TestAction.Action(ConsoleTestAction.TEST_WRITE_FILE, name => Stubs.A(waitFile, name)));
+        });
+    }
+
+    [Test]
     public void TestStartStopServiceFromService_action()
     {
       TempFilesHolder.WithTempFile(
